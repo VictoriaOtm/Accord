@@ -138,6 +138,12 @@ namespace Player{
             state = PAUSED;
         }
     }
+
+    void ChangeTrack(std::string path){
+        Dispose();
+        Init(EosCallback, MessageCallback, path);
+    }
+
     void Dispose(){
         state = TO_STOP; //переводим в это состояние для выхода из цикла потока
         playbackThread.join(); //присоединяем поток

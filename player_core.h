@@ -56,6 +56,7 @@ namespace Player{
     void StartPlayback();
     void PausePlayback();
     void StopPlayback();
+    void ChangeTrack(std::string path);
     void Dispose();
 };
 
