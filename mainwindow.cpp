@@ -13,8 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete player;
     delete ui;
+    delete model;
+    delete player;
 }
 
 
