@@ -17,7 +17,7 @@ namespace WorkingDir{
     {
     public:
         WorkingDirectory(QString _path);
-        ~WorkingDirectory();
+        ~WorkingDirectory() = default;
 
         static bool IsValidDir(QString _path);
 

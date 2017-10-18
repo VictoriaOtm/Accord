@@ -2,20 +2,11 @@
 
 namespace WorkingDir{
 
-    WorkingDirectory::WorkingDirectory(QString _path){
-        path = "";
-
-        if( IsValidDir(_path) ){
+    WorkingDirectory::WorkingDirectory(const QString& _path){
             path = _path;
-        }
     }
 
-    WorkingDirectory::~WorkingDirectory(){
-        namesOfSongs.~vector();
-        path.~QString();
-    }
-
-    bool WorkingDirectory::IsValidDir(QString _path){
+    bool WorkingDirectory::IsValidDir(const QString& _path){
         QDir dir( _path );
         if( !dir.exists() ){
             return false;
