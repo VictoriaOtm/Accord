@@ -23,7 +23,7 @@ namespace WorkingDir{
 
         bool IsValidDir(void);
 
-        QString CreateListOfSongs(TypeOfSort typeOfSort);
+        bool Refresh(TypeOfSort typeOfSort);
 
         int Size();
 

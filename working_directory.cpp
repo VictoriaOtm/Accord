@@ -29,24 +29,23 @@ namespace WorkingDir{
     }
 
     QString WorkingDirectory::GetSong(const unsigned int i){
-        if( (0 < i) && (i <= namesOfSongs.size()) ){
-            return namesOfSongs[i - 1];
+        if( (0 <= i) && (i < namesOfSongs.size()) ){
+            return namesOfSongs[i];
         } else {
             return "";
         }
     }
 
-    QString WorkingDirectory::CreateListOfSongs(TypeOfSort typeOfSort)
+    bool WorkingDirectory::Refresh(TypeOfSort typeOfSort)
     {
         /*
         Функция считывает список файлов (только доступные для чтения) в директории.
         Входные параметры:
          typeOfSort - тип сортировки
         Возвращаемое значение:
-         Строка со списком файлов в директории в порядке, который
-         опеределяется заданным ключом typeOfSort
+         true - в случае успеха операции
+         false - в противном случае
         */
-        QString listOfSongs = "";
         QDir dir(path);
 
         if( dir.exists() ){
@@ -69,10 +68,6 @@ namespace WorkingDir{
 
                 // заполняем вектор названиями песен
                 namesOfSongs.push_back( fileInfo.fileName() );
-
-                // формируем строку со всеми песнями
-                QString strSong = strSong.number(i + 1) + ". " + fileInfo.fileName() + "\n";
-                listOfSongs += strSong;
             }
         }
 
