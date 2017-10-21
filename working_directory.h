@@ -16,10 +16,10 @@ namespace WorkingDir{
     class WorkingDirectory
     {
     public:
-        WorkingDirectory(QString _path);
+        WorkingDirectory(const QString& _path);
         ~WorkingDirectory() = default;
 
-        static bool IsValidDir(QString _path);
+        static bool IsValidDir(const QString& _path);
 
         bool IsValidDir(void);
 
