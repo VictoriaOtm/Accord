@@ -8,11 +8,11 @@
 class Application
 {
 public:
-    Application();
-    run();
+    explicit Application();
+    int run(int argc, char* argv[]);
 
 private:
-    MainController mainController;
+
 };
 
 #endif // APPLICATION_H

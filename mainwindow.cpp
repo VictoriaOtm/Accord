@@ -5,6 +5,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    audioListModel = new QStringListModel(this);
+    playlistModel = new QStringListModel(this);
     ui->setupUi(this);
 }
 

@@ -1,13 +1,14 @@
 #include "application.h"
 
 Application::Application()
-{
+{}
 
-}
-
-Application::run(){
-    QApplication a(argc, argv);
+int Application::run(int argc, char *argv[]){
+    QApplication application(argc, argv);
     Player player;
+    MainController mainController;
 
-    return a.exec();
+    mainController.start();
+
+    return application.exec();
 }

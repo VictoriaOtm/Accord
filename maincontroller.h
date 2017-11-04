@@ -10,6 +10,9 @@ class MainController
 public:
     MainController();
 
+    void start();
+    void openMainWin();
+
 private:
     MainWindow mainWin;
 };
