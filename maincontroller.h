@@ -12,6 +12,7 @@ public:
 
     void start();
     void openMainWin();
+    MainWindow& getMainWin();
 
 private:
     MainWindow mainWin;

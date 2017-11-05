@@ -12,3 +12,7 @@ void MainController::openMainWin(){
 void MainController::start(){
     openMainWin();
 }
+
+MainWindow& MainController::getMainWin(){
+    return mainWin;
+}

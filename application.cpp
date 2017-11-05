@@ -10,5 +10,10 @@ int Application::run(int argc, char *argv[]){
 
     mainController.start();
 
+    QObject::connect(&mainController.getMainWin(),
+                     SIGNAL(playButtonPushed(),
+                     &player,
+                     SLOT(play());
+
     return application.exec();
 }

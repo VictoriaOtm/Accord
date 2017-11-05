@@ -18,10 +18,10 @@ public:
     ~MainWindow();
 
 signals:
-    void play();
-    void pause();
-    void next();
-    void prev();
+    void playButtonPushed();
+    void pauseButtonPushed();
+    void nextButtonPushed();
+    void prevButtonPushed();
     void audioSwitched(size_t audioPosition);
     void addAudioFromDisk();
     void saveAsPlaylist(const QStringListModel* audioListModel);
