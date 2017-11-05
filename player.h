@@ -35,11 +35,13 @@ public slots:
     void RemoveTrack(int trackNum);
 
 signals:
+    //PASSED FURTHER FROM QMEDIAPLAYER
     void AudioAvailableChanged(bool available);
     void PositionChanged(qint64 position);
     void MediaChanged(const QMediaContent& media);
     void CurrentIndexChanged(int position);
     void MediaStatusChanged(QMediaPlayer::MediaStatus);
+    //EMITTED BY PLAYER ITSELF
     void AddedTracksSuccessfully();
     void AddTracksFailed();
     void RemovedTracksSuccessfully();

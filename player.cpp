@@ -12,6 +12,7 @@ Player::Player(){
     QObject::connect(&player, &QMediaPlayer::posititionChanged, &Player::PositionChanged);
     QObject::connect(player.playlist(), &QMediaPlaylist::currentMediaChanged, &Player::MediaChanged);
     QObject::connect(player.playlist(), &QMediaPlaylist::currentIndexChanged, &Player::CurrentIndexChanged);
+    QObject::connect(&player, &QMediaPlayer::mediaStatusChanged, &Player::MediaStatusChanged);
 }
 
 void Player::Play(){
