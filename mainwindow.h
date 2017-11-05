@@ -2,12 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QMediaPlayer>
-#include <QMediaPlaylist>
-#include <QMessageBox>
 #include <QStringListModel>
-#include <stdio.h>
-#include "working_directory.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -19,18 +15,25 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void setAudioListModel(QStringList tracks);
     ~MainWindow();
 
 private slots:
-    void on_chooseDirButton_clicked();
+     void on_pushButton_clicked();
 
-    void on_playButton_clicked();
+signals:
+    void play();
+    void pause();
+    void next();
+    void prev();
+    void audioSwitched(size_t audioPosition);
+    void addAudioFromDisk(MainWindow*);
+    void saveAsPlaylist(const QStringListModel* audioListModel);
 
 private:
     Ui::MainWindow *ui;
-    QMediaPlayer *player;
-    QStringListModel *model;
-    QString currentPath;
+    QStringListModel *audioListModel;
+    QStringListModel *playlistModel;
 };
 
 #endif // MAINWINDOW_H
