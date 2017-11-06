@@ -4,6 +4,7 @@
 #include <qfiledialog.h>
 #include "uploadwindow.h"
 #include "maincontroller.h"
+#include "audio.h"
 
 class UploadWinController : public QObject
 {
@@ -16,11 +17,11 @@ public slots:
     void Add(MainWindow*);
 
 signals:
-    void TracksAdded(QStringList);
+    void TracksAdded(QVector<Audio>);
 
 private:
     UploadWindow uploadWin;
-    QStringList tracksToAdd;
+    QVector<Audio> tracksToAdd;
 };
 
 #endif // UPLOADWINCONTROLLER_H

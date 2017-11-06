@@ -14,8 +14,11 @@ int Application::run(int argc, char *argv[]){
     QObject::connect(&mainController.getMainWin(), SIGNAL(addAudioFromDisk(MainWindow*)),
                           &uploadWinController, SLOT(Add(MainWindow*)));
 
-    QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QStringList)),
-                          &mainController, SLOT(NewTracksAdded(QStringList)));
+    QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
+                          &mainController, SLOT(NewTracksAdded(QVector<Audio>)));
+
+    QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
+                        &Player::instance(), SLOT(addTracks(QVector<Audio>)));
 
     QObject::connect(&mainController.getMainWin(), SIGNAL(play()),
                     &player, SLOT(play()));
@@ -28,6 +31,9 @@ int Application::run(int argc, char *argv[]){
 
     QObject::connect(&mainController.getMainWin(), SIGNAL(prev()),
                      &player, SLOT(prev()));
+
+    /*QObject::connect(&mainController.getMainWin(), SIGNAL(audioSwitched(int)),
+                    &player, SLOT(curAudioPosChanged(int)));*/
 
     mainController.start();
 

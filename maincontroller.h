@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "mainwindow.h"
+#include "audio.h"
 
 class MainController : public QObject
 {
@@ -16,10 +17,11 @@ public:
     MainWindow& getMainWin();
 
 public slots:
-    void NewTracksAdded(QStringList tracks);
+    void NewTracksAdded(QVector<Audio> tracks);
 
 private:
     MainWindow mainWin;
+    QVector<Audio> currentList;
 };
 
 #endif // MAINCONTROLLER_H
