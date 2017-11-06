@@ -12,7 +12,7 @@ class Player: public QObject
     Q_OBJECT
 
 public:
-    static Player& Instance();
+    static Player& instance();
     Player(const Player& other) = delete;
     Player& operator = (const Player& other) = delete;
 
@@ -22,30 +22,30 @@ private:
     ~Player() = default;
 
 public slots:
-    void Play();
-    void Pause();
-    void Stop();
-    void Prev();
-    void Next();
-    void SetVolume(int volume);
-    void SetPosition(qint64 position);
-    void AddTracks(const QVector<Audio>& newTracks);
-    void RemoveTracks(int start, int end);
-    void AddTrack(const Audio& newTrack);
-    void RemoveTrack(int trackNum);
+    void play();
+    void pause();
+    void stop();
+    void prev();
+    void next();
+    void setVolume(int volume);
+    void setPosition(qint64 position);
+    void addTracks(const QVector<Audio>& newTracks);
+    void removeTracks(int start, int end);
+    void addTrack(const Audio& newTrack);
+    void removeTrack(int trackNum);
 
 signals:
     //PASSED FURTHER FROM QMEDIAPLAYER
-    void AudioAvailableChanged(bool available);
-    void PositionChanged(qint64 position);
-    void MediaChanged(const QMediaContent& media);
-    void CurrentIndexChanged(int position);
-    void MediaStatusChanged(QMediaPlayer::MediaStatus);
+    void audioAvailableChanged(bool available);
+    void positionChanged(qint64 position);
+    void mediaChanged(const QMediaContent& media);
+    void currentIndexChanged(int position);
+    void mediaStatusChanged(QMediaPlayer::MediaStatus);
     //EMITTED BY PLAYER ITSELF
-    void AddedTracksSuccessfully();
-    void AddTracksFailed();
-    void RemovedTracksSuccessfully();
-    void RemoveTracksFailed();
+    void addedTracksSuccessfully();
+    void addTracksFailed();
+    void removedTracksSuccessfully();
+    void removeTracksFailed();
 };
 
 #endif // PLAYER_H

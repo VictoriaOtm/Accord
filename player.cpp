@@ -1,7 +1,7 @@
 #include <iostream>
 #include "player.h"
 
-static Player& Player::Instance(){
+static Player& Player::instance(){
     static Player p;
     return p;
 }
@@ -15,35 +15,35 @@ Player::Player(){
     QObject::connect(&player, &QMediaPlayer::mediaStatusChanged, &Player::MediaStatusChanged);
 }
 
-void Player::Play(){
+void Player::play(){
     player.play();
 }
 
-void Player::Pause(){
+void Player::pause(){
     player.pause();
 }
 
-void Player::Stop(){
+void Player::stop(){
     player.stop();
 }
 
-void Player::Prev(){
+void Player::prev(){
     player.media().playlist()->previous();
 }
 
-void Player::Next(){
+void Player::next(){
     player.media().playlist()->next();
 }
 
-void Player::SetVolume(int volume){
+void Player::setVolume(int volume){
     player.setVolume(volume);
 }
 
-void Player::SetPosition(qint64 position){
+void Player::setPosition(qint64 position){
     player.setPosition(position);
 }
 
-void Player::AddTracks(const QVector<Audio>& newTracks){
+void Player::addTracks(const QVector<Audio>& newTracks){
     QList<QMediaContent> tracks;
     for(auto i = newTracks.begin() ; i != newTracks.end() ; ++i){
         QMediaContent track(QMediaResource( QUrl::fromLocalFile(i->GetPath()) )); //create a QT media object by track path
@@ -52,50 +52,35 @@ void Player::AddTracks(const QVector<Audio>& newTracks){
     if(!player.playlist()->addMedia(tracks)){
         std::cerr << "Error while adding media to playlist in player" << std::endl;
         std::cerr << player.playlist()->errorString().toStdString() << std::endl;
-        emit AddTracksFailed();
+        emit addTracksFailed();
     }else{
-        emit AddedTracksSuccessfully();
+        emit addedTracksSuccessfully();
     }
 }
 
-void Player::RemoveTracks(int start, int end){
+void Player::removeTracks(int start, int end){
     if(!player.playlist()->removeMedia(start, end)){
-        emit RemoveTracksFailed();
+        emit removeTracksFailed();
     }else{
-        emit RemovedTracksSuccessfully();
+        emit removedTracksSuccessfully();
     }
 }
 
-void Player::AddTrack(const Audio &newTrack){
+void Player::addTrack(const Audio &newTrack){
     QMediaContent track(QMediaResource( QUrl::fromLocalFile(newTrack.GetPath()) ));
     if(!player.playlist()->addMedia(track)){
         std::cerr << "Error while adding media to playlist in player" << std::endl;
         std::cerr << player.playlist()->errorString().toStdString() << std::endl;
-        emit AddTracksFailed();
+        emit addTracksFailed();
     }else{
-        emit AddedTracksSuccessfully();
+        emit addedTracksSuccessfully();
     }
 }
 
-void Player::RemoveTrack(int trackNum){
+void Player::removeTrack(int trackNum){
     if(!player.playlist()->removeMedia(trackNum)){
-        emit RemoveTracksFailed();
+        emit removeTracksFailed();
     }else{
-        emit RemovedTracksSuccessfully();
+        emit removedTracksSuccessfully();
     }
-}
-
-void Player::play(){
-    std::cout << "play" << std::endl;
-}
-void Player::pause(){
-    std::cout << "pause" << std::endl;
-}
-
-void Player::next(){
-    std::cout << "next" << std::endl;
-}
-
-void Player::prev(){
-    std::cout << "prev" << std::endl;
 }
