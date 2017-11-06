@@ -2,8 +2,7 @@
 #define PLAYER_H
 
 #include <QObject>
-#include <QMediaPlayer>
-#include <QMediaPlaylist>
+#include <iostream>
 
 
 class Player : public QObject
@@ -18,11 +17,6 @@ public slots:
     void pause();
     void next();
     void prev();
-
-private:
-    QMediaPlayer player;
-    QMediaPlaylist mediaPlaylist;
-
 };
 
 #endif // PLAYER_H

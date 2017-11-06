@@ -6,9 +6,8 @@ Player::Player()
 }
 
 void Player::play(){
-    std::cout << "Звучит музыка" << std::endl;
+    std::cout << "play" << std::endl;
 }
-
 void Player::pause(){
     std::cout << "pause" << std::endl;
 }
