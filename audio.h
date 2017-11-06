@@ -6,10 +6,15 @@
 class Audio
 {
 public:
-    Audio();
+    Audio(QString path);
+    static QVector<Audio> fromAudioPaths(const QStringList& paths);
     const QString& GetPath() const;
 private:
     QString path;
+    QString title;
+    QStringList authors;
+    QString album;
+    void LoadMetaData();
 };
 
 #endif // AUDIO_H
