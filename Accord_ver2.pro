@@ -35,3 +35,6 @@ HEADERS  += mainwindow.h\
         uploadwindow.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    images.qrc
