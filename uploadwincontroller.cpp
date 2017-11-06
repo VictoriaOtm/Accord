@@ -11,10 +11,9 @@ void UploadWinController::Add(MainWindow* mainWin){
                                 QDir::homePath(),
                                 "Music (*.mp3 *.mp4 *.wav);;All files (*.*)");
 
-    QStringList namesSongs;
+    QVector<Audio> tracks;
     foreach(QString str, files){
-       ssize_t startIndexNameSong = str.lastIndexOf(QString::fromLocal8Bit("/"));
-       namesSongs.push_back(str.mid(startIndexNameSong + 1, str.count() - 1));
+       tracks.append(Audio(str));
        //currentPath = str.mid(0, startIndexNameSong + 1);
 
        // информация о преобразовании имени песни
@@ -26,6 +25,7 @@ void UploadWinController::Add(MainWindow* mainWin){
        qDebug() << currentPath;*/
     }
 
-    tracksToAdd = namesSongs;
+    tracksToAdd = tracks;
+
     emit TracksAdded(tracksToAdd);
 }
