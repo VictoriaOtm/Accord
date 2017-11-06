@@ -26,7 +26,7 @@ signals:
     void pause();
     void next();
     void prev();
-    void audioSwitched(size_t audioPosition);
+    void audioSwitched(int);
     void addAudioFromDisk(MainWindow*);
     void saveAsPlaylist(const QStringListModel* audioListModel);
 

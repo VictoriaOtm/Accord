@@ -29,6 +29,9 @@ int Application::run(int argc, char *argv[]){
     QObject::connect(&mainController.getMainWin(), SIGNAL(prev()),
                      &player, SLOT(prev()));
 
+    QObject::connect(&mainController.getMainWin(), SIGNAL(audioSwitched(int)),
+                    &player, SLOT(curAudioPosChanged(int)));
+
     mainController.start();
 
     return application.exec();

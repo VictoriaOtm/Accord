@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->prev_button, SIGNAL(clicked()),
                      this, SIGNAL(prev()));
+
+    QObject::connect(ui->cur_audiolist_view, SIGNAL(currentRowChanged(int)),
+                     this, SIGNAL(audioSwitched(int)));
+
 }
 
 MainWindow::~MainWindow() {
@@ -29,5 +33,6 @@ void MainWindow::on_pushButton_clicked() {
 
 void MainWindow::setAudioListModel(QStringList tracks) {
     audioListModel->setStringList(tracks);
-    ui->listView->setModel(audioListModel);
+    ui->cur_audiolist_view->addItems(tracks);
+    //ui->cur_audiolist_view->setModel(audioListModel);
 }

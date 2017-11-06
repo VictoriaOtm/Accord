@@ -20,6 +20,7 @@ public slots:
 
 private:
     MainWindow mainWin;
+    QStringList currentList;
 };
 
 #endif // MAINCONTROLLER_H

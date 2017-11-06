@@ -6,6 +6,8 @@ Player::Player()
 }
 
 void Player::play(){
+
+
     std::cout << "play" << std::endl;
 }
 void Player::pause(){
@@ -18,4 +20,8 @@ void Player::next(){
 
 void Player::prev(){
     std::cout << "prev" << std::endl;
+}
+
+void Player::curAudioPosChanged(int audioPosition){
+    std::cout << audioPosition << std::endl;
 }

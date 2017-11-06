@@ -17,6 +17,7 @@ public slots:
     void pause();
     void next();
     void prev();
+    void curAudioPosChanged(int audioPosition);
 };
 
 #endif // PLAYER_H

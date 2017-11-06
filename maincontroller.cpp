@@ -10,6 +10,7 @@ void MainController::start(){
 }
 
 void MainController::NewTracksAdded(QStringList tracks){
+    currentList += tracks;
     mainWin.setAudioListModel(tracks);
 }
 
