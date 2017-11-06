@@ -1,7 +1,6 @@
 #include "maincontroller.h"
 
-MainController::MainController()
-{
+MainController::MainController(){
 
 }
 
@@ -19,4 +18,8 @@ void MainController::NewTracksAdded(QStringList tracks){
 
 MainWindow& MainController::getMainWin(){
     return mainWin;
+}
+
+MainController::~MainController(){
+
 }
