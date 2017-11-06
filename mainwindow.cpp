@@ -24,8 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
                                 "background-repeat: none;"
                                 "height: 50px;"
                                 "width: 50px;"
-                                "margin-left: 50px"
                                "}");
+    playButton->move(50, 0);
     playButton->show();
 
     ui->listWidget->addItem("Add Audio From Disk");
@@ -94,8 +94,8 @@ void MainWindow::setPlayPause() {
                                     "background-repeat: none;"
                                     "height: 50px;"
                                     "width: 50px;"
-                                    "margin-left: 50px"
                                    "}");
+        playButton->move(50, 0);
         pauseButton->show();
         playButtonStatus = false;
 
@@ -117,8 +117,8 @@ void MainWindow::setPlayPause() {
                                     "background-repeat: none;"
                                     "height: 50px;"
                                     "width: 50px;"
-                                    "margin-left: 50px"
                                    "}");
+        playButton->move(50, 0);
         playButton->show();
         playButtonStatus = true;
 
