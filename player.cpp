@@ -1,18 +1,18 @@
 #include <iostream>
 #include "player.h"
 
-static Player& Player::instance(){
+Player& Player::instance(){
     static Player p;
     return p;
 }
 
 Player::Player(){
     player.setPlaylist(new QMediaPlaylist(&player));
-    QObject::connect(&player, &QMediaPlayer::audioAvailableChanged, &Player::AudioAvailableChanged);
-    QObject::connect(&player, &QMediaPlayer::posititionChanged, &Player::PositionChanged);
-    QObject::connect(player.playlist(), &QMediaPlaylist::currentMediaChanged, &Player::MediaChanged);
-    QObject::connect(player.playlist(), &QMediaPlaylist::currentIndexChanged, &Player::CurrentIndexChanged);
-    QObject::connect(&player, &QMediaPlayer::mediaStatusChanged, &Player::MediaStatusChanged);
+    QObject::connect(&player, &QMediaPlayer::audioAvailableChanged, this, &Player::audioAvailableChanged);
+    QObject::connect(&player, &QMediaPlayer::positionChanged, this, &Player::positionChanged);
+    QObject::connect(player.playlist(), &QMediaPlaylist::currentMediaChanged, this, &Player::mediaChanged);
+    QObject::connect(player.playlist(), &QMediaPlaylist::currentIndexChanged, this, &Player::currentIndexChanged);
+    QObject::connect(&player, &QMediaPlayer::mediaStatusChanged, this, &Player::mediaStatusChanged);
 }
 
 void Player::play(){
