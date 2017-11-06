@@ -4,15 +4,15 @@
 Audio::Audio(QString path)
 {
     this->path = path;
+    ssize_t startIndexNameSong = path.lastIndexOf(QString::fromLocal8Bit("/"));
+    this->filename = path.mid(startIndexNameSong + 1, path.count() - 1);
     LoadMetaData();
 }
 
-
-
 QVector<Audio> Audio::fromAudioPaths(const QStringList &paths){
     QVector<Audio> result;
-    for(auto iter = paths.begin() ; iter != paths.end() ; ++i){
-        Audio audio(*i);
+    for(auto iter = paths.begin() ; iter != paths.end() ; ++iter){
+        Audio audio(*iter);
         result.append(audio);
     }
     return result;
@@ -20,6 +20,22 @@ QVector<Audio> Audio::fromAudioPaths(const QStringList &paths){
 
 const QString& Audio::GetPath() const{
     return path;
+}
+
+const QString& Audio::GetFilename() const{
+    return filename;
+}
+
+const QString& Audio::GetTitle() const{
+    return title;
+}
+
+const QStringList& Audio::GetAuthors() const{
+    return authors;
+}
+
+const QString& Audio::GetAlbumTitle() const{
+    return album;
 }
 
 void Audio::LoadMetaData(){
