@@ -98,7 +98,7 @@
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>201</width>
+      <width>151</width>
       <height>241</height>
      </rect>
     </property>
@@ -213,9 +213,9 @@
    <widget class="QListWidget" name="curAudioListWidget">
     <property name="geometry">
      <rect>
-      <x>225</x>
+      <x>175</x>
       <y>31</y>
-      <width>321</width>
+      <width>371</width>
       <height>241</height>
      </rect>
     </property>

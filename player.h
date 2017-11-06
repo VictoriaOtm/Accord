@@ -13,10 +13,7 @@ public:
     Player();
 
 public slots:
-    void play();
-    void pause();
-    void next();
-    void prev();
+
     void curAudioPosChanged(int audioPosition);
 };
 
