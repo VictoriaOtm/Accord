@@ -7,6 +7,15 @@ MainWindow::MainWindow(QWidget *parent) :
     audioListModel = new QStringListModel(this);
     playlistModel = new QStringListModel(this);
     ui->setupUi(this);
+
+    QObject::connect(ui->play_button, SIGNAL(clicked()),
+                     this, SIGNAL(play()));
+
+    QObject::connect(ui->next_button, SIGNAL(clicked()),
+                     this, SIGNAL(next()));
+
+    QObject::connect(ui->prev_button, SIGNAL(clicked()),
+                     this, SIGNAL(prev()));
 }
 
 MainWindow::~MainWindow() {
