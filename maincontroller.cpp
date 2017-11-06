@@ -12,8 +12,16 @@ void MainController::start(){
     openMainWin();
 }
 
-void MainController::NewTracksAdded(QStringList tracks){
-    mainWin.setAudioListModel(tracks);
+void MainController::NewTracksAdded(QVector<Audio> tracks){
+    QStringList modelNames;
+    for(auto iter = tracks.begin() ; iter != tracks.end() ; ++iter){
+        QString authors;
+        for(QString author: iter->GetAuthors()){
+            authors += author + " ";
+        }
+        modelNames.append(iter->GetFilename() + ": " + iter->GetTitle() + ", " + authors);
+    }
+    mainWin.setAudioListModel(modelNames);
 }
 
 MainWindow& MainController::getMainWin(){
