@@ -3,15 +3,19 @@
 
 #include <QObject>
 #include "mainwindow.h"
-
-
-class MainController
+class MainController : public QObject
 {
-public:
-    MainController();
+    Q_OBJECT
 
+public:
+    MainController(){};
+    ~MainController(){};
     void start();
     void openMainWin();
+    MainWindow& getMainWin();
+
+public slots:
+    void NewTracksAdded(QStringList tracks);
 
 private:
     MainWindow mainWin;

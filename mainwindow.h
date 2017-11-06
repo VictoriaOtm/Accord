@@ -15,7 +15,11 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void setAudioListModel(QStringList tracks);
     ~MainWindow();
+
+private slots:
+     void on_pushButton_clicked();
 
 signals:
     void play();
@@ -23,7 +27,7 @@ signals:
     void next();
     void prev();
     void audioSwitched(size_t audioPosition);
-    void addAudioFromDisk();
+    void addAudioFromDisk(MainWindow*);
     void saveAsPlaylist(const QStringListModel* audioListModel);
 
 private:

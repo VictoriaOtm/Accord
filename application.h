@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include "maincontroller.h"
+#include "uploadwincontroller.h"
 #include "player.h"
 
 class Application
