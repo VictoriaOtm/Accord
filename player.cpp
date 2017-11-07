@@ -6,8 +6,6 @@ Player::Player()
 }
 
 void Player::play(){
-
-
     std::cout << "play" << std::endl;
 }
 void Player::pause(){
