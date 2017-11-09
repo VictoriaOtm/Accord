@@ -1,0 +1,19 @@
+QPushButton#playButton {
+    background-color: transparent;
+    border-image: url(:images/play.png);
+    background: none;
+    border: none;
+    background-repeat: none;
+    height: 50px;
+    width: 50px;
+}
+
+QPushButton#pauseButton {
+    background-color: transparent;
+    border-image: url(:images/pause.png);
+    background: none;
+    border: none;
+    background-repeat: none;
+    height: 50px;
+    width: 50px;
+}
