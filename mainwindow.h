@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QStringListModel>
+#include <memory>
 #include "ui_mainwindow.h"
 #include "qslider.h"
 
@@ -17,8 +18,9 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    void setAudioListModel(QStringList tracks);
     ~MainWindow();
+    void setAudioListModel(QStringList tracks);
+    void setPlaylistsModel(QStringList playlists);
 
 
 signals:
@@ -37,14 +39,14 @@ private slots:
     void setPlayPause();
 
 private:
-    Ui::MainWindow *ui;
-    QStringListModel *audioListModel;
-    QStringListModel *playlistModel;
+    std::shared_ptr<Ui::MainWindow> ui;
+    std::shared_ptr<QStringListModel> audioListModel;
+    std::shared_ptr<QStringListModel> playlistModel;
 
-    QSlider *volumeSlider;
+    std::shared_ptr<QSlider> volumeSlider;
     bool volumeSliderStatus;
-    QPushButton *playButton;
-    QPushButton *pauseButton;
+    std::shared_ptr<QPushButton> playButton;
+    std::shared_ptr<QPushButton> pauseButton;
     bool playButtonStatus;
 };
 

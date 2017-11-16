@@ -1,37 +1,36 @@
 #include "mainwindow.h"
-
+#include <QFile>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
     volumeSliderStatus(false),
     playButtonStatus(true)
 {
-    audioListModel = new QStringListModel(this);
-    playlistModel = new QStringListModel(this);
+    ui.reset(new Ui::MainWindow);
+    QFile file(":/qss/mainwindow.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = file.readAll();
+
+    audioListModel.reset(new QStringListModel(this));
+    playlistModel.reset(new QStringListModel(this));
     ui->setupUi(this);
 
     setMinimumWidth(562);
     setMaximumWidth(562);
     setMinimumHeight(400);
     setMaximumHeight(400);
-    playButton = new QPushButton(ui->groupBox);
-    playButton->setStyleSheet("QPushButton {"
-                                "background-color: transparent;"
-                                "border-image: url(:images/play.png);"
-                                "background: none;"
-                                "border: none;"
-                                "background-repeat: none;"
-                                "height: 50px;"
-                                "width: 50px;"
-                               "}");
-    playButton->move(50, 0);
+
+    playButton.reset(new QPushButton(ui->playPauseBox));
+    playButton->setObjectName("playButton");
+    playButton->setStyleSheet(styleSheet);
     playButton->show();
 
-    QObject::connect(playButton, SIGNAL(clicked()),
+    file.close();
+
+    QObject::connect(playButton.get(), SIGNAL(clicked()),
                      this, SIGNAL(play()));
 
-    QObject::connect(playButton, SIGNAL(clicked()),
+    QObject::connect(playButton.get(), SIGNAL(clicked()),
             this, SLOT(setPlayPause()));
 
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
@@ -55,9 +54,8 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 MainWindow::~MainWindow() {
-    delete ui;
+    ui.~__shared_ptr();
 }
-
 
 void MainWindow::setAudioListModel(QStringList tracks) {
     // TODO
@@ -65,8 +63,26 @@ void MainWindow::setAudioListModel(QStringList tracks) {
     // а не заменять их, как сейчас
     // т.к. tracks содержат только новые песни, которые
     // только были добавлены
+    //audioListModel.get()->
     audioListModel->setStringList(tracks);
     ui->curAudioListWidget->addItems(tracks);
+}
+
+void MainWindow::setPlaylistsModel(QStringList playlists) {
+    // TODO
+    // необходимо добавлять playlists в playlistModel
+    // а не заменять их, как сейчас
+    // т.к. playlists содержат только новые плейлисты, которые
+    // только были добавлены
+    if(ui->playListWidget->count() == 0 ) {
+        playlistModel->setStringList(playlists);
+        ui->playListWidget->addItems(playlists);
+    }
+
+    // пробный код добавления плейлистов
+    /*QListWidgetItem *newItem = new QListWidgetItem;
+    //newItem->setText("Текущий плейлист");
+    ui->playListWidget->insertItem(0, newItem);*/
 }
 
 void MainWindow::addButtonPushed() {
@@ -75,63 +91,51 @@ void MainWindow::addButtonPushed() {
 
 void MainWindow::setVolumeSlider() {
     if(!volumeSliderStatus){
-        volumeSlider = new QSlider(Qt::Vertical, ui->centralWidget);
+        volumeSlider.reset( new QSlider(Qt::Vertical, ui->centralWidget) );
         volumeSlider->setRange(0,100);
         volumeSlider->show();
         volumeSliderStatus = true;
         volumeSlider->move(495,220);
     }
     else {
-        delete volumeSlider;
+        volumeSlider.~__shared_ptr();
         volumeSliderStatus = false;
     }
 }
 
 void MainWindow::setPlayPause() {
+    QFile file(":/qss/mainwindow.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = file.readAll();
+
     if(playButtonStatus){
-        delete playButton;
-        pauseButton = new QPushButton(ui->groupBox);
-        pauseButton->setStyleSheet("QPushButton {"
-                                    "background-color: transparent;"
-                                    "border-image: url(:images/pause.png);"
-                                    "background: none;"
-                                    "border: none;"
-                                    "background-repeat: none;"
-                                    "height: 50px;"
-                                    "width: 50px;"
-                                   "}");
-        playButton->move(50, 0);
+        playButton.~__shared_ptr();
+        pauseButton.reset( new QPushButton(ui->playPauseBox) );
+        pauseButton->setObjectName("pauseButton");
+        pauseButton->setStyleSheet(styleSheet);
         pauseButton->show();
         playButtonStatus = false;
 
-        QObject::connect(pauseButton, SIGNAL(clicked()),
+        QObject::connect(pauseButton.get(), SIGNAL(clicked()),
                 this, SIGNAL(pause()));
 
-        QObject::connect(pauseButton, SIGNAL(clicked()),
+        QObject::connect(pauseButton.get(), SIGNAL(clicked()),
                 this, SLOT(setPlayPause()));
 
     }
     else {
-        delete pauseButton;
-        playButton = new QPushButton(ui->groupBox);
-        playButton->setStyleSheet("QPushButton {"
-                                    "background-color: transparent;"
-                                    "border-image: url(:images/play.png);"
-                                    "background: none;"
-                                    "border: none;"
-                                    "background-repeat: none;"
-                                    "height: 50px;"
-                                    "width: 50px;"
-                                   "}");
-        playButton->move(50, 0);
+        pauseButton.~__shared_ptr();
+        playButton.reset(new QPushButton(ui->playPauseBox));
+        playButton->setObjectName("playButton");
+        playButton->setStyleSheet(styleSheet);
         playButton->show();
         playButtonStatus = true;
 
-        QObject::connect(playButton, SIGNAL(clicked()),
+        QObject::connect(playButton.get(), SIGNAL(clicked()),
                 this, SIGNAL(play()));
 
-        QObject::connect(playButton, SIGNAL(clicked()),
+        QObject::connect(playButton.get(), SIGNAL(clicked()),
                 this, SLOT(setPlayPause()));
-
     }
+    file.close();
 }
