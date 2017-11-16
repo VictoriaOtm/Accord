@@ -27,6 +27,7 @@ signals:
     void next();
     void prev();
     void settings();
+    void itemClicked(int);
     void audioSwitched(int);
     void addAudioFromDisk(MainWindow*);
     void saveAsPlaylist(const QStringListModel* audioListModel);
@@ -35,6 +36,7 @@ private slots:
     void addButtonPushed();
     void setVolumeSlider();
     void setPlayPause();
+    void itemDoubleClicked(QListWidgetItem*);
 
 private:
     Ui::MainWindow *ui;

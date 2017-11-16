@@ -57,6 +57,9 @@
        <height>20</height>
       </rect>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">#nextButton {
 	background-color: transparent;
@@ -233,7 +236,7 @@
      <x>0</x>
      <y>0</y>
      <width>562</width>
-     <height>28</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

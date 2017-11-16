@@ -44,7 +44,10 @@ MainWindow::MainWindow(QWidget *parent) :
                      this, SIGNAL(settings()));
 
     QObject::connect(ui->curAudioListWidget, SIGNAL(currentRowChanged(int)),
-                     this, SIGNAL(audioSwitched(int)));
+                     this, SIGNAL(itemClicked(int)));
+
+    QObject::connect(ui->curAudioListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+                     this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
     QObject::connect(ui->volumeButton, SIGNAL(clicked()),
             this, SLOT(setVolumeSlider()));
@@ -66,6 +69,11 @@ void MainWindow::setAudioListModel(QStringList tracks) {
 
 void MainWindow::addButtonPushed() {
     emit addAudioFromDisk(this);
+}
+
+void MainWindow::itemDoubleClicked(QListWidgetItem* item){
+    int position = item->listWidget()->currentRow();
+    emit audioSwitched(position);
 }
 
 void MainWindow::setVolumeSlider() {
@@ -127,6 +135,5 @@ void MainWindow::setPlayPause() {
 
         QObject::connect(playButton, SIGNAL(clicked()),
                 this, SLOT(setPlayPause()));
-
     }
 }
