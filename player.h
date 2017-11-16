@@ -28,9 +28,12 @@ public slots:
     void stop();
     void prev();
     void next();
+
     void setVolume(int volume);
+
     void setPlayingPosition(int position);
     void setSelectedAudioPosition(int position);
+
     void addTracks(const QVector<Audio>& newTracks);
     void removeTracks(int start, int end);
     void addTrack(const Audio& newTrack);
@@ -41,11 +44,14 @@ signals:
     void audioAvailableChanged(bool available);
     void positionChanged(int position);
     void mediaChanged(const QMediaContent& media);
-    void currentIndexChanged(int position);
+    void currentIndexChanged(int);
     void mediaStatusChanged(QMediaPlayer::MediaStatus);
+    void audioDurationChanged(qint64);
+
     //EMITTED BY PLAYER ITSELF
     void addedTracksSuccessfully();
     void addTracksFailed();
+
     void removedTracksSuccessfully();
     void removeTracksFailed();
 };

@@ -43,8 +43,14 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->settingsButton, SIGNAL(clicked()),
                      this, SIGNAL(settings()));
 
-    QObject::connect(ui->curAudioListWidget, SIGNAL(currentRowChanged(int)),
-                     this, SIGNAL(itemClicked(int)));
+    QObject::connect(ui->prevButton, SIGNAL(clicked()),
+                     this, SLOT(setPrevRow()));
+
+    QObject::connect(ui->nextButton, SIGNAL(clicked()),
+                     this, SLOT(setNextRow()));
+
+    QObject::connect(ui->curAudioListWidget, SIGNAL(itemClicked(QListWidgetItem*)),
+                     this, SLOT(itemClicked(QListWidgetItem*)));
 
     QObject::connect(ui->curAudioListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
                      this, SLOT(itemDoubleClicked(QListWidgetItem*)));
@@ -71,9 +77,38 @@ void MainWindow::addButtonPushed() {
     emit addAudioFromDisk(this);
 }
 
+void MainWindow::itemClicked(QListWidgetItem *item){
+    int position = item->listWidget()->currentRow();
+    emit audioSelected(position);
+}
+
 void MainWindow::itemDoubleClicked(QListWidgetItem* item){
     int position = item->listWidget()->currentRow();
     emit audioSwitched(position);
+}
+
+void MainWindow::setPrevRow(){
+    int curRow = ui->curAudioListWidget->currentRow();
+    if (curRow > 0){
+        --curRow;
+    }
+    ui->curAudioListWidget->setCurrentRow(curRow);
+}
+
+void MainWindow::setNextRow(){
+    int curRow = ui->curAudioListWidget->currentRow();
+    if (curRow < audioListModel->rowCount() - 1){
+        ++curRow;
+    }
+    ui->curAudioListWidget->setCurrentRow(curRow);
+}
+
+void MainWindow::itemIndexChanged(int newRow){
+    ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
+}
+
+void MainWindow::sliderDurationChanged(qint64 duration){
+    ui->audioTimeSlider->setSliderPosition(static_cast<int>(duration));
 }
 
 void MainWindow::setVolumeSlider() {

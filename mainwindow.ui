@@ -112,13 +112,13 @@
 </string>
     </property>
    </widget>
-   <widget class="QSlider" name="timeSlider">
+   <widget class="QSlider" name="audioTimeSlider">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
-      <width>571</width>
-      <height>29</height>
+      <y>280</y>
+      <width>561</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="orientation">
@@ -236,7 +236,7 @@
      <x>0</x>
      <y>0</y>
      <width>562</width>
-     <height>25</height>
+     <height>28</height>
     </rect>
    </property>
   </widget>

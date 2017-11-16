@@ -13,6 +13,7 @@ Player::Player(): selectedAudioPosition(0){
     QObject::connect(player.playlist(), &QMediaPlaylist::currentMediaChanged, this, &Player::mediaChanged);
     QObject::connect(player.playlist(), &QMediaPlaylist::currentIndexChanged, this, &Player::currentIndexChanged);
     QObject::connect(&player, &QMediaPlayer::mediaStatusChanged, this, &Player::mediaStatusChanged);
+    QObject::connect(&player, &QMediaPlayer::durationChanged, this, &Player::audioDurationChanged);
 }
 
 void Player::play(){
@@ -32,7 +33,6 @@ void Player::stop(){
 void Player::prev(){
     player.playlist()->previous();
     selectedAudioPosition = player.playlist()->currentIndex();
-
 }
 
 void Player::next(){
@@ -47,6 +47,10 @@ void Player::setVolume(int volume){
 
 void Player::setPlayingPosition(int position){
     player.playlist()->setCurrentIndex(position);
+    if (player.state() == QMediaPlayer::PausedState){
+        player.play();
+        //emit mediaStatusChanged(QMediaPlayer::MediaStatus);
+    }
 }
 
 void Player::setSelectedAudioPosition(int position){
