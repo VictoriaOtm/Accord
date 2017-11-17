@@ -11,28 +11,12 @@ MainWindow::MainWindow(QWidget *parent) :
     playlistModel = new QStringListModel(this);
     ui->setupUi(this);
 
-    setMinimumWidth(562);
-    setMaximumWidth(562);
-    setMinimumHeight(400);
-    setMaximumHeight(400);
-    playButton = new QPushButton(ui->groupBox);
-    playButton->setStyleSheet("QPushButton {"
-                                "background-color: transparent;"
-                                "border-image: url(:images/play.png);"
-                                "background: none;"
-                                "border: none;"
-                                "background-repeat: none;"
-                                "height: 50px;"
-                                "width: 50px;"
-                               "}");
-    playButton->move(50, 0);
-    playButton->show();
+    //setMinimumWidth(562);
+    //setMaximumWidth(562);
+    //setMinimumHeight(400);
+    //setMaximumHeight(400);
 
-    QObject::connect(playButton, SIGNAL(clicked()),
-                     this, SIGNAL(play()));
-
-    QObject::connect(playButton, SIGNAL(clicked()),
-            this, SLOT(setPlayPause()));
+    QObject::connect(ui->playPauseButton, SIGNAL(toggled(bool)), this, SLOT(onPlayPauseButtonToggled(bool)));
 
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
                      this, SIGNAL(next()));
@@ -125,50 +109,14 @@ void MainWindow::setVolumeSlider() {
     }
 }
 
-void MainWindow::setPlayPause() {
-    if(playButtonStatus){
-        delete playButton;
-        pauseButton = new QPushButton(ui->groupBox);
-        pauseButton->setStyleSheet("QPushButton {"
-                                    "background-color: transparent;"
-                                    "border-image: url(:images/pause.png);"
-                                    "background: none;"
-                                    "border: none;"
-                                    "background-repeat: none;"
-                                    "height: 50px;"
-                                    "width: 50px;"
-                                   "}");
-        playButton->move(50, 0);
-        pauseButton->show();
-        playButtonStatus = false;
 
-        QObject::connect(pauseButton, SIGNAL(clicked()),
-                this, SIGNAL(pause()));
-
-        QObject::connect(pauseButton, SIGNAL(clicked()),
-                this, SLOT(setPlayPause()));
-
-    }
-    else {
-        delete pauseButton;
-        playButton = new QPushButton(ui->groupBox);
-        playButton->setStyleSheet("QPushButton {"
-                                    "background-color: transparent;"
-                                    "border-image: url(:images/play.png);"
-                                    "background: none;"
-                                    "border: none;"
-                                    "background-repeat: none;"
-                                    "height: 50px;"
-                                    "width: 50px;"
-                                   "}");
-        playButton->move(50, 0);
-        playButton->show();
-        playButtonStatus = true;
-
-        QObject::connect(playButton, SIGNAL(clicked()),
-                this, SIGNAL(play()));
-
-        QObject::connect(playButton, SIGNAL(clicked()),
-                this, SLOT(setPlayPause()));
+void MainWindow::onPlayPauseButtonToggled(bool checked)
+{
+    if(checked){
+        ui->playPauseButton->setIcon(QIcon(":/images/pause.png"));
+        emit play();
+    }else{
+        ui->playPauseButton->setIcon(QIcon(":/images/play.png"));
+        emit pause();
     }
 }

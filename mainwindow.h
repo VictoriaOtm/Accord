@@ -39,11 +39,11 @@ signals:
 private slots:
     void addButtonPushed();
     void setVolumeSlider();
-    void setPlayPause();
     void itemClicked(QListWidgetItem*);
     void itemDoubleClicked(QListWidgetItem*);
     void setPrevRow();
     void setNextRow();
+    void onPlayPauseButtonToggled(bool checked);
 
 private:
     Ui::MainWindow *ui;
