@@ -6,16 +6,19 @@ Player& Player::instance(){
     return p;
 }
 
-Player::Player(){
+Player::Player(): selectedAudioPosition(0){
     player.setPlaylist(new QMediaPlaylist(&player));
     QObject::connect(&player, &QMediaPlayer::audioAvailableChanged, this, &Player::audioAvailableChanged);
     QObject::connect(&player, &QMediaPlayer::positionChanged, this, &Player::positionChanged);
     QObject::connect(player.playlist(), &QMediaPlaylist::currentMediaChanged, this, &Player::mediaChanged);
     QObject::connect(player.playlist(), &QMediaPlaylist::currentIndexChanged, this, &Player::currentIndexChanged);
     QObject::connect(&player, &QMediaPlayer::mediaStatusChanged, this, &Player::mediaStatusChanged);
+    QObject::connect(&player, &QMediaPlayer::durationChanged, this, &Player::audioDurationChanged);
 }
 
 void Player::play(){
+    //player.setVolume(100);
+    player.playlist()->setCurrentIndex(selectedAudioPosition);
     player.play();
 }
 
@@ -28,19 +31,30 @@ void Player::stop(){
 }
 
 void Player::prev(){
-    player.media().playlist()->previous();
+    player.playlist()->previous();
+    selectedAudioPosition = player.playlist()->currentIndex();
 }
 
 void Player::next(){
-    player.media().playlist()->next();
+    player.playlist()->next();
+    selectedAudioPosition = player.playlist()->currentIndex();
+
 }
 
 void Player::setVolume(int volume){
     player.setVolume(volume);
 }
 
-void Player::setPosition(qint64 position){
-    player.setPosition(position);
+void Player::setPlayingPosition(int position){
+    player.playlist()->setCurrentIndex(position);
+    if (player.state() == QMediaPlayer::PausedState){
+        player.play();
+        //emit mediaStatusChanged(QMediaPlayer::MediaStatus);
+    }
+}
+
+void Player::setSelectedAudioPosition(int position){
+    selectedAudioPosition = position;
 }
 
 void Player::addTracks(const QVector<Audio>& newTracks){

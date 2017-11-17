@@ -26,6 +26,5 @@ void UploadWinController::Add(MainWindow* mainWin){
     }
 
     tracksToAdd = tracks;
-
     emit TracksAdded(tracksToAdd);
 }

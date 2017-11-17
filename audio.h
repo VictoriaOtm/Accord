@@ -14,6 +14,7 @@ public:
     const QString& GetTitle() const;
     const QStringList& GetAuthors() const;
     const QString& GetAlbumTitle() const;
+    bool operator == (const Audio& other) const;
 private:
     QString path;
     QString filename;

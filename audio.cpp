@@ -5,7 +5,8 @@ Audio::Audio(QString path)
 {
     this->path = path;
     ssize_t startIndexNameSong = path.lastIndexOf(QString::fromLocal8Bit("/"));
-    this->filename = path.mid(startIndexNameSong + 1, path.count() - 1);
+    ssize_t endIndexNameSong = path.lastIndexOf(QString::fromLocal8Bit("."));
+    this->filename = path.mid(startIndexNameSong + 1, endIndexNameSong);
     LoadMetaData();
 }
 
@@ -46,4 +47,8 @@ void Audio::LoadMetaData(){
     title = (metaDataKeys.contains("Title") ? d.metaData("Title").toString() : "Unknown title" );
     authors = (metaDataKeys.contains("Author") ? d.metaData("Author").toStringList() : QStringList("Unknown author") );
     title = (metaDataKeys.contains("AlbumTitle") ? d.metaData("AlbumTitle").toString() : "Unknown album" );
+}
+
+bool Audio::operator == (const Audio& other) const{
+    return this->GetPath() == other.GetPath();
 }

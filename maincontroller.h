@@ -4,13 +4,14 @@
 #include <QObject>
 #include "mainwindow.h"
 #include "audio.h"
+
 class MainController : public QObject
 {
     Q_OBJECT
 
 public:
-    MainController();
-    ~MainController();
+    MainController(){};
+    ~MainController(){};
     void start();
     void openMainWin();
     MainWindow& getMainWin();
@@ -20,6 +21,7 @@ public slots:
 
 private:
     MainWindow mainWin;
+    QVector<Audio> currentList;
 };
 
 #endif // MAINCONTROLLER_H
