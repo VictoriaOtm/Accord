@@ -15,11 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     playlistModel = new QStringListModel(this);
     ui->setupUi(this);
 
-    setMinimumWidth(562);
-    setMaximumWidth(562);
-    setMinimumHeight(400);
-    setMaximumHeight(400);
-
     playButton = new QPushButton(ui->playPauseBox);
     playButton->setObjectName("playButton");
     playButton->setStyleSheet(styleSheet);
@@ -71,12 +66,11 @@ void MainWindow::addButtonPushed() {
 }
 
 void MainWindow::setVolumeSlider() {
-    if(!volumeSliderStatus){
-        volumeSlider = new QSlider(Qt::Vertical, ui->centralWidget);
+        if(!volumeSliderStatus){
+        volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
         volumeSlider->setRange(0,100);
         volumeSlider->show();
         volumeSliderStatus = true;
-        volumeSlider->move(495,220);
     }
     else {
         delete volumeSlider;
