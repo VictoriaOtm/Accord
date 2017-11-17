@@ -12,13 +12,15 @@ class Player: public QObject
     Q_OBJECT
 
 public:
-    Player();
-    ~Player() = default;
+
+
     static Player& instance();
     Player(const Player& other) = delete;
     Player& operator = (const Player& other) = delete;
 
 private:
+    Player();
+    ~Player() = default;
     QMediaPlayer player;
     int selectedAudioPosition;
 
