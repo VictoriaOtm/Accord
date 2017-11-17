@@ -4,8 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    volumeSliderStatus(false),
-    playButtonStatus(true)
+    volumeSliderStatus(false)
 {
     QFile file(":/qss/mainwindow.qss");
     file.open(QFile::ReadOnly);
@@ -15,18 +14,17 @@ MainWindow::MainWindow(QWidget *parent) :
     playlistModel = new QStringListModel(this);
     ui->setupUi(this);
 
-    playButton = new QPushButton(ui->playPauseBox);
-    playButton->setObjectName("playButton");
-    playButton->setStyleSheet(styleSheet);
-    playButton->show();
+    playPauseButton = new QRadioButton(ui->playPauseBox);
+    playPauseButton->setObjectName("playPauseButton");
+    playPauseButton->setStyleSheet(styleSheet);
 
     file.close();
 
-    QObject::connect(playButton, SIGNAL(clicked()),
-                     this, SIGNAL(play()));
+    QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
+                     this, SIGNAL(play(bool)));
 
-    QObject::connect(playButton, SIGNAL(clicked()),
-            this, SLOT(setPlayPause()));
+    QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
+                     this, SIGNAL(pause(bool)));
 
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
                      this, SIGNAL(next()));
@@ -78,39 +76,3 @@ void MainWindow::setVolumeSlider() {
     }
 }
 
-void MainWindow::setPlayPause() {
-    QFile file(":/qss/mainwindow.qss");
-    file.open(QFile::ReadOnly);
-    QString styleSheet = file.readAll();
-
-    if(playButtonStatus){
-        delete playButton;
-        pauseButton = new QPushButton(ui->playPauseBox);
-        pauseButton->setObjectName("pauseButton");
-        pauseButton->setStyleSheet(styleSheet);
-        pauseButton->show();
-        playButtonStatus = false;
-
-        QObject::connect(pauseButton, SIGNAL(clicked()),
-                this, SIGNAL(pause()));
-
-        QObject::connect(pauseButton, SIGNAL(clicked()),
-                this, SLOT(setPlayPause()));
-
-    }
-    else {
-        delete pauseButton;
-        playButton = new QPushButton(ui->playPauseBox);
-        playButton->setObjectName("playButton");
-        playButton->setStyleSheet(styleSheet);
-        playButton->show();
-        playButtonStatus = true;
-
-        QObject::connect(playButton, SIGNAL(clicked()),
-                this, SIGNAL(play()));
-
-        QObject::connect(playButton, SIGNAL(clicked()),
-                this, SLOT(setPlayPause()));
-    }
-    file.close();
-}

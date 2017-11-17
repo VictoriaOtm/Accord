@@ -5,6 +5,7 @@
 #include <QStringListModel>
 #include "ui_mainwindow.h"
 #include "qslider.h"
+#include <QRadioButton>
 
 
 namespace Ui {
@@ -22,8 +23,8 @@ public:
 
 
 signals:
-    void play();
-    void pause();
+    void play(bool);
+    void pause(bool);
     void next();
     void prev();
     void settings();
@@ -34,18 +35,15 @@ signals:
 private slots:
     void addButtonPushed();
     void setVolumeSlider();
-    void setPlayPause();
 
 private:
     Ui::MainWindow *ui;
     QStringListModel *audioListModel;
     QStringListModel *playlistModel;
 
+    QRadioButton *playPauseButton;
     QSlider *volumeSlider;
     bool volumeSliderStatus;
-    QPushButton *playButton;
-    QPushButton *pauseButton;
-    bool playButtonStatus;
 };
 
 #endif // MAINWINDOW_H
