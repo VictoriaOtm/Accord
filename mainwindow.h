@@ -22,7 +22,8 @@ public:
     ~MainWindow();
 
 public slots:
-    void sliderDurationChanged(qint64 duration);
+    void sliderPositionChanged(qint64);
+    void curAudioDurationChanged(qint64);
     void itemIndexChanged(int);
 
 signals:
@@ -55,6 +56,8 @@ private:
     QPushButton *playButton;
     QPushButton *pauseButton;
     bool playButtonStatus;
+
+    qint64 curAudioDuration;
 };
 
 #endif // MAINWINDOW_H

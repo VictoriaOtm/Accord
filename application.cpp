@@ -41,7 +41,11 @@ int Application::run(int argc, char *argv[]){
                      &mainController.getMainWin(), SLOT(itemIndexChanged(int))),
 
     QObject::connect(&Player::instance(), SIGNAL(audioDurationChanged(qint64)),
-                     &mainController.getMainWin(), SLOT(sliderDurationChanged(qint64)));
+                     &mainController.getMainWin(), SLOT(curAudioDurationChanged(qint64)));
+
+    QObject::connect(&Player::instance(), SIGNAL(positionChanged(qint64)),
+                     &mainController.getMainWin(), SLOT(sliderPositionChanged(qint64)));
+
 
     mainController.start();
 

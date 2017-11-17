@@ -42,7 +42,7 @@ public slots:
 signals:
     //PASSED FURTHER FROM QMEDIAPLAYER
     void audioAvailableChanged(bool available);
-    void positionChanged(int position);
+    void positionChanged(qint64 position);
     void mediaChanged(const QMediaContent& media);
     void currentIndexChanged(int);
     void mediaStatusChanged(QMediaPlayer::MediaStatus);

@@ -5,7 +5,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     volumeSliderStatus(false),
-    playButtonStatus(true)
+    playButtonStatus(true),
+    curAudioDuration(0)
 {
     audioListModel = new QStringListModel(this);
     playlistModel = new QStringListModel(this);
@@ -107,8 +108,15 @@ void MainWindow::itemIndexChanged(int newRow){
     ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
 }
 
-void MainWindow::sliderDurationChanged(qint64 duration){
-    ui->audioTimeSlider->setSliderPosition(static_cast<int>(duration));
+void MainWindow::curAudioDurationChanged(qint64 newDuration){
+    curAudioDuration = newDuration;
+}
+
+void MainWindow::sliderPositionChanged(qint64 position){
+    if (curAudioDuration != 0){
+        int newSliderPosition = static_cast<int>(position / curAudioDuration);
+        ui->audioTimeSlider->setSliderPosition(newSliderPosition);
+    }
 }
 
 void MainWindow::setVolumeSlider() {
