@@ -15,6 +15,7 @@ Player::Player(){
     QObject::connect(&player, &QMediaPlayer::mediaStatusChanged, this, &Player::mediaStatusChanged);
 }
 
+
 void Player::play(bool playPauseStatus){
     //player.setVolume(100);
     if(playPauseStatus)

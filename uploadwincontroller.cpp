@@ -9,7 +9,7 @@ void UploadWinController::Add(MainWindow* mainWin){
     QStringList files = QFileDialog::getOpenFileNames(mainWin,
                                 QString::fromUtf8("Выберите аудиофайлы"),
                                 QDir::homePath(),
-                                "Music (*.mp3 *.mp4 *.wav);;All files (*.*)");
+                                "Music (*.mp3 *.mp4 *.wav)");
 
     QVector<Audio> tracks;
     foreach(QString str, files){

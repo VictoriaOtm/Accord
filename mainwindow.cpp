@@ -1,9 +1,5 @@
 #include "mainwindow.h"
-<<<<<<< HEAD
-
-=======
 #include <QFile>
->>>>>>> origin/interface
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -65,12 +61,29 @@ void MainWindow::setAudioListModel(QStringList tracks) {
     ui->curAudioListWidget->addItems(tracks);
 }
 
+void MainWindow::setPlaylistsModel(QStringList playlists) {
+    // TODO
+    // необходимо добавлять playlists в playlistModel
+    // а не заменять их, как сейчас
+    // т.к. playlists содержат только новые плейлисты, которые
+    // только были добавлены
+    if(ui->playListWidget->count() == 0 ) {
+        playlistModel->setStringList(playlists);
+        ui->playListWidget->addItems(playlists);
+    }
+
+    // пробный код добавления плейлистов
+    /*QListWidgetItem *newItem = new QListWidgetItem;
+    //newItem->setText("Текущий плейлист");
+    ui->playListWidget->insertItem(0, newItem);*/
+}
+
 void MainWindow::addButtonPushed() {
     emit addAudioFromDisk(this);
 }
 
 void MainWindow::setVolumeSlider() {
-        if(!volumeSliderStatus){
+    if(!volumeSliderStatus){
         volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
         volumeSlider->setRange(0,100);
         volumeSlider->show();

@@ -6,6 +6,8 @@
 #include "ui_mainwindow.h"
 #include "qslider.h"
 #include <QRadioButton>
+#include <memory>
+
 
 
 namespace Ui {
@@ -18,8 +20,9 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    void setAudioListModel(QStringList tracks);
     ~MainWindow();
+    void setAudioListModel(QStringList tracks);
+    void setPlaylistsModel(QStringList playlists);
 
 
 signals:
@@ -40,18 +43,10 @@ private:
     Ui::MainWindow *ui;
     QStringListModel *audioListModel;
     QStringListModel *playlistModel;
-
-<<<<<<< HEAD
-    QSlider *volumeSlider;
-    bool volumeSliderStatus;
-    QPushButton *playButton;
-    QPushButton *pauseButton;
-    bool playButtonStatus;
-=======
+    
     QRadioButton *playPauseButton;
     QSlider *volumeSlider;
     bool volumeSliderStatus;
->>>>>>> origin/interface
 };
 
 #endif // MAINWINDOW_H
