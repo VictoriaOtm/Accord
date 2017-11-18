@@ -15,13 +15,15 @@ Player::Player(){
     QObject::connect(&player, &QMediaPlayer::mediaStatusChanged, this, &Player::mediaStatusChanged);
 }
 
-void Player::play(){
+void Player::play(bool playPauseStatus){
     //player.setVolume(100);
-    player.play();
+    if(playPauseStatus)
+        player.play();
 }
 
-void Player::pause(){
-    player.pause();
+void Player::pause(bool playPauseStatus){
+    if(!playPauseStatus)
+        player.pause();
 }
 
 void Player::stop(){

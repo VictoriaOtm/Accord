@@ -1,38 +1,35 @@
 #include "mainwindow.h"
+<<<<<<< HEAD
 
+=======
+#include <QFile>
+>>>>>>> origin/interface
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    volumeSliderStatus(false),
-    playButtonStatus(true)
+    volumeSliderStatus(false)
 {
+    QFile file(":/qss/mainwindow.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = file.readAll();
+
     audioListModel = new QStringListModel(this);
     playlistModel = new QStringListModel(this);
     ui->setupUi(this);
 
-    setMinimumWidth(562);
-    setMaximumWidth(562);
-    setMinimumHeight(400);
-    setMaximumHeight(400);
-    playButton = new QPushButton(ui->groupBox);
-    playButton->setStyleSheet("QPushButton {"
-                                "background-color: transparent;"
-                                "border-image: url(:images/play.png);"
-                                "background: none;"
-                                "border: none;"
-                                "background-repeat: none;"
-                                "height: 50px;"
-                                "width: 50px;"
-                               "}");
-    playButton->move(50, 0);
-    playButton->show();
+    
+    playPauseButton = new QRadioButton(ui->playPauseBox);
+    playPauseButton->setObjectName("playPauseButton");
+    playPauseButton->setStyleSheet(styleSheet);
 
-    QObject::connect(playButton, SIGNAL(clicked()),
-                     this, SIGNAL(play()));
+    file.close();
 
-    QObject::connect(playButton, SIGNAL(clicked()),
-            this, SLOT(setPlayPause()));
+    QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
+                     this, SIGNAL(play(bool)));
+
+    QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
+                     this, SIGNAL(pause(bool)));
 
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
                      this, SIGNAL(next()));
@@ -58,7 +55,6 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-
 void MainWindow::setAudioListModel(QStringList tracks) {
     // TODO
     // необходимо добавлять tracks в audioListModel
@@ -74,63 +70,14 @@ void MainWindow::addButtonPushed() {
 }
 
 void MainWindow::setVolumeSlider() {
-    if(!volumeSliderStatus){
-        volumeSlider = new QSlider(Qt::Vertical, ui->centralWidget);
+        if(!volumeSliderStatus){
+        volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
         volumeSlider->setRange(0,100);
         volumeSlider->show();
         volumeSliderStatus = true;
-        volumeSlider->move(495,220);
     }
     else {
         delete volumeSlider;
         volumeSliderStatus = false;
-    }
-}
-
-void MainWindow::setPlayPause() {
-    if(playButtonStatus){
-        delete playButton;
-        pauseButton = new QPushButton(ui->groupBox);
-        pauseButton->setStyleSheet("QPushButton {"
-                                    "background-color: transparent;"
-                                    "border-image: url(:images/pause.png);"
-                                    "background: none;"
-                                    "border: none;"
-                                    "background-repeat: none;"
-                                    "height: 50px;"
-                                    "width: 50px;"
-                                   "}");
-        playButton->move(50, 0);
-        pauseButton->show();
-        playButtonStatus = false;
-
-        QObject::connect(pauseButton, SIGNAL(clicked()),
-                this, SIGNAL(pause()));
-
-        QObject::connect(pauseButton, SIGNAL(clicked()),
-                this, SLOT(setPlayPause()));
-
-    }
-    else {
-        delete pauseButton;
-        playButton = new QPushButton(ui->groupBox);
-        playButton->setStyleSheet("QPushButton {"
-                                    "background-color: transparent;"
-                                    "border-image: url(:images/play.png);"
-                                    "background: none;"
-                                    "border: none;"
-                                    "background-repeat: none;"
-                                    "height: 50px;"
-                                    "width: 50px;"
-                                   "}");
-        playButton->move(50, 0);
-        playButton->show();
-        playButtonStatus = true;
-
-        QObject::connect(playButton, SIGNAL(clicked()),
-                this, SIGNAL(play()));
-
-        QObject::connect(playButton, SIGNAL(clicked()),
-                this, SLOT(setPlayPause()));
     }
 }
