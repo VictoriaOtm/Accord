@@ -34,10 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
                      this, SIGNAL(prev()));
     
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
-                     this, SIGNAL(setNextRow()));
+                     this, SLOT(setNextRow()));
     
     QObject::connect(ui->prevButton, SIGNAL(clicked()),
-                     this, SIGNAL(setPrevRow()));
+                     this, SLOT(setPrevRow()));
 
     QObject::connect(ui->settingsButton, SIGNAL(clicked()),
                      this, SIGNAL(settings()));

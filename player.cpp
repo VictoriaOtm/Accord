@@ -49,7 +49,7 @@ void Player::setVolume(int volume){
 }
 
 
-void Player::setPosition(qint64 position){
+void Player::setPlayingPosition(int position){
     player.playlist()->setCurrentIndex(position);
     if (player.state() == QMediaPlayer::PausedState){
         player.play();

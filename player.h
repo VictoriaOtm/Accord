@@ -29,7 +29,6 @@ public slots:
     void prev();
     void next();
     void setVolume(int volume);
-    void setPosition(qint64 position);
     
     void setPlayingPosition(int position);
     void setSelectedAudioPosition(int position);
