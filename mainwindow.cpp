@@ -1,22 +1,30 @@
 #include "mainwindow.h"
-
+#include <QFile>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    volumeSliderStatus(false),
-    playButtonStatus(true)
+    volumeSliderStatus(false)
 {
+    QFile file(":/qss/mainwindow.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = file.readAll();
+
     audioListModel = new QStringListModel(this);
     playlistModel = new QStringListModel(this);
     ui->setupUi(this);
 
-    setMinimumWidth(562);
-    setMaximumWidth(562);
-    setMinimumHeight(400);
-    setMaximumHeight(400);
+    playPauseButton = new QRadioButton(ui->playPauseBox);
+    playPauseButton->setObjectName("playPauseButton");
+    playPauseButton->setStyleSheet(styleSheet);
 
-    QObject::connect(ui->playPauseButton, SIGNAL(toggled(bool)), this, SLOT(onPlayPauseButtonToggled(bool)));
+    file.close();
+
+    QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
+                     this, SIGNAL(play(bool)));
+
+    QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
+                     this, SIGNAL(pause(bool)));
 
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
                      this, SIGNAL(next()));
@@ -27,17 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->settingsButton, SIGNAL(clicked()),
                      this, SIGNAL(settings()));
 
-    QObject::connect(ui->prevButton, SIGNAL(clicked()),
-                     this, SLOT(setPrevRow()));
-
-    QObject::connect(ui->nextButton, SIGNAL(clicked()),
-                     this, SLOT(setNextRow()));
-
-    QObject::connect(ui->curAudioListWidget, SIGNAL(itemClicked(QListWidgetItem*)),
-                     this, SLOT(itemClicked(QListWidgetItem*)));
-
-    QObject::connect(ui->curAudioListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-                     this, SLOT(itemDoubleClicked(QListWidgetItem*)));
+    QObject::connect(ui->curAudioListWidget, SIGNAL(currentRowChanged(int)),
+                     this, SIGNAL(audioSwitched(int)));
 
     QObject::connect(ui->volumeButton, SIGNAL(clicked()),
             this, SLOT(setVolumeSlider()));
@@ -50,9 +49,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow() {
     delete ui;
 }
-
-
 void MainWindow::setAudioListModel(QStringList tracks) {
+    // TODO
+    // необходимо добавлять tracks в audioListModel
+    // а не заменять их, как сейчас
+    // т.к. tracks содержат только новые песни, которые
+    // только были добавлены
     audioListModel->setStringList(tracks);
     ui->curAudioListWidget->addItems(tracks);
 }
@@ -61,31 +63,12 @@ void MainWindow::addButtonPushed() {
     emit addAudioFromDisk(this);
 }
 
-void MainWindow::itemClicked(QListWidgetItem *item){
-    int position = item->listWidget()->currentRow();
-    emit audioSelected(position);
-}
-
-void MainWindow::itemDoubleClicked(QListWidgetItem* item){
-    int position = item->listWidget()->currentRow();
-    emit audioSwitched(position);
-}
-
-void MainWindow::itemIndexChanged(int newRow){
-    ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
-}
-
-void MainWindow::sliderDurationChanged(qint64 duration){
-    ui->audioTimeSlider->setSliderPosition(static_cast<int>(duration));
-}
-
 void MainWindow::setVolumeSlider() {
-    if(!volumeSliderStatus){
-        volumeSlider = new QSlider(Qt::Vertical, ui->centralWidget);
+        if(!volumeSliderStatus){
+        volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
         volumeSlider->setRange(0,100);
         volumeSlider->show();
         volumeSliderStatus = true;
-        volumeSlider->move(495,220);
     }
     else {
         delete volumeSlider;
@@ -93,14 +76,3 @@ void MainWindow::setVolumeSlider() {
     }
 }
 
-
-void MainWindow::onPlayPauseButtonToggled(bool checked)
-{
-    if(checked){
-        ui->playPauseButton->setIcon(QIcon(":/images/pause.png"));
-        emit play();
-    }else{
-        ui->playPauseButton->setIcon(QIcon(":/images/play.png"));
-        emit pause();
-    }
-}

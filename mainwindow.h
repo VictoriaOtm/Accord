@@ -3,9 +3,9 @@
 
 #include <QMainWindow>
 #include <QStringListModel>
-#include <iostream>
 #include "ui_mainwindow.h"
 #include "qslider.h"
+#include <QRadioButton>
 
 
 namespace Ui {
@@ -21,17 +21,13 @@ public:
     void setAudioListModel(QStringList tracks);
     ~MainWindow();
 
-public slots:
-    void sliderDurationChanged(qint64 duration);
-    void itemIndexChanged(int);
 
 signals:
-    void play();
-    void pause();
+    void play(bool);
+    void pause(bool);
     void next();
     void prev();
     void settings();
-    void audioSelected(int);
     void audioSwitched(int);
     void addAudioFromDisk(MainWindow*);
     void saveAsPlaylist(const QStringListModel* audioListModel);
@@ -39,20 +35,15 @@ signals:
 private slots:
     void addButtonPushed();
     void setVolumeSlider();
-    void itemClicked(QListWidgetItem*);
-    void itemDoubleClicked(QListWidgetItem*);
-    void onPlayPauseButtonToggled(bool checked);
 
 private:
     Ui::MainWindow *ui;
     QStringListModel *audioListModel;
     QStringListModel *playlistModel;
 
+    QRadioButton *playPauseButton;
     QSlider *volumeSlider;
     bool volumeSliderStatus;
-    QPushButton *playButton;
-    QPushButton *pauseButton;
-    bool playButtonStatus;
 };
 
 #endif // MAINWINDOW_H

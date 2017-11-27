@@ -5,8 +5,7 @@ Audio::Audio(QString path)
 {
     this->path = path;
     ssize_t startIndexNameSong = path.lastIndexOf(QString::fromLocal8Bit("/"));
-    ssize_t endIndexNameSong = path.lastIndexOf(QString::fromLocal8Bit("."));
-    this->filename = path.mid(startIndexNameSong + 1, endIndexNameSong);
+    this->filename = path.mid(startIndexNameSong + 1, path.count() - 1);
     LoadMetaData();
 }
 

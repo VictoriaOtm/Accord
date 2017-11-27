@@ -23,18 +23,16 @@ private:
     ~Player() = default;
     QMediaPlayer player;
     int selectedAudioPosition;
+    QMediaPlayer player;
 
 public slots:
-    void play();
-    void pause();
+    void play(bool);
+    void pause(bool);
     void stop();
     void prev();
     void next();
-
     void setVolume(int volume);
-
-    void setPlayingPosition(int position);
-
+    void setPosition(qint64 position);
     void addTracks(const QVector<Audio>& newTracks);
     void removeTracks(int start, int end);
     void addTrack(const Audio& newTrack);
@@ -43,16 +41,13 @@ public slots:
 signals:
     //PASSED FURTHER FROM QMEDIAPLAYER
     void audioAvailableChanged(bool available);
-    void positionChanged(int position);
+    void positionChanged(qint64 position);
     void mediaChanged(const QMediaContent& media);
-    void currentIndexChanged(int);
+    void currentIndexChanged(int position);
     void mediaStatusChanged(QMediaPlayer::MediaStatus);
-    void audioDurationChanged(qint64);
-
     //EMITTED BY PLAYER ITSELF
     void addedTracksSuccessfully();
     void addTracksFailed();
-
     void removedTracksSuccessfully();
     void removeTracksFailed();
 };
