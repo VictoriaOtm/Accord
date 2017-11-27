@@ -11,10 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
     playlistModel = new QStringListModel(this);
     ui->setupUi(this);
 
-    //setMinimumWidth(562);
-    //setMaximumWidth(562);
-    //setMinimumHeight(400);
-    //setMaximumHeight(400);
+    setMinimumWidth(562);
+    setMaximumWidth(562);
+    setMinimumHeight(400);
+    setMaximumHeight(400);
 
     QObject::connect(ui->playPauseButton, SIGNAL(toggled(bool)), this, SLOT(onPlayPauseButtonToggled(bool)));
 
@@ -69,22 +69,6 @@ void MainWindow::itemClicked(QListWidgetItem *item){
 void MainWindow::itemDoubleClicked(QListWidgetItem* item){
     int position = item->listWidget()->currentRow();
     emit audioSwitched(position);
-}
-
-void MainWindow::setPrevRow(){
-    int curRow = ui->curAudioListWidget->currentRow();
-    if (curRow > 0){
-        --curRow;
-    }
-    ui->curAudioListWidget->setCurrentRow(curRow);
-}
-
-void MainWindow::setNextRow(){
-    int curRow = ui->curAudioListWidget->currentRow();
-    if (curRow < audioListModel->rowCount() - 1){
-        ++curRow;
-    }
-    ui->curAudioListWidget->setCurrentRow(curRow);
 }
 
 void MainWindow::itemIndexChanged(int newRow){

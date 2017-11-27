@@ -7,6 +7,8 @@
 #include <vector>
 #include "audio.h"
 
+const int PREV_THRESHOLD = 3000; //позиция в песне, до которой при нажатии prev переключаемся на предыдущую песню
+
 class Player: public QObject
 {
     Q_OBJECT
@@ -32,7 +34,6 @@ public slots:
     void setVolume(int volume);
 
     void setPlayingPosition(int position);
-    void setSelectedAudioPosition(int position);
 
     void addTracks(const QVector<Audio>& newTracks);
     void removeTracks(int start, int end);

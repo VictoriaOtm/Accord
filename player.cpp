@@ -18,7 +18,6 @@ Player::Player(): selectedAudioPosition(0){
 
 void Player::play(){
     //player.setVolume(100);
-    player.playlist()->setCurrentIndex(selectedAudioPosition);
     player.play();
 }
 
@@ -31,8 +30,8 @@ void Player::stop(){
 }
 
 void Player::prev(){
-    player.playlist()->previous();
-    selectedAudioPosition = player.playlist()->currentIndex();
+    if(player.playlist->currentIndex() == 0) //если играем первую песню в списке
+        if(player.position() > )
 }
 
 void Player::next(){
@@ -51,10 +50,6 @@ void Player::setPlayingPosition(int position){
         player.play();
         //emit mediaStatusChanged(QMediaPlayer::MediaStatus);
     }
-}
-
-void Player::setSelectedAudioPosition(int position){
-    selectedAudioPosition = position;
 }
 
 void Player::addTracks(const QVector<Audio>& newTracks){

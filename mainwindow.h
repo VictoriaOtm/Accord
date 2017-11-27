@@ -41,8 +41,6 @@ private slots:
     void setVolumeSlider();
     void itemClicked(QListWidgetItem*);
     void itemDoubleClicked(QListWidgetItem*);
-    void setPrevRow();
-    void setNextRow();
     void onPlayPauseButtonToggled(bool checked);
 
 private:

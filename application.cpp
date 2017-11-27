@@ -34,9 +34,6 @@ int Application::run(int argc, char *argv[]){
     QObject::connect(&mainController.getMainWin(), SIGNAL(audioSwitched(int)),
                     &Player::instance(), SLOT(setPlayingPosition(int)));
 
-    QObject::connect(&mainController.getMainWin(), SIGNAL(audioSelected(int)),
-                     &Player::instance(), SLOT(setSelectedAudioPosition(int)));
-
     QObject::connect(&Player::instance(), SIGNAL(currentIndexChanged(int)),
                      &mainController.getMainWin(), SLOT(itemIndexChanged(int))),
 
