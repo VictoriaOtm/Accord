@@ -125,7 +125,7 @@ void MainWindow::curAudioDurationChanged(qint64 newDuration){
 
 void MainWindow::sliderPositionChanged(qint64 position){
     if (curAudioDuration != 0){
-        int newSliderPosition = static_cast<int>(position / curAudioDuration);
+        int newSliderPosition = static_cast<int>(((double)position) / curAudioDuration * 100);
         ui->timeSlider->setSliderPosition(newSliderPosition);
     }
 }

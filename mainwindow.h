@@ -52,10 +52,6 @@ private:
     Ui::MainWindow *ui;
     QStringListModel *audioListModel;
     QStringListModel *playlistModel;
-
-    QRadioButton *playPauseButton;
-    QSlider *volumeSlider;
-    bool volumeSliderStatus;
     
     QRadioButton *playPauseButton;
     QSlider *volumeSlider;
