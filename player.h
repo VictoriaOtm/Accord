@@ -23,7 +23,6 @@ private:
     ~Player() = default;
     QMediaPlayer player;
     int selectedAudioPosition;
-    QMediaPlayer player;
 
 public slots:
     void play(bool);
@@ -41,7 +40,8 @@ public slots:
 signals:
     //PASSED FURTHER FROM QMEDIAPLAYER
     void audioAvailableChanged(bool available);
-    void positionChanged(qint64 position);
+    void positionChanged(quint64 position);
+    void durationChanged(quint64 duration);
     void mediaChanged(const QMediaContent& media);
     void currentIndexChanged(int position);
     void mediaStatusChanged(QMediaPlayer::MediaStatus);
