@@ -34,8 +34,21 @@ int Application::run(int argc, char *argv[]){
     QObject::connect(&mainController.getMainWin(), SIGNAL(prev()),
                      &Player::instance(), SLOT(prev()));
 
-    /*QObject::connect(&mainController.getMainWin(), SIGNAL(audioSwitched(int)),
-                    &player, SLOT(curAudioPosChanged(int)));*/
+    QObject::connect(&mainController.getMainWin(), SIGNAL(audioSwitched(int)),
+                    &Player::instance(), SLOT(setPlayingPosition(int)));
+
+    QObject::connect(&mainController.getMainWin(), SIGNAL(audioSelected(int)),
+                     &Player::instance(), SLOT(setSelectedAudioPosition(int)));
+
+    QObject::connect(&Player::instance(), SIGNAL(currentIndexChanged(int)),
+                     &mainController.getMainWin(), SLOT(itemIndexChanged(int))),
+
+    QObject::connect(&Player::instance(), SIGNAL(audioDurationChanged(qint64)),
+                     &mainController.getMainWin(), SLOT(curAudioDurationChanged(qint64)));
+
+    QObject::connect(&Player::instance(), SIGNAL(positionChanged(qint64)),
+                     &mainController.getMainWin(), SLOT(sliderPositionChanged(qint64)));
+
 
     mainController.start();
 

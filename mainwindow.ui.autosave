@@ -211,6 +211,12 @@
 	padding-top: -4px;
 }</string>
         </property>
+        <property name="value">
+         <number>54</number>
+        </property>
+        <property name="sliderPosition">
+         <number>54</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -374,10 +380,6 @@
             <string/>
            </property>
           </widget>
-          <zorder>nextButton</zorder>
-          <zorder>prevButton</zorder>
-          <zorder>playPauseBox</zorder>
-          <zorder>settingsBox</zorder>
          </widget>
         </item>
         <item>

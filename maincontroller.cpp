@@ -15,7 +15,13 @@ MainWindow& MainController::getMainWin(){
 }
 
 void MainController::NewTracksAdded(QVector<Audio> tracks){
-    QStringList modelNames;
+    // формирование отображаемых плейлистов
+    QStringList playlistsModel;
+    playlistsModel.append("Текущий плейлист");
+    mainWin.setPlaylistsModel(playlistsModel);
+
+    // формирование отображаемых аудиофайлов
+    QStringList tracksNames;
 
     // добавим только новые треки в currentList
     foreach(Audio song, tracks){
@@ -28,11 +34,11 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
             for(QString author: song.GetAuthors()){
                 authors += author + " ";
             }
-            modelNames.append(song.GetFilename() + ": " + iter->GetTitle() + ", " + authors);*/
-            modelNames.append(song.GetFilename());
+
+            tracksNames.append(song.GetFilename() + ": " + iter->GetTitle() + ", " + authors);*/
+            tracksNames.append(song.GetFilename());
             // блок закончился
         }
     }
-
-    mainWin.setAudioListModel(modelNames);
+    mainWin.setAudioListModel(tracksNames);
 }
