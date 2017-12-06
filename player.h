@@ -51,7 +51,6 @@ signals:
     //EMITTED BY PLAYER ITSELF
     void addedTracksSuccessfully();
     void addTracksFailed();
-
     void removedTracksSuccessfully();
     void removeTracksFailed();
 };

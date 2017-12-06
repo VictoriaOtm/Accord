@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QFile>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -121,12 +122,13 @@ void MainWindow::itemIndexChanged(int newRow){
 
 void MainWindow::curAudioDurationChanged(qint64 newDuration){
     curAudioDuration = newDuration;
+    ui->timeSlider->setMaximum(newDuration);
 }
 
 void MainWindow::sliderPositionChanged(qint64 position){
     if (curAudioDuration != 0){
-        int newSliderPosition = static_cast<int>(((double)position) / curAudioDuration * 100);
-        ui->timeSlider->setSliderPosition(newSliderPosition);
+        ui->timeSlider->setSliderPosition(position);
+        std::cout << "Slider position changed" << std::endl;
     }
 }
 
