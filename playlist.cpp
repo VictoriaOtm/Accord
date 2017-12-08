@@ -23,7 +23,7 @@ Playlist::Playlist(QString nameForPlaylist, QVector<Audio>& tracksForPlaylist) {
     } else {*/
         // вызовем функцию qCopy
         // чтобы не париться из-за передаваемого вектора
-            qCopy(tracksForPlaylist.begin(), tracksForPlaylist.end(), tracks.begin());
+        qCopy(tracksForPlaylist.begin(), tracksForPlaylist.end(), tracks.begin());
     //}
 }
 
@@ -42,11 +42,11 @@ void Playlist::Save() {
 
     protobuf::Playlists saved_playlists;
     protobuf::Playlist* playlistForSave = saved_playlists.add_playlist();
-    playlistForSave->set_name(name);
+    playlistForSave->set_name(name.toLocal8Bit());
 
     foreach( Audio audio, tracks ) {
-        protobuf::Playlist_Audio* tracksOfPlaylist = saved_playlists->add_audio();
-        tracksOfPlaylist->set_path(audio.GetPath());
+        protobuf::Playlist_Audio* tracksOfPlaylist = playlistForSave->add_audio();
+        tracksOfPlaylist->set_path(audio.GetPath().toLocal8Bit());
     }
 
     return;
