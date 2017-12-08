@@ -18,6 +18,7 @@ public:
 
 public slots:
     void NewTracksAdded(QVector<Audio> tracks);
+    void FailedToAddTracks(QVector<Audio> failedTracks);
 
 private:
     MainWindow mainWin;

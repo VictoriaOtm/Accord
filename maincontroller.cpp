@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include "maincontroller.h"
 
 
@@ -41,4 +42,16 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
         }
     }
     mainWin.setAudioListModel(tracksNames);
+}
+
+void FailedToAddTracks(QVector<Audio> failedTracks){
+    //вывод окна с ошибками
+    QString message = "Не удалось добавить следующие треки: ";
+    for(auto track = failedTracks.constBegin() ; track != failedTracks.constEnd() ; ++track){
+        message.append(track->GetFilename());
+        if(track != failedTracks.end()-1)
+            message.append(", ");
+    }
+
+    QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
 }
