@@ -1,6 +1,15 @@
 #include <iostream>
 #include "player.h"
 
+const QMimeDatabase db;
+const QVector<QMimeType> SUPPORTED_FORMATS = { db.mimeTypeForName("audio/mp4"),
+                                               db.mimeTypeForName("audio/aac"),
+                                               db.mimeTypeForName("audio/mpeg"),
+                                               db.mimeTypeForName("audio/ogg"),
+                                               db.mimeTypeForName("audio/vorbis")
+                                             };
+
+
 Player& Player::instance(){
     static Player p;
     return p;
@@ -81,9 +90,8 @@ void Player::addTracks(const QVector<Audio>& newTracks){
         }
     }
     if(!player.playlist()->addMedia(tracks)){
-
         qDebug() << "Error while adding media to playlist in player";
-        qDebug() << << player.playlist()->errorString();
+        qDebug() << player.playlist()->errorString();
         emit addTracksFailed();
     }else{
         if(!errors.empty()){
