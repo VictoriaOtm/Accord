@@ -1,19 +1,12 @@
-QPushButton#playButton {
-    background-color: transparent;
-    border-image: url(:images/play.png);
-    background: none;
-    border: none;
-    background-repeat: none;
-    height: 50px;
+QRadioButton::indicator#playPauseButton {
     width: 50px;
+    height: 50px;
 }
 
-QPushButton#pauseButton {
-    background-color: transparent;
-    border-image: url(:images/pause.png);
-    background: none;
-    border: none;
-    background-repeat: none;
-    height: 50px;
-    width: 50px;
+QRadioButton::indicator::unchecked#playPauseButton {
+    image: url(:images/play.png);
+}
+
+QRadioButton::indicator::checked#playPauseButton {
+    image: url(:images/pause.png);
 }

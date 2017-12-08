@@ -3,9 +3,16 @@
 
 #include <QMainWindow>
 #include <QStringListModel>
-#include <memory>
+#include <QtGui>
+#include <QErrorMessage>
+#include <QInputDialog>
+#include <QLineEdit>
+
 #include "ui_mainwindow.h"
 #include "qslider.h"
+#include <QRadioButton>
+#include <memory>
+#include "audio.h"
 
 
 namespace Ui {
@@ -21,33 +28,42 @@ public:
     ~MainWindow();
     void setAudioListModel(QStringList tracks);
     void setPlaylistsModel(QStringList playlists);
-
+    void showErrorMessage(QString textOfError);
+    bool getLineOfText(QString& title, QString& message, QString& result);
 
 signals:
-    void play();
-    void pause();
+    void play(bool);
+    void pause(bool);
     void next();
     void prev();
     void settings();
+    void audioSelected(int);
     void audioSwitched(int);
     void addAudioFromDisk(MainWindow*);
-    void saveAsPlaylist(const QStringListModel* audioListModel);
+    void saveAsPlaylist(QString, QVector<Audio>&);
+
+public slots:
+    void sliderPositionChanged(qint64);
+    void curAudioDurationChanged(qint64);
+    void itemIndexChanged(int);
 
 private slots:
     void addButtonPushed();
     void setVolumeSlider();
-    void setPlayPause();
+    void itemClicked(QListWidgetItem*);
+    void itemDoubleClicked(QListWidgetItem*);
+    void setPrevRow();
+    void setNextRow();
 
 private:
-    std::shared_ptr<Ui::MainWindow> ui;
-    std::shared_ptr<QStringListModel> audioListModel;
-    std::shared_ptr<QStringListModel> playlistModel;
-
-    std::shared_ptr<QSlider> volumeSlider;
+    Ui::MainWindow *ui;
+    QStringListModel *audioListModel;
+    QStringListModel *playlistModel;
+    
+    QRadioButton *playPauseButton;
+    QSlider *volumeSlider;
     bool volumeSliderStatus;
-    std::shared_ptr<QPushButton> playButton;
-    std::shared_ptr<QPushButton> pauseButton;
-    bool playButtonStatus;
+    qint64 curAudioDuration;
 };
 
 #endif // MAINWINDOW_H

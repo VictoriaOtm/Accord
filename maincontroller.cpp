@@ -34,11 +34,16 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
             for(QString author: song.GetAuthors()){
                 authors += author + " ";
             }
+
             tracksNames.append(song.GetFilename() + ": " + iter->GetTitle() + ", " + authors);*/
             tracksNames.append(song.GetFilename());
             // блок закончился
         }
     }
-
     mainWin.setAudioListModel(tracksNames);
+}
+
+void MainController::CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist) {
+    Playlist newPlaylist(nameForPlaylist, tracksToPlaylist);
+
 }
