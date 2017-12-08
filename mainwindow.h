@@ -49,8 +49,6 @@ private slots:
     void setPrevRow();
     void setNextRow();
 
-    void on_pushButton_clicked(bool checked);
-
 private:
     Ui::MainWindow *ui;
     QStringListModel *audioListModel;
