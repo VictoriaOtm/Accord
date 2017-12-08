@@ -3,7 +3,7 @@
 
 #include <QtGui>
 #include "audio.h"
-#include <algorithm>
+#include "playlists.pb.h"
 
 
 class Playlist

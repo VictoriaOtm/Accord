@@ -40,6 +40,14 @@ void Playlist::Save() {
         return;
     }
 
-    // в процессе разработки
+    protobuf::Playlists saved_playlists;
+    protobuf::Playlist* playlistForSave = saved_playlists.add_playlist();
+    playlistForSave->set_name(name);
+
+    foreach( Audio audio, tracks ) {
+        protobuf::Playlist_Audio* tracksOfPlaylist = saved_playlists->add_audio();
+        tracksOfPlaylist->set_path(audio.GetPath());
+    }
+
     return;
 }
