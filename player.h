@@ -8,6 +8,12 @@
 #include "audio.h"
 
 const int PREV_THRESHOLD = 3000; //позиция в песне, до которой при нажатии prev переключаемся на предыдущую песню
+const QMap<QMimeType> SUPPORTED_FORMATS = { QMimeDatabase::mimeTypeForName("audio/mp4"),
+                                            QMimeDatabase::mimeTypeForName("audio/aac"),
+                                            QMimeDatabase::mimeTypeForName("audio/mpeg"),
+                                            QMimeDatabase::mimeTypeForName("audio/ogg"),
+                                            QMimeDatabase::mimeTypeForName("audio/vorbis")
+                                          };
 
 class Player: public QObject
 {
@@ -53,6 +59,7 @@ signals:
     void addTracksFailed();
     void removedTracksSuccessfully();
     void removeTracksFailed();
+    void currentPlaylistChanged(QVector<Audio>);
 };
 
 #endif // PLAYER_H
