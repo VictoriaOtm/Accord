@@ -26,6 +26,7 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
 
     // добавим только новые треки в currentList
     foreach(Audio song, tracks){
+        qDebug() << "Adding track to UI " << song.GetFilename();
         if( !currentList.contains(song) ){
             currentList += song;
 
@@ -42,16 +43,18 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
         }
     }
     mainWin.setAudioListModel(tracksNames);
+    qDebug() << "Setting audio list model - success";
 }
 
-void FailedToAddTracks(QVector<Audio> failedTracks){
+void MainController::FailedToAddTracks(QVector<Audio> failedTracks){
     //вывод окна с ошибками
+    qDebug() << "Printing errors";
     QString message = "Не удалось добавить следующие треки: ";
     for(auto track = failedTracks.constBegin() ; track != failedTracks.constEnd() ; ++track){
         message.append(track->GetFilename());
-        if(track != failedTracks.end()-1)
+        if(track != failedTracks.constEnd()-1)
             message.append(", ");
     }
-
     QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
+    qDebug() << "Printing errors: success";
 }

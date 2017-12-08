@@ -75,7 +75,7 @@ void Player::addTracks(const QVector<Audio>& newTracks){
     QVector<Audio> successfullyAddedTracks;
     QVector<Audio> notAdded;
     QMimeDatabase db;       //инициализируем базу данных MIME типов для проверки типа файла
-    for(Audio& audio: newTracks){
+    foreach(Audio audio, newTracks){
         QMimeType type = db.mimeTypeForFile(audio.GetPath(), QMimeDatabase::MatchContent); //получаем MIME тип файла на основе его контента
         if(SUPPORTED_FORMATS.contains(type)){ //если такой тип поддерживается
             QMediaContent track(QUrl::fromLocalFile(audio.GetPath())); //то конструируем MediaContent на его основе
@@ -94,7 +94,8 @@ void Player::addTracks(const QVector<Audio>& newTracks){
         qDebug() << player.playlist()->errorString();
         emit addTracksFailed();
     }else{
-        if(!errors.empty()){
+        qDebug() << "Successfully added media";
+        if(!notAdded.empty()){
             emit addTracksFailed(notAdded);
         }
         if(!successfullyAddedTracks.empty()){
@@ -119,7 +120,7 @@ void Player::addTrack(const Audio &newTrack){
         std::cerr << player.playlist()->errorString().toStdString() << std::endl;
         emit addTracksFailed();
     }else{
-        emit addedTracksSuccessfully();
+        emit addedTracksSuccessfully(QVector<Audio>{newTrack});
     }
 }
 

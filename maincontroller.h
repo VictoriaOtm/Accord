@@ -10,8 +10,8 @@ class MainController : public QObject
     Q_OBJECT
 
 public:
-    MainController(){};
-    ~MainController(){};
+    MainController(){}
+    ~MainController(){}
     void start();
     void openMainWin();
     MainWindow& getMainWin();

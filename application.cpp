@@ -47,7 +47,7 @@ int Application::run(int argc, char *argv[]){
                      &mainController, SLOT(NewTracksAdded(QVector<Audio>)));
 
     QObject::connect(&Player::instance(), SIGNAL(addTracksFailed(QVector<Audio>)),
-                     &mainController, SLOT(FailedToAddTracks(QVector<Audio>));
+                     &mainController, SLOT(FailedToAddTracks(QVector<Audio>)));
 
 
     mainController.start();
