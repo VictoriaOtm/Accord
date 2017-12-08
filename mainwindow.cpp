@@ -54,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->plusButton, SIGNAL(clicked()),
                      this, SLOT(addButtonPushed()));
 
+    QObject::connect(ui->loopPlaylistButton, SIGNAL(clicked(bool)), this, SIGNAL(loopPlaylist(bool)));
+
 }
 
 MainWindow::~MainWindow() {

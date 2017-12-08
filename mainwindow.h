@@ -34,6 +34,7 @@ signals:
     void audioSwitched(int);
     void addAudioFromDisk(MainWindow*);
     void saveAsPlaylist(const QStringListModel* audioListModel);
+    void loopPlaylist(bool);
 
 public slots:
     void sliderPositionChanged(qint64);
@@ -47,6 +48,8 @@ private slots:
     void itemDoubleClicked(QListWidgetItem*);
     void setPrevRow();
     void setNextRow();
+
+    void on_pushButton_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;

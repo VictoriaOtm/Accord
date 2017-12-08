@@ -34,6 +34,7 @@ public slots:
     void setVolume(int volume);
     void setPlayingPosition(int position);
     void setSelectedAudioPosition(int position);
+    void loopPlaylist(bool looping);
 
     void addTracks(const QVector<Audio>& newTracks);
     void removeTracks(int start, int end);

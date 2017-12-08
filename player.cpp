@@ -1,4 +1,3 @@
-#include <iostream>
 #include "player.h"
 
 const QMimeDatabase db;
@@ -18,6 +17,7 @@ Player& Player::instance(){
 
 Player::Player(): selectedAudioPosition(0){
     player.setPlaylist(new QMediaPlaylist(&player));
+    player.playlist()->setPlaybackMode(QMediaPlaylist::Loop);
     QObject::connect(&player, &QMediaPlayer::audioAvailableChanged, this, &Player::audioAvailableChanged);
     QObject::connect(&player, &QMediaPlayer::positionChanged, this, &Player::positionChanged);
     QObject::connect(player.playlist(), &QMediaPlaylist::currentMediaChanged, this, &Player::mediaChanged);
@@ -116,8 +116,8 @@ void Player::removeTracks(int start, int end){
 void Player::addTrack(const Audio &newTrack){
     QMediaContent track(QMediaResource( QUrl::fromLocalFile(newTrack.GetPath()) ));
     if(!player.playlist()->addMedia(track)){
-        std::cerr << "Error while adding media to playlist in player" << std::endl;
-        std::cerr << player.playlist()->errorString().toStdString() << std::endl;
+        qDebug() << "Error while adding media to playlist in player";
+        qDebug() << player.playlist()->errorString();
         emit addTracksFailed();
     }else{
         emit addedTracksSuccessfully(QVector<Audio>{newTrack});
@@ -129,5 +129,13 @@ void Player::removeTrack(int trackNum){
         emit removeTracksFailed();
     }else{
         emit removedTracksSuccessfully();
+    }
+}
+
+void Player::loopPlaylist(bool looping){
+    if(looping){
+        qDebug() << "Looping enabled";
+    }else{
+        qDebug() << "Looping disabled";
     }
 }
