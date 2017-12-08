@@ -55,8 +55,9 @@ signals:
     void audioDurationChanged(qint64);
 
     //EMITTED BY PLAYER ITSELF
-    void addedTracksSuccessfully();
+    void addedTracksSuccessfully(QVector<Audio> successfullyAddedTracks);
     void addTracksFailed();
+    void addTracksFailed(QVector<Audio> failedTracks);
     void removedTracksSuccessfully();
     void removeTracksFailed();
     void currentPlaylistChanged(QVector<Audio>);
