@@ -23,8 +23,7 @@ SOURCES += main.cpp\
         playlists.cpp\
         playlist.cpp\
         audio.cpp\
-        uploadwindow.cpp \
-        playlists.pb.cc
+        uploadwindow.cpp
 
 HEADERS  += mainwindow.h\
         application.h\
@@ -34,14 +33,9 @@ HEADERS  += mainwindow.h\
         playlists.h\
         playlist.h\
         audio.h \
-        uploadwindow.h \
-        playlists.pb.h
+        uploadwindow.h
 
 FORMS    += mainwindow.ui
 
 RESOURCES += \
     ui.qrc
-
-#DISTFILES += \
-OTHER_FILES += \
-    playlists.proto
