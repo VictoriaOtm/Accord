@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QFile>
+#include <QDebug>
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -119,7 +120,10 @@ void MainWindow::setNextRow(){
 }
 
 void MainWindow::itemIndexChanged(int newRow){
-    ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
+    qDebug() << "Item index changed:";
+    qDebug() << (qint64) newRow;
+    //ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
+    ui->curAudioListWidget->setCurrentItem(ui->curAudioListWidget->item(newRow));
 }
 
 void MainWindow::curAudioDurationChanged(qint64 newDuration){

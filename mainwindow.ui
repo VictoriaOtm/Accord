@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>544</width>
+    <width>567</width>
     <height>402</height>
    </rect>
   </property>
@@ -387,6 +387,9 @@
           <property name="text">
            <string>Loop</string>
           </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
@@ -454,7 +457,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>544</width>
+     <width>567</width>
      <height>25</height>
     </rect>
    </property>

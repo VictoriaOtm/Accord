@@ -17,7 +17,7 @@ Player& Player::instance(){
 
 Player::Player(): selectedAudioPosition(0){
     player.setPlaylist(new QMediaPlaylist(&player));
-    player.playlist()->setPlaybackMode(QMediaPlaylist::Loop);
+    player.playlist()->setPlaybackMode(QMediaPlaylist::Sequential);
     QObject::connect(&player, &QMediaPlayer::audioAvailableChanged, this, &Player::audioAvailableChanged);
     QObject::connect(&player, &QMediaPlayer::positionChanged, this, &Player::positionChanged);
     QObject::connect(player.playlist(), &QMediaPlaylist::currentMediaChanged, this, &Player::mediaChanged);
@@ -29,8 +29,10 @@ Player::Player(): selectedAudioPosition(0){
 
 void Player::play(bool playPauseStatus){
     //player.setVolume(100);
-    if(playPauseStatus)
+    if(playPauseStatus){
         player.play();
+        emit currentIndexChanged(player.playlist()->currentIndex());
+    }
 }
 
 void Player::pause(bool playPauseStatus){
@@ -45,12 +47,10 @@ void Player::stop(){
 
 void Player::prev(){
     player.media().playlist()->previous();
-    selectedAudioPosition = player.playlist()->currentIndex();
 }
 
 void Player::next(){
     player.media().playlist()->next();
-    selectedAudioPosition = player.playlist()->currentIndex();
 }
 
 void Player::setVolume(int volume){
@@ -79,9 +79,11 @@ void Player::addTracks(const QVector<Audio>& newTracks){
         QMimeType type = db.mimeTypeForFile(audio.GetPath(), QMimeDatabase::MatchContent); //получаем MIME тип файла на основе его контента
         if(SUPPORTED_FORMATS.contains(type)){ //если такой тип поддерживается
             QMediaContent track(QUrl::fromLocalFile(audio.GetPath())); //то конструируем MediaContent на его основе
+            /*
             qDebug() << "Adding track " << audio.GetPath();
             qDebug() << type.name();
             qDebug() << type.parentMimeTypes();
+            */
             tracks.append(track); //добавляем к трекам, которые пойдут в плейлист
             successfullyAddedTracks.append(audio);
         }else{
@@ -90,11 +92,15 @@ void Player::addTracks(const QVector<Audio>& newTracks){
         }
     }
     if(!player.playlist()->addMedia(tracks)){
+        /*
         qDebug() << "Error while adding media to playlist in player";
         qDebug() << player.playlist()->errorString();
+        */
         emit addTracksFailed();
     }else{
+        /*
         qDebug() << "Successfully added media";
+        */
         if(!notAdded.empty()){
             emit addTracksFailed(notAdded);
         }
@@ -134,8 +140,8 @@ void Player::removeTrack(int trackNum){
 
 void Player::loopPlaylist(bool looping){
     if(looping){
-        qDebug() << "Looping enabled";
+        player.playlist()->setPlaybackMode(QMediaPlaylist::Loop);
     }else{
-        qDebug() << "Looping disabled";
+        player.playlist()->setPlaybackMode(QMediaPlaylist::Sequential);
     }
 }
