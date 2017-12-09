@@ -1,5 +1,6 @@
 #include <QMessageBox>
 #include "maincontroller.h"
+#include <QMessageBox>
 
 
 void MainController::openMainWin(){
@@ -55,6 +56,19 @@ void MainController::FailedToAddTracks(QVector<Audio> failedTracks){
         if(track != failedTracks.constEnd()-1)
             message.append(", ");
     }
+    QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
+    qDebug() << "Printing errors: success";
+}
+
+void MainController::CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist) {
+    Playlist newPlaylist(nameForPlaylist, tracksToPlaylist);
+
+}
+
+void MainController::trackRemovingFailed(int position){
+    qDebug() << "Printing errors ";
+    QString message = "Не удалось удалить трек номер ";
+    message.append(position + 1);
     QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
     qDebug() << "Printing errors: success";
 }

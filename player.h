@@ -39,7 +39,7 @@ public slots:
     void addTracks(const QVector<Audio>& newTracks);
     void removeTracks(int start, int end);
     void addTrack(const Audio& newTrack);
-    void removeTrack(int trackNum);
+    void removeTrack();
 
 signals:
     //PASSED FURTHER FROM QMEDIAPLAYER
@@ -55,8 +55,14 @@ signals:
     void addTracksFailed();
     void addTracksFailed(QVector<Audio> failedTracks);
     void removedTracksSuccessfully();
+
     void removeTracksFailed();
+    
     void currentPlaylistChanged(QVector<Audio>);
+    void removedTracksFailed();
+
+    void removedTrackSuccessfully(int);
+    void removedTrackFailed(int);
 };
 
 #endif // PLAYER_H

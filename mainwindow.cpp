@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     audioListModel = new QStringListModel(this);
     playlistModel = new QStringListModel(this);
+
     ui->setupUi(this);
     playPauseButton = new QRadioButton(ui->playPauseBox);
     playPauseButton->setObjectName("playPauseButton");
@@ -56,10 +57,16 @@ MainWindow::MainWindow(QWidget *parent) :
                      this, SLOT(addButtonPushed()));
 
     QObject::connect(ui->loopPlaylistButton, SIGNAL(clicked(bool)), this, SIGNAL(loopPlaylist(bool)));
+      
+    QObject::connect(ui->minusButton, SIGNAL(clicked()),
+                     this, SLOT(removeButtonPushed()));
 
 }
 
 MainWindow::~MainWindow() {
+    delete audioListModel;
+    delete playlistModel;
+
     delete ui;
 }
 void MainWindow::setAudioListModel(QStringList tracks) {
@@ -89,8 +96,17 @@ void MainWindow::setPlaylistsModel(QStringList playlists) {
     ui->playListWidget->insertItem(0, newItem);*/
 }
 
+void MainWindow::removeButtonPushed(){
+    emit removeAudio();
+}
+
 void MainWindow::addButtonPushed() {
     emit addAudioFromDisk(this);
+}
+
+
+void MainWindow::audioRemoveFromList(int position) {
+    ui->curAudioListWidget->model()->removeRow(position);
 }
 
 void MainWindow::itemClicked(QListWidgetItem *item){
@@ -148,5 +164,65 @@ void MainWindow::setVolumeSlider() {
     else {
         delete volumeSlider;
         volumeSliderStatus = false;
+
     }
+    ui->curAudioListWidget->setCurrentRow(curRow);
+}
+
+
+void MainWindow::showErrorMessage(QString textOfError){
+    QErrorMessage errorMessage;
+    errorMessage.showMessage(textOfError);
+    errorMessage.exec();
+}
+
+bool MainWindow::getLineOfText(QString& title, QString& message, QString& result){
+    // будет отвечать за кнопнку
+    // которую нажнем пользователь
+    // true - если нажали 'ok'
+    // false - если нажали 'cancel'
+    bool ok;
+    result = QInputDialog::getText(this,
+                                     title,
+                                     message,
+                                     QLineEdit::Normal,
+                                     QDir::home().dirName(), &ok);
+
+    return ok;
+
+void MainWindow::setNextRow(){
+    int curRow = ui->curAudioListWidget->currentRow();
+    if (curRow < audioListModel->rowCount() - 1){
+        ++curRow;
+    }
+    ui->curAudioListWidget->setCurrentRow(curRow);
+}
+
+void MainWindow::itemIndexChanged(int newRow){
+    ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
+}
+
+void MainWindow::curAudioDurationChanged(qint64 newDuration){
+    curAudioDuration = newDuration;
+}
+
+void MainWindow::sliderPositionChanged(qint64 position){
+    if (curAudioDuration != 0){
+        int newSliderPosition = static_cast<int>(position / curAudioDuration);
+        ui->timeSlider->setSliderPosition(newSliderPosition);
+    }
+}
+
+void MainWindow::setVolumeSlider() {
+    if(!volumeSliderStatus){
+        volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
+        volumeSlider->setRange(0,100);
+        volumeSlider->show();
+        volumeSliderStatus = true;
+    }
+    else {
+        delete volumeSlider;
+        volumeSliderStatus = false;
+    }
+
 }

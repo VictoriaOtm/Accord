@@ -113,7 +113,7 @@ void Player::addTracks(const QVector<Audio>& newTracks){
 
 void Player::removeTracks(int start, int end){
     if(!player.playlist()->removeMedia(start, end)){
-        emit removeTracksFailed();
+        emit removedTracksFailed();
     }else{
         emit removedTracksSuccessfully();
     }
@@ -130,11 +130,11 @@ void Player::addTrack(const Audio &newTrack){
     }
 }
 
-void Player::removeTrack(int trackNum){
-    if(!player.playlist()->removeMedia(trackNum)){
-        emit removeTracksFailed();
+void Player::removeTrack(){
+    if(!player.playlist()->removeMedia(selectedAudioPosition)){
+        emit removedTrackFailed(selectedAudioPosition);
     }else{
-        emit removedTracksSuccessfully();
+        emit removedTrackSuccessfully(selectedAudioPosition);
     }
 }
 
