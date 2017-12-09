@@ -11,14 +11,15 @@ class MainController : public QObject
     Q_OBJECT
 
 public:
-    MainController(){};
-    ~MainController(){};
+    MainController(){}
+    ~MainController(){}
     void start();
     void openMainWin();
     MainWindow& getMainWin();
 
 public slots:
     void NewTracksAdded(QVector<Audio> tracks);
+    void FailedToAddTracks(QVector<Audio> failedTracks);
 
     void CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist);
 

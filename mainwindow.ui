@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>544</width>
+    <width>567</width>
     <height>402</height>
    </rect>
   </property>
@@ -374,10 +374,22 @@
             <string/>
            </property>
           </widget>
-          <zorder>nextButton</zorder>
-          <zorder>prevButton</zorder>
-          <zorder>playPauseBox</zorder>
-          <zorder>settingsBox</zorder>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="loopPlaylistButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Loop</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
@@ -445,7 +457,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>544</width>
+     <width>567</width>
      <height>25</height>
     </rect>
    </property>

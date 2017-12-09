@@ -55,6 +55,7 @@ public slots:
 
     void removeAudio();
     void saveAsPlaylist(const QStringListModel* audioListModel);
+    void loopPlaylist(bool);
 
 
 public slots:

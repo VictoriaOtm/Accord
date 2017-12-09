@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include <QFile>
+#include <QDebug>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     playlistModel = new QStringListModel(this);
 
     ui->setupUi(this);
-    
     playPauseButton = new QRadioButton(ui->playPauseBox);
     playPauseButton->setObjectName("playPauseButton");
     playPauseButton->setStyleSheet(styleSheet);
@@ -55,6 +56,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->plusButton, SIGNAL(clicked()),
                      this, SLOT(addButtonPushed()));
 
+    QObject::connect(ui->loopPlaylistButton, SIGNAL(clicked(bool)), this, SIGNAL(loopPlaylist(bool)));
+      
     QObject::connect(ui->minusButton, SIGNAL(clicked()),
                      this, SLOT(removeButtonPushed()));
 
@@ -66,14 +69,12 @@ MainWindow::~MainWindow() {
 
     delete ui;
 }
-
 void MainWindow::setAudioListModel(QStringList tracks) {
     // TODO
     // необходимо добавлять tracks в audioListModel
     // а не заменять их, как сейчас
     // т.к. tracks содержат только новые песни, которые
     // только были добавлены
-
     audioListModel->setStringList(tracks);
     ui->curAudioListWidget->addItems(tracks);
 }
@@ -135,17 +136,21 @@ void MainWindow::setNextRow(){
 }
 
 void MainWindow::itemIndexChanged(int newRow){
-    ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
+    qDebug() << "Item index changed:";
+    qDebug() << (qint64) newRow;
+    //ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
+    ui->curAudioListWidget->setCurrentItem(ui->curAudioListWidget->item(newRow));
 }
 
 void MainWindow::curAudioDurationChanged(qint64 newDuration){
     curAudioDuration = newDuration;
+    ui->timeSlider->setMaximum(newDuration);
 }
 
 void MainWindow::sliderPositionChanged(qint64 position){
     if (curAudioDuration != 0){
-        int newSliderPosition = static_cast<int>(position / curAudioDuration);
-        ui->timeSlider->setSliderPosition(newSliderPosition);
+        ui->timeSlider->setSliderPosition(position);
+        std::cout << "Slider position changed" << std::endl;
     }
 }
 
