@@ -4,6 +4,7 @@
 #include <QObject>
 #include "mainwindow.h"
 #include "audio.h"
+#include "playlist.h"
 
 class MainController : public QObject
 {
@@ -18,11 +19,17 @@ public:
 
 public slots:
     void NewTracksAdded(QVector<Audio> tracks);
+
+    void CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist);
+
     void trackRemovingFailed(int position);
 
 private:
     MainWindow mainWin;
     QVector<Audio> currentList;
+    // пока что такая реализация
+    // потом будет переписано под класс Playlists
+    QVector<Playlist> currentPlaylists;
 };
 
 #endif // MAINCONTROLLER_H
