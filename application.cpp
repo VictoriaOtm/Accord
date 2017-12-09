@@ -13,9 +13,6 @@ int Application::run(int argc, char *argv[]){
     QObject::connect(&mainController.getMainWin(), SIGNAL(addAudioFromDisk(MainWindow*)),
                           &uploadWinController, SLOT(Add(MainWindow*)));
 
-    QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
-                          &mainController, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
-
     // сначала скормить новый список песен в плеер
     // проверить его на валидность, а потом уже
     // показывать в интерфейсе юзеру
@@ -24,10 +21,6 @@ int Application::run(int argc, char *argv[]){
 
     QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
                         &Player::instance(), SLOT(addTracks(QVector<Audio>)));
-
-
-    QObject::connect(&mainController.getMainWin(), SIGNAL(play(bool)),
-                     &Player::instance(), SLOT(play(bool)));
 
     QObject::connect(&mainController.getMainWin(), SIGNAL(removeAudio()),
                      &Player::instance(), SLOT(removeTrack()));

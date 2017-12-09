@@ -44,11 +44,6 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
     mainWin.setAudioListModel(tracksNames);
 }
 
-void MainController::CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist) {
-    Playlist newPlaylist(nameForPlaylist, tracksToPlaylist);
-
-}
-
 void MainController::trackRemovingFailed(int position){
     qDebug() << "Printing errors ";
     QString message = "Не удалось удалить трек номер ";
@@ -56,3 +51,4 @@ void MainController::trackRemovingFailed(int position){
     QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
     qDebug() << "Printing errors: success";
 }
+
