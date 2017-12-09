@@ -29,10 +29,14 @@ signals:
     void pause(bool);
     void next();
     void prev();
+
     void settings();
+
     void audioSelected(int);
     void audioSwitched(int);
+
     void addAudioFromDisk(MainWindow*);
+    void removeAudio();
     void saveAsPlaylist(const QStringListModel* audioListModel);
 
 public slots:
@@ -40,11 +44,17 @@ public slots:
     void curAudioDurationChanged(qint64);
     void itemIndexChanged(int);
 
+    void audioRemoveFromList(int);
+
 private slots:
     void addButtonPushed();
+    void removeButtonPushed();
+
     void setVolumeSlider();
+
     void itemClicked(QListWidgetItem*);
     void itemDoubleClicked(QListWidgetItem*);
+
     void setPrevRow();
     void setNextRow();
 
@@ -52,6 +62,7 @@ private:
     Ui::MainWindow *ui;
     QStringListModel *audioListModel;
     QStringListModel *playlistModel;
+    QListWidgetItem *audioListItem;
     
     QRadioButton *playPauseButton;
     QSlider *volumeSlider;

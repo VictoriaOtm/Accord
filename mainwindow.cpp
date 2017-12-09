@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     audioListModel = new QStringListModel(this);
     playlistModel = new QStringListModel(this);
+
     ui->setupUi(this);
     
     playPauseButton = new QRadioButton(ui->playPauseBox);
@@ -54,9 +55,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->plusButton, SIGNAL(clicked()),
                      this, SLOT(addButtonPushed()));
 
+    QObject::connect(ui->minusButton, SIGNAL(clicked()),
+                     this, SLOT(removeButtonPushed()));
+
 }
 
 MainWindow::~MainWindow() {
+    delete audioListModel;
+    delete playlistModel;
+
     delete ui;
 }
 
@@ -88,8 +95,17 @@ void MainWindow::setPlaylistsModel(QStringList playlists) {
     ui->playListWidget->insertItem(0, newItem);*/
 }
 
+void MainWindow::removeButtonPushed(){
+    emit removeAudio();
+}
+
 void MainWindow::addButtonPushed() {
     emit addAudioFromDisk(this);
+}
+
+
+void MainWindow::audioRemoveFromList(int position) {
+    ui->curAudioListWidget->model()->removeRow(position);
 }
 
 void MainWindow::itemClicked(QListWidgetItem *item){
