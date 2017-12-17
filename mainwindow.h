@@ -3,9 +3,10 @@
 
 #include <QMainWindow>
 #include <QStringListModel>
-#include <iostream>
 #include "ui_mainwindow.h"
 #include "qslider.h"
+#include <QRadioButton>
+#include <memory>
 
 
 namespace Ui {
@@ -18,31 +19,42 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    void setAudioListModel(QStringList tracks);
     ~MainWindow();
+    void setAudioListModel(QStringList tracks);
+    void setPlaylistsModel(QStringList playlists);
+
+
+signals:
+    void play(bool);
+    void pause(bool);
+    void next();
+    void prev();
+
+    void settings();
+
+    void audioSelected(int);
+    void audioSwitched(int);
+
+    void addAudioFromDisk(MainWindow*);
+    void removeAudio();
+    void saveAsPlaylist(const QStringListModel* audioListModel);
 
 public slots:
     void sliderPositionChanged(qint64);
     void curAudioDurationChanged(qint64);
     void itemIndexChanged(int);
 
-signals:
-    void play();
-    void pause();
-    void next();
-    void prev();
-    void settings();
-    void audioSelected(int);
-    void audioSwitched(int);
-    void addAudioFromDisk(MainWindow*);
-    void saveAsPlaylist(const QStringListModel* audioListModel);
+    void audioRemoveFromList(int);
 
 private slots:
     void addButtonPushed();
+    void removeButtonPushed();
+
     void setVolumeSlider();
-    void setPlayPause();
+
     void itemClicked(QListWidgetItem*);
     void itemDoubleClicked(QListWidgetItem*);
+
     void setPrevRow();
     void setNextRow();
 
@@ -50,13 +62,11 @@ private:
     Ui::MainWindow *ui;
     QStringListModel *audioListModel;
     QStringListModel *playlistModel;
-
+    QListWidgetItem *audioListItem;
+    
+    QRadioButton *playPauseButton;
     QSlider *volumeSlider;
     bool volumeSliderStatus;
-    QPushButton *playButton;
-    QPushButton *pauseButton;
-    bool playButtonStatus;
-
     qint64 curAudioDuration;
 };
 

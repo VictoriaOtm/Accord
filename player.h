@@ -12,8 +12,6 @@ class Player: public QObject
     Q_OBJECT
 
 public:
-
-
     static Player& instance();
     Player(const Player& other) = delete;
     Player& operator = (const Player& other) = delete;
@@ -23,23 +21,22 @@ private:
     ~Player() = default;
     QMediaPlayer player;
     int selectedAudioPosition;
-
+    
 public slots:
-    void play();
-    void pause();
+    void play(bool);
+    void pause(bool);
     void stop();
     void prev();
     void next();
-
     void setVolume(int volume);
-
+    
     void setPlayingPosition(int position);
     void setSelectedAudioPosition(int position);
 
     void addTracks(const QVector<Audio>& newTracks);
     void removeTracks(int start, int end);
     void addTrack(const Audio& newTrack);
-    void removeTrack(int trackNum);
+    void removeTrack();
 
 signals:
     //PASSED FURTHER FROM QMEDIAPLAYER
@@ -55,7 +52,10 @@ signals:
     void addTracksFailed();
 
     void removedTracksSuccessfully();
-    void removeTracksFailed();
+    void removedTracksFailed();
+
+    void removedTrackSuccessfully(int);
+    void removedTrackFailed(int);
 };
 
 #endif // PLAYER_H
