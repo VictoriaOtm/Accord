@@ -6,14 +6,17 @@ Player& Player::instance(){
     return p;
 }
 
-Player::Player(){
+
+Player::Player(): selectedAudioPosition(0){
     player.setPlaylist(new QMediaPlaylist(&player));
     QObject::connect(&player, &QMediaPlayer::audioAvailableChanged, this, &Player::audioAvailableChanged);
     QObject::connect(&player, &QMediaPlayer::positionChanged, this, &Player::positionChanged);
     QObject::connect(player.playlist(), &QMediaPlaylist::currentMediaChanged, this, &Player::mediaChanged);
     QObject::connect(player.playlist(), &QMediaPlaylist::currentIndexChanged, this, &Player::currentIndexChanged);
     QObject::connect(&player, &QMediaPlayer::mediaStatusChanged, this, &Player::mediaStatusChanged);
+    QObject::connect(&player, &QMediaPlayer::durationChanged, this, &Player::audioDurationChanged);
 }
+
 
 void Player::play(bool playPauseStatus){
     //player.setVolume(100);
@@ -26,24 +29,36 @@ void Player::pause(bool playPauseStatus){
         player.pause();
 }
 
+
 void Player::stop(){
     player.stop();
 }
 
 void Player::prev(){
     player.media().playlist()->previous();
+    selectedAudioPosition = player.playlist()->currentIndex();
 }
 
 void Player::next(){
     player.media().playlist()->next();
+    selectedAudioPosition = player.playlist()->currentIndex();
 }
 
 void Player::setVolume(int volume){
     player.setVolume(volume);
 }
 
-void Player::setPosition(qint64 position){
-    player.setPosition(position);
+
+void Player::setPlayingPosition(int position){
+    player.playlist()->setCurrentIndex(position);
+    if (player.state() == QMediaPlayer::PausedState){
+        player.play();
+        //emit mediaStatusChanged(QMediaPlayer::MediaStatus);
+    }
+}
+
+void Player::setSelectedAudioPosition(int position){
+    selectedAudioPosition = position;
 }
 
 void Player::addTracks(const QVector<Audio>& newTracks){
@@ -63,7 +78,7 @@ void Player::addTracks(const QVector<Audio>& newTracks){
 
 void Player::removeTracks(int start, int end){
     if(!player.playlist()->removeMedia(start, end)){
-        emit removeTracksFailed();
+        emit removedTracksFailed();
     }else{
         emit removedTracksSuccessfully();
     }
@@ -80,10 +95,10 @@ void Player::addTrack(const Audio &newTrack){
     }
 }
 
-void Player::removeTrack(int trackNum){
-    if(!player.playlist()->removeMedia(trackNum)){
-        emit removeTracksFailed();
+void Player::removeTrack(){
+    if(!player.playlist()->removeMedia(selectedAudioPosition)){
+        emit removedTrackFailed(selectedAudioPosition);
     }else{
-        emit removedTracksSuccessfully();
+        emit removedTrackSuccessfully(selectedAudioPosition);
     }
 }
