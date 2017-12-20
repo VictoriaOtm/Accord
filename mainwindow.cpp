@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     
     playPauseButton = new QRadioButton(ui->playPauseBox);
+    playPauseButton->setFocusPolicy(Qt::NoFocus);
     playPauseButton->setObjectName("playPauseButton");
     playPauseButton->setStyleSheet(styleSheet);
 
@@ -155,6 +156,7 @@ void MainWindow::sliderPositionChanged(qint64 position){
 void MainWindow::setVolumeSlider() {
     if(!volumeSliderStatus){
         volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
+        volumeSlider->setFocusPolicy(Qt::NoFocus);
         volumeSlider->setRange(0,100);
         volumeSlider->show();
         volumeSliderStatus = true;
