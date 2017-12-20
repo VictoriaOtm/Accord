@@ -7,12 +7,17 @@
 QT       += core gui
 QT       += multimedia
 CONFIG += c++11
+#CONFIG -= app_bundle
+
+#LIBS += -lprotobuf
+LIBS += /usr/local/lib/libprotobuf.so
+#PROTOS = playlists.proto
+include(protobuf.pri)
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Accord_ver2
 TEMPLATE = app
-
 
 SOURCES += main.cpp\
         mainwindow.cpp\
@@ -23,8 +28,8 @@ SOURCES += main.cpp\
         playlists.cpp\
         playlist.cpp\
         audio.cpp\
-        uploadwindow.cpp \
-        playlists.pb.cc
+        uploadwindow.cpp #\
+    #playlists.pb.cc
 
 HEADERS  += mainwindow.h\
         application.h\
@@ -34,14 +39,12 @@ HEADERS  += mainwindow.h\
         playlists.h\
         playlist.h\
         audio.h \
-        uploadwindow.h \
-        playlists.pb.h
+        uploadwindow.h #\
+    #playlists.pb.h
 
 FORMS    += mainwindow.ui
 
 RESOURCES += \
     ui.qrc
 
-#DISTFILES += \
-OTHER_FILES += \
-    playlists.proto
+#OTHER_FILES +=

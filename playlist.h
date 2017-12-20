@@ -3,8 +3,9 @@
 
 #include <QtGui>
 #include "audio.h"
-#include "playlists.pb.h"
-
+//#include "playlists.pb.h"
+#include <fstream>
+#include <string>
 
 class Playlist
 {

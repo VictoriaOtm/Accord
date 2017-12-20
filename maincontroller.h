@@ -19,7 +19,10 @@ public:
 
 public slots:
     void NewTracksAdded(QVector<Audio> tracks);
+
     void CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist);
+
+    void trackRemovingFailed(int position);
 
 private:
     MainWindow mainWin;

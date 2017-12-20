@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     audioListModel = new QStringListModel(this);
     playlistModel = new QStringListModel(this);
+
     ui->setupUi(this);
     
     playPauseButton = new QRadioButton(ui->playPauseBox);
@@ -54,9 +55,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->plusButton, SIGNAL(clicked()),
                      this, SLOT(addButtonPushed()));
 
+    QObject::connect(ui->minusButton, SIGNAL(clicked()),
+                     this, SLOT(removeButtonPushed()));
+
 }
 
 MainWindow::~MainWindow() {
+    delete audioListModel;
+    delete playlistModel;
+
     delete ui;
 }
 
@@ -88,9 +95,14 @@ void MainWindow::setPlaylistsModel(QStringList playlists) {
     ui->playListWidget->insertItem(0, newItem);*/
 }
 
+void MainWindow::removeButtonPushed(){
+    //emit removeAudio();
+}
+
 void MainWindow::addButtonPushed() {
     emit addAudioFromDisk(this);
 }
+
 
 void MainWindow::itemClicked(QListWidgetItem *item){
     int position = item->listWidget()->currentRow();
@@ -133,18 +145,6 @@ void MainWindow::sliderPositionChanged(qint64 position){
     }
 }
 
-void MainWindow::setVolumeSlider() {
-    if(!volumeSliderStatus){
-        volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
-        volumeSlider->setRange(0,100);
-        volumeSlider->show();
-        volumeSliderStatus = true;
-    }
-    else {
-        delete volumeSlider;
-        volumeSliderStatus = false;
-    }
-}
 
 void MainWindow::showErrorMessage(QString textOfError){
     QErrorMessage errorMessage;
@@ -165,4 +165,17 @@ bool MainWindow::getLineOfText(QString& title, QString& message, QString& result
                                      QDir::home().dirName(), &ok);
 
     return ok;
+}
+
+void MainWindow::setVolumeSlider() {
+    if(!volumeSliderStatus){
+        volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
+        volumeSlider->setRange(0,100);
+        volumeSlider->show();
+        volumeSliderStatus = true;
+    }
+    else {
+        delete volumeSlider;
+        volumeSliderStatus = false;
+   }
 }
