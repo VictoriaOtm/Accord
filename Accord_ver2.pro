@@ -20,7 +20,7 @@ BITSIZE = $$system(getconf LONG_BIT)
  if (contains(BITSIZE, 32)) {
      LIBS += /usr/lib/libprotobuf.so
  }
- PROTOS = a.proto
+ PROTOS = playlist.proto
  include(protobuf.pri)
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -54,6 +54,6 @@ FORMS    += mainwindow.ui
 RESOURCES += \
     ui.qrc
 
-OTHER_FILES += a.proto
+OTHER_FILES += playlist.proto
 
 

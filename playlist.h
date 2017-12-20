@@ -3,7 +3,7 @@
 
 #include <QtGui>
 #include "audio.h"
-#include "a.pb.h"
+#include "playlist.pb.h"
 #include <fstream>
 #include <string>
 
