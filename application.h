@@ -2,8 +2,7 @@
 #define APPLICATION_H
 
 #include <QApplication>
-//#include "playlists.pb.h"
-//#include "playlist.h"
+#include "a.pb.h"
 #include "maincontroller.h"
 #include "uploadwincontroller.h"
 #include "player.h"

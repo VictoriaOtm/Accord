@@ -8,7 +8,7 @@ Application::Application()
 int Application::run(int argc, char *argv[]){
     // Verify that the version of the library that we linked against is
     // compatible with the version of the headers we compiled against.
-    //GOOGLE_PROTOBUF_VERIFY_VERSION;
+    GOOGLE_PROTOBUF_VERIFY_VERSION;
 
     QApplication application(argc, argv);
     MainController mainController;
@@ -73,6 +73,6 @@ int Application::run(int argc, char *argv[]){
     mainController.start();
 
     // Optional:  Delete all global objects allocated by libprotobuf.
-    //google::protobuf::ShutdownProtobufLibrary();
+    google::protobuf::ShutdownProtobufLibrary();
     return application.exec();
 }
