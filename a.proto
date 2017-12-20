@@ -6,7 +6,7 @@ message Playlist {
   required string name = 1;
 
   message Audio {
-  	required string path = 1;
+        required string path = 1;
   }
 
   repeated Audio audio = 2;

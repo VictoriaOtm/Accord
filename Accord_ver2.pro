@@ -7,12 +7,21 @@
 QT       += core gui
 QT       += multimedia
 CONFIG += c++11
-#CONFIG -= app_bundle
 
-#LIBS += -lprotobuf
-LIBS += /usr/local/lib/libprotobuf.so
-#PROTOS = playlists.proto
-include(protobuf.pri)
+#LIBS += /usr/local/lib/libprotobuf.so
+#PROTOS += /home/yury/Qt_projects/a.proto
+#PROTOS = a.proto b.proto
+#include(protobuf.pri)
+
+BITSIZE = $$system(getconf LONG_BIT)
+ if (contains(BITSIZE, 64)) {
+     LIBS += /usr/lib/x86_64-linux-gnu/libprotobuf.so
+ }
+ if (contains(BITSIZE, 32)) {
+     LIBS += /usr/lib/libprotobuf.so
+ }
+ PROTOS = a.proto b.proto
+ include(protobuf.pri)
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,8 +37,7 @@ SOURCES += main.cpp\
         playlists.cpp\
         playlist.cpp\
         audio.cpp\
-        uploadwindow.cpp #\
-    #playlists.pb.cc
+        uploadwindow.cpp
 
 HEADERS  += mainwindow.h\
         application.h\
@@ -39,12 +47,13 @@ HEADERS  += mainwindow.h\
         playlists.h\
         playlist.h\
         audio.h \
-        uploadwindow.h #\
-    #playlists.pb.h
+        uploadwindow.h
 
 FORMS    += mainwindow.ui
 
 RESOURCES += \
     ui.qrc
 
-#OTHER_FILES +=
+OTHER_FILES += a.proto
+
+
