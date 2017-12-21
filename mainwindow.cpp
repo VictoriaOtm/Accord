@@ -170,11 +170,6 @@ void MainWindow::setVolumeSlider() {
     }
 }
 
-void MainWindow::showErrorMessage(QString textOfError){
-    QErrorMessage errorMessage;
-    errorMessage.showMessage(textOfError);
-    errorMessage.exec();
-}
 
 void MainWindow::audioRemoveFromList(int position) {
     ui->curAudioListWidget->model()->removeRow(position);
@@ -193,4 +188,10 @@ bool MainWindow::getLineOfText(QString& title, QString& message, QString& result
                                      QDir::home().dirName(), &ok);
 
     return ok;
+}
+
+void MainWindow::showErrorMessage(QString textOfError){
+    QErrorMessage errorMessage;
+    errorMessage.showMessage(textOfError);
+    errorMessage.exec();
 }

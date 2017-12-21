@@ -27,15 +27,18 @@ Player::Player(): selectedAudioPosition(0){
 }
 
 
-void Player::play(){
+void Player::play(bool playPause){
+    if( playPause ) {
         player.play();
         emit currentIndexChanged(player.playlist()->currentIndex());
+    }
 }
 
-void Player::pause(){
+void Player::pause(bool playPause){
+    if( !playPause ) {
         player.pause();
+    }
 }
-
 
 void Player::stop(){
     player.stop();

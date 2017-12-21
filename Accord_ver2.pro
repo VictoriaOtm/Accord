@@ -4,8 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-QT       += multimedia
+QT += core gui
+QT += multimedia
 CONFIG += c++11
 
 
@@ -36,7 +36,6 @@ SOURCES += main.cpp\
         audio.cpp\
         uploadwindow.cpp
 
-
 HEADERS  += mainwindow.h\
         application.h\
         maincontroller.h\
@@ -47,9 +46,11 @@ HEADERS  += mainwindow.h\
         audio.h \
         uploadwindow.h
 
+
 FORMS    += mainwindow.ui
 
 RESOURCES += \
     ui.qrc
 
 OTHER_FILES += playlist.proto
+

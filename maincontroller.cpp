@@ -7,8 +7,8 @@ MainController::MainController(){
     QObject::connect(&mainWin, SIGNAL(play(bool)),
                      this, SLOT(playpause(bool)));
 
-    QObject::connect(&mainWin, SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
-                          this, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
+    //QObject::connect(&mainWin, SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
+    //                      this, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
 }
 
 void MainController::openMainWin(){
@@ -88,4 +88,5 @@ void MainController::playpause(bool playOrPause){
         emit pause();
     }
 }
+
 

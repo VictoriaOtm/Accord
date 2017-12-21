@@ -31,23 +31,6 @@ public:
     //void showErrorMessage(QString textOfError);
     bool getLineOfText(QString& title, QString& message, QString& result);
 
-signals:
-    void play(bool);
-    void pause(bool);
-    void next();
-    void prev();
-
-    void settings();
-
-    void audioSelected(int);
-    void audioSwitched(int);
-
-    void addAudioFromDisk(MainWindow*);
-    void removeAudio();
-    void saveAsPlaylist(const QStringListModel* audioListModel);
-
-    void loopPlaylist(bool);
-
 public slots:
     void sliderPositionChanged(qint64);
     void curAudioDurationChanged(qint64);
@@ -68,6 +51,24 @@ private slots:
     void setNextRow();
     
     
+
+signals:
+    void play(bool);
+    void pause(bool);
+    void next();
+    void prev();
+
+    void settings();
+
+    void audioSelected(int);
+    void audioSwitched(int);
+
+    void addAudioFromDisk(MainWindow*);
+    void removeAudio();
+    void saveAsPlaylist(const QStringListModel* audioListModel);
+    
+    void loopPlaylist(bool);
+
 private:
     Ui::MainWindow *ui;
     QStringListModel *audioListModel;
