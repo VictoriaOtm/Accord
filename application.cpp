@@ -70,6 +70,8 @@ int Application::run(int argc, char *argv[]) {
                      &mainController, SLOT(FailedToAddTracks(QVector<Audio>)));
 
 
+    mainController.start();
+
     // Optional:  Delete all global objects allocated by libprotobuf.
     google::protobuf::ShutdownProtobufLibrary();
 

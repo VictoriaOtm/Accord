@@ -47,10 +47,9 @@ HEADERS  += mainwindow.h\
         uploadwindow.h
 
 
-FORMS    += mainwindow.ui
+FORMS  += mainwindow.ui
 
-RESOURCES += \
-    ui.qrc
+RESOURCES += ui.qrc
 
 OTHER_FILES += playlist.proto
 
