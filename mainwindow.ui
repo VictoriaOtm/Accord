@@ -366,7 +366,7 @@
            <property name="title">
             <string/>
            </property>
-           <widget class="QRadioButton" name="loopButton">
+           <widget class="QRadioButton" name="loopPlaylistButton">
             <property name="geometry">
              <rect>
               <x>0</x>
