@@ -1,11 +1,10 @@
 #include "application.h"
 
-Application::Application()
-{
+Application::Application() {
 
 }
 
-int Application::run(int argc, char *argv[]){
+int Application::run(int argc, char *argv[]) {
     // Verify that the version of the library that we linked against is
     // compatible with the version of the headers we compiled against.
     GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -14,69 +13,80 @@ int Application::run(int argc, char *argv[]){
     MainController mainController;
     UploadWinController uploadWinController;
 
-    QObject::connect(&mainController.getMainWin(), SIGNAL(addAudioFromDisk(MainWindow*)),
-                          &uploadWinController, SLOT(Add(MainWindow*)));
-
-    QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
-                          &mainController, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
-
     // мои новые сигналы: ошибки и
     QObject::connect(&Playlists::instance(), SIGNAL(Error(QString)),
                           &mainController.getMainWin(), SLOT(ShowErrorMessage(QString)));
 
-    // сначала скормить новый список песен в плеер
-    // проверить его на валидность, а потом уже
-    // показывать в интерфейсе юзеру
-    QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
-                          &mainController, SLOT(NewTracksAdded(QVector<Audio>)));
+    QObject::connect(&mainController.getMainWin(), SIGNAL(addAudioFromDisk(MainWindow*)),
+                              &uploadWinController, SLOT(Add(MainWindow*)));
 
-    QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
-                        &Player::instance(), SLOT(addTracks(QVector<Audio>)));
+        QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
+                              &mainController, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
+
+        QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
+                              &mainController, SLOT(NewTracksAdded(QVector<Audio>)));
+
+        QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
+                         &Player::instance(), SLOT(addTracks(QVector<Audio>)));
+
+        QObject::connect(&mainController.getMainWin(), SIGNAL(removeAudio()),
+                         &Player::instance(), SLOT(removeTrack()));
+
+        QObject::connect(&Player::instance(), SIGNAL(removedTrackSuccessfully(int)),
+                         &mainController.getMainWin(), SLOT(audioRemoveFromList(int)));
+
+        QObject::connect(&Player::instance(), SIGNAL(removedTrackFailed(int)),
+                         &mainController, SLOT(trackRemovingFailed(int)));
+
+        QObject::connect(&mainController.getMainWin(), SIGNAL(removeAudio()),
+                         &Player::instance(), SLOT(removeTrack()));
+
+        QObject::connect(&Player::instance(), SIGNAL(removedTrackSuccessfully(int)),
+                         &mainController.getMainWin(), SLOT(audioRemoveFromList(int)));
+
+        QObject::connect(&Player::instance(), SIGNAL(removedTrackFailed(int)),
+                         &mainController, SLOT(trackRemovingFailed(int)));
+
+        QObject::connect(&mainController.getMainWin(), SIGNAL(play(bool)),
+                         &mainController, SLOT(playpause(bool)));
+
+        QObject::connect(&mainController, SIGNAL(play()), &Player::instance(), SLOT(play()));
+        QObject::connect(&mainController, SIGNAL(pause()), &Player::instance(), SLOT(play()));
+
+        QObject::connect(&mainController.getMainWin(), SIGNAL(next()),
+                         &Player::instance(), SLOT(next()));
+
+        QObject::connect(&mainController.getMainWin(), SIGNAL(prev()),
+                         &Player::instance(), SLOT(prev()));
+
+        QObject::connect(&mainController.getMainWin(), SIGNAL(loopPlaylist(bool)), &Player::instance(), SLOT(loopPlaylist(bool)));
+
+        QObject::connect(&mainController.getMainWin(), SIGNAL(audioSwitched(int)),
+                        &Player::instance(), SLOT(setPlayingPosition(int)));
+
+        QObject::connect(&mainController.getMainWin(), SIGNAL(audioSelected(int)),
+                         &Player::instance(), SLOT(setSelectedAudioPosition(int)));
+
+        QObject::connect(&Player::instance(), SIGNAL(currentIndexChanged(int)),
+                         &mainController.getMainWin(), SLOT(itemIndexChanged(int))),
+
+        QObject::connect(&Player::instance(), SIGNAL(audioDurationChanged(qint64)),
+                         &mainController.getMainWin(), SLOT(curAudioDurationChanged(qint64)));
+
+        QObject::connect(&Player::instance(), SIGNAL(positionChanged(qint64)),
+                         &mainController.getMainWin(), SLOT(sliderPositionChanged(qint64)));
+
+        QObject::connect(&Player::instance(), SIGNAL(addedTracksSuccessfully(QVector<Audio>)),
+                         &mainController, SLOT(NewTracksAdded(QVector<Audio>)));
+
+        QObject::connect(&Player::instance(), SIGNAL(addTracksFailed(QVector<Audio>)),
+                         &mainController, SLOT(FailedToAddTracks(QVector<Audio>)));
 
 
-    QObject::connect(&mainController.getMainWin(), SIGNAL(play(bool)),
-                     &Player::instance(), SLOT(play(bool)));
+        mainController.start();
 
-    QObject::connect(&mainController.getMainWin(), SIGNAL(removeAudio()),
-                     &Player::instance(), SLOT(removeTrack()));
+        // Optional:  Delete all global objects allocated by libprotobuf.
+        google::protobuf::ShutdownProtobufLibrary();
 
-    QObject::connect(&Player::instance(), SIGNAL(removedTrackSuccessfully(int)),
-                     &mainController.getMainWin(), SLOT(audioRemoveFromList(int)));
-
-    QObject::connect(&Player::instance(), SIGNAL(removedTrackFailed(int)),
-                     &mainController, SLOT(trackRemovingFailed(int)));
-
-    QObject::connect(&mainController.getMainWin(), SIGNAL(play(bool)),
-                     &Player::instance(), SLOT(play(bool)));
-
-    QObject::connect(&mainController.getMainWin(), SIGNAL(pause(bool)),
-                     &Player::instance(), SLOT(pause(bool)));
-
-    QObject::connect(&mainController.getMainWin(), SIGNAL(next()),
-                     &Player::instance(), SLOT(next()));
-
-    QObject::connect(&mainController.getMainWin(), SIGNAL(prev()),
-                     &Player::instance(), SLOT(prev()));
-
-    QObject::connect(&mainController.getMainWin(), SIGNAL(audioSwitched(int)),
-                    &Player::instance(), SLOT(setPlayingPosition(int)));
-
-    QObject::connect(&mainController.getMainWin(), SIGNAL(audioSelected(int)),
-                     &Player::instance(), SLOT(setSelectedAudioPosition(int)));
-
-    QObject::connect(&Player::instance(), SIGNAL(currentIndexChanged(int)),
-                     &mainController.getMainWin(), SLOT(itemIndexChanged(int))),
-
-    QObject::connect(&Player::instance(), SIGNAL(audioDurationChanged(qint64)),
-                     &mainController.getMainWin(), SLOT(curAudioDurationChanged(qint64)));
-
-    QObject::connect(&Player::instance(), SIGNAL(positionChanged(qint64)),
-                     &mainController.getMainWin(), SLOT(sliderPositionChanged(qint64)));
-
-
-    mainController.start();
-
-    // Optional:  Delete all global objects allocated by libprotobuf.
-    google::protobuf::ShutdownProtobufLibrary();
-    return application.exec();
+        return application.exec();
 }

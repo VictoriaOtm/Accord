@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 #include <QFile>
+#include <QDebug>
+#include <iostream>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,10 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     audioListModel = new QStringListModel(this);
     playlistModel = new QStringListModel(this);
-
     ui->setupUi(this);
     
     playPauseButton = new QRadioButton(ui->playPauseBox);
+    playPauseButton->setFocusPolicy(Qt::NoFocus);
     playPauseButton->setObjectName("playPauseButton");
     playPauseButton->setStyleSheet(styleSheet);
 
@@ -24,9 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
                      this, SIGNAL(play(bool)));
-
-    QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
-                     this, SIGNAL(pause(bool)));
 
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
                      this, SIGNAL(next()));
@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
                      this, SLOT(setNextRow()));
     
+
     QObject::connect(ui->prevButton, SIGNAL(clicked()),
                      this, SLOT(setPrevRow()));
 
@@ -55,6 +56,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->plusButton, SIGNAL(clicked()),
                      this, SLOT(addButtonPushed()));
 
+    QObject::connect(ui->loopPlaylistButton, SIGNAL(toggled(bool)), this, SIGNAL(loopPlaylist(bool)));
+    
     QObject::connect(ui->minusButton, SIGNAL(clicked()),
                      this, SLOT(removeButtonPushed()));
 
@@ -96,7 +99,9 @@ void MainWindow::setPlaylistsModel(QStringList playlists) {
 }
 
 void MainWindow::removeButtonPushed(){
-    //emit removeAudio();
+    if (ui->curAudioListWidget->count() > 0){
+        emit removeAudio();
+    }
 }
 
 void MainWindow::addButtonPushed() {
@@ -131,25 +136,48 @@ void MainWindow::setNextRow(){
 }
 
 void MainWindow::itemIndexChanged(int newRow){
-    ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
+    qDebug() << "Item index changed:";
+    qDebug() << (qint64) newRow;
+    //ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
+    ui->curAudioListWidget->setCurrentItem(ui->curAudioListWidget->item(newRow));
 }
 
 void MainWindow::curAudioDurationChanged(qint64 newDuration){
     curAudioDuration = newDuration;
+    ui->timeSlider->setMaximum(newDuration);
 }
 
 void MainWindow::sliderPositionChanged(qint64 position){
     if (curAudioDuration != 0){
-        int newSliderPosition = static_cast<int>(position / curAudioDuration);
-        ui->timeSlider->setSliderPosition(newSliderPosition);
+        ui->timeSlider->setSliderPosition(position);
+        std::cout << "Slider position changed" << std::endl;
     }
 }
 
+
+void MainWindow::setVolumeSlider() {
+    if(!volumeSliderStatus){
+        volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
+        volumeSlider->setFocusPolicy(Qt::NoFocus);
+        volumeSlider->setRange(0,100);
+        volumeSlider->show();
+        volumeSliderStatus = true;
+    }
+    else {
+        delete volumeSlider;
+        volumeSliderStatus = false;
+
+    }
+}
 
 void MainWindow::showErrorMessage(QString textOfError){
     QErrorMessage errorMessage;
     errorMessage.showMessage(textOfError);
     errorMessage.exec();
+}
+
+void MainWindow::audioRemoveFromList(int position) {
+    ui->curAudioListWidget->model()->removeRow(position);
 }
 
 bool MainWindow::getLineOfText(QString& title, QString& message, QString& result){
@@ -165,17 +193,4 @@ bool MainWindow::getLineOfText(QString& title, QString& message, QString& result
                                      QDir::home().dirName(), &ok);
 
     return ok;
-}
-
-void MainWindow::setVolumeSlider() {
-    if(!volumeSliderStatus){
-        volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
-        volumeSlider->setRange(0,100);
-        volumeSlider->show();
-        volumeSliderStatus = true;
-    }
-    else {
-        delete volumeSlider;
-        volumeSliderStatus = false;
-   }
 }

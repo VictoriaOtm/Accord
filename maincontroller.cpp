@@ -1,6 +1,15 @@
+#include <QMessageBox>
 #include "maincontroller.h"
 #include <QMessageBox>
 
+
+MainController::MainController(){
+    QObject::connect(&mainWin, SIGNAL(play(bool)),
+                     this, SLOT(playpause(bool)));
+
+    QObject::connect(&mainWin, SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
+                          this, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
+}
 
 void MainController::openMainWin(){
     mainWin.show();
@@ -26,6 +35,7 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
 
     // добавим только новые треки в currentList
     foreach(Audio song, tracks){
+        qDebug() << "Adding track to UI " << song.GetFilename();
         if( !currentList.contains(song) ){
             currentList += song;
 
@@ -42,6 +52,20 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
         }
     }
     mainWin.setAudioListModel(tracksNames);
+    qDebug() << "Setting audio list model - success";
+}
+
+void MainController::FailedToAddTracks(QVector<Audio> failedTracks){
+    //вывод окна с ошибками
+    qDebug() << "Printing errors";
+    QString message = "Не удалось добавить следующие треки: ";
+    for(auto track = failedTracks.constBegin() ; track != failedTracks.constEnd() ; ++track){
+        message.append(track->GetFilename());
+        if(track != failedTracks.constEnd()-1)
+            message.append(", ");
+    }
+    QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
+    qDebug() << "Printing errors: success";
 }
 
 void MainController::CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist) {
@@ -51,8 +75,17 @@ void MainController::CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tra
 
 void MainController::trackRemovingFailed(int position){
     qDebug() << "Printing errors ";
-    QString message = "Не удалось удалить трек номер ";
-    message.append(position + 1);
+
+    QString message = "Не удалось удалить трек";
     QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
     qDebug() << "Printing errors: success";
 }
+
+void MainController::playpause(bool playOrPause){
+    if(playOrPause){
+        emit play();
+    }else{
+        emit pause();
+    }
+}
+

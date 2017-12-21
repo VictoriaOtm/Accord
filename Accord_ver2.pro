@@ -36,6 +36,7 @@ SOURCES += main.cpp\
         audio.cpp\
         uploadwindow.cpp
 
+
 HEADERS  += mainwindow.h\
         application.h\
         maincontroller.h\
@@ -52,5 +53,3 @@ RESOURCES += \
     ui.qrc
 
 OTHER_FILES += playlist.proto
-
-

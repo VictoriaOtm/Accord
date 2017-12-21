@@ -42,6 +42,7 @@ Playlist::Playlist(QString nameForPlaylist, QVector<Audio>& tracksForPlaylist) {
     // в процессе разработки
 }*/
 
+
 bool Playlist::Save( protobuf::Playlists& playlistsForSaving ) {
     if( name.isEmpty() ){
         return false;
