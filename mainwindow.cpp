@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 #include <QFile>
+#include <QDebug>
+#include <iostream>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     playlistModel = new QStringListModel(this);
 
     ui->setupUi(this);
-    
+
     playPauseButton = new QRadioButton(ui->playPauseBox);
     playPauseButton->setObjectName("playPauseButton");
     playPauseButton->setStyleSheet(styleSheet);
@@ -25,21 +28,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
                      this, SIGNAL(play(bool)));
 
-    QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
-                     this, SIGNAL(pause(bool)));
-
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
                      this, SIGNAL(next()));
     
     QObject::connect(ui->prevButton, SIGNAL(clicked()),
                      this, SIGNAL(prev()));
-    
-    QObject::connect(ui->nextButton, SIGNAL(clicked()),
-                     this, SLOT(setNextRow()));
-    
-
-    QObject::connect(ui->prevButton, SIGNAL(clicked()),
-                     this, SLOT(setPrevRow()));
 
     QObject::connect(ui->settingsButton, SIGNAL(clicked()),
                      this, SIGNAL(settings()));
@@ -47,14 +40,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->curAudioListWidget, SIGNAL(itemClicked(QListWidgetItem*)),
                      this, SLOT(itemClicked(QListWidgetItem*)));
 
-    QObject::connect(ui->curAudioListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-                     this, SLOT(itemDoubleClicked(QListWidgetItem*)));
-
     QObject::connect(ui->volumeButton, SIGNAL(clicked()),
             this, SLOT(setVolumeSlider()));
 
     QObject::connect(ui->plusButton, SIGNAL(clicked()),
                      this, SLOT(addButtonPushed()));
+
+    QObject::connect(ui->loopPlaylistButton, SIGNAL(clicked(bool)), this, SIGNAL(loopPlaylist(bool)));
 
     QObject::connect(ui->minusButton, SIGNAL(clicked()),
                      this, SLOT(removeButtonPushed()));
@@ -138,17 +130,21 @@ void MainWindow::setNextRow(){
 }
 
 void MainWindow::itemIndexChanged(int newRow){
-    ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
+    qDebug() << "Item index changed:";
+    qDebug() << (qint64) newRow;
+    //ui->curAudioListWidget->setCurrentRow(newRow, QItemSelectionModel::Current);
+    ui->curAudioListWidget->setCurrentItem(ui->curAudioListWidget->item(newRow));
 }
 
 void MainWindow::curAudioDurationChanged(qint64 newDuration){
     curAudioDuration = newDuration;
+    ui->timeSlider->setMaximum(newDuration);
 }
 
 void MainWindow::sliderPositionChanged(qint64 position){
     if (curAudioDuration != 0){
-        int newSliderPosition = static_cast<int>(position / curAudioDuration);
-        ui->timeSlider->setSliderPosition(newSliderPosition);
+        ui->timeSlider->setSliderPosition(position);
+        std::cout << "Slider position changed" << std::endl;
     }
 }
 
@@ -162,5 +158,27 @@ void MainWindow::setVolumeSlider() {
     else {
         delete volumeSlider;
         volumeSliderStatus = false;
+
     }
+}
+
+void MainWindow::showErrorMessage(QString textOfError){
+    QErrorMessage errorMessage;
+    errorMessage.showMessage(textOfError);
+    errorMessage.exec();
+}
+
+bool MainWindow::getLineOfText(QString& title, QString& message, QString& result){
+    // будет отвечать за кнопнку
+    // которую нажнем пользователь
+    // true - если нажали 'ok'
+    // false - если нажали 'cancel'
+    bool ok;
+    result = QInputDialog::getText(this,
+                                     title,
+                                     message,
+                                     QLineEdit::Normal,
+                                     QDir::home().dirName(), &ok);
+
+    return ok;
 }

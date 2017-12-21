@@ -14,11 +14,12 @@ int Application::run(int argc, char *argv[]){
                           &uploadWinController, SLOT(Add(MainWindow*)));
 
 
-    QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
-                          &mainController, SLOT(NewTracksAdded(QVector<Audio>)));
+
+    QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
+                          &mainController, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
 
     QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
-                        &Player::instance(), SLOT(addTracks(QVector<Audio>)));
+                     &Player::instance(), SLOT(addTracks(QVector<Audio>)));
 
     QObject::connect(&mainController.getMainWin(), SIGNAL(removeAudio()),
                      &Player::instance(), SLOT(removeTrack()));
@@ -41,6 +42,8 @@ int Application::run(int argc, char *argv[]){
     QObject::connect(&mainController.getMainWin(), SIGNAL(prev()),
                      &Player::instance(), SLOT(prev()));
 
+    QObject::connect(&mainController.getMainWin(), SIGNAL(loopPlaylist(bool)), &Player::instance(), SLOT(loopPlaylist(bool)));
+
     QObject::connect(&mainController.getMainWin(), SIGNAL(audioSwitched(int)),
                     &Player::instance(), SLOT(setPlayingPosition(int)));
 
@@ -55,6 +58,12 @@ int Application::run(int argc, char *argv[]){
 
     QObject::connect(&Player::instance(), SIGNAL(positionChanged(qint64)),
                      &mainController.getMainWin(), SLOT(sliderPositionChanged(qint64)));
+
+    QObject::connect(&Player::instance(), SIGNAL(addedTracksSuccessfully(QVector<Audio>)),
+                     &mainController, SLOT(NewTracksAdded(QVector<Audio>)));
+
+    QObject::connect(&Player::instance(), SIGNAL(addTracksFailed(QVector<Audio>)),
+                     &mainController, SLOT(FailedToAddTracks(QVector<Audio>)));
 
 
     mainController.start();
