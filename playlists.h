@@ -3,7 +3,7 @@
 
 #include "playlist.h"
 
-class Playlists
+class Playlists : public QObject
 {
       Q_OBJECT
 

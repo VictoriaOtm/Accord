@@ -12,7 +12,7 @@ void Playlists::Load() {
     }
 
     protobuf::Playlists currentPlaylists;
-    if( !currentPlaylists.ParseFromIstream(finBinaryPlaylists) ){
+    if( !currentPlaylists.ParseFromIstream(&finBinaryPlaylists) ){
         emit Error("Ошибка при открытии плейлистов!\nЧто-то пошло не так!");
     }
 
@@ -27,7 +27,7 @@ void Playlists::Load() {
 void Playlists::Save() {
     protobuf::Playlists playlistsForSaving;
     foreach( Playlist playlist, currentPlaylists ) {
-        if( !playlist.Save(&playlistsForSaving) )
+        if( !playlist.Save(playlistsForSaving) )
             emit Error("Ошибка при сохранении плейлистов!\nЧто-то пошло не так!");
     }
 
@@ -37,11 +37,11 @@ void Playlists::Save() {
     if( !foutBinaryPlaylists.is_open() ) {
         emit Error("Ошибка при сохранении плейлистов!\nЧто-то пошло не так!");
     }
-    playlistsForSaving.SerializeToOstream(foutBinaryPlaylists);
+    playlistsForSaving.SerializeToOstream(&foutBinaryPlaylists);
     foutBinaryPlaylists.close();
 }
 
-Playlists& Playlists:instance(){
+Playlists& Playlists::instance(){
     static Playlists playlistsSingletone;
     return playlistsSingletone;
 }
