@@ -6,6 +6,7 @@
 #include "maincontroller.h"
 #include "uploadwincontroller.h"
 #include "player.h"
+#include "playlists.h"
 
 
 class Application

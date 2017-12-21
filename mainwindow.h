@@ -30,7 +30,7 @@ public:
     ~MainWindow();
     void setAudioListModel(QStringList tracks);
     void setPlaylistsModel(QStringList playlists);
-    void showErrorMessage(QString textOfError);
+    //void showErrorMessage(QString textOfError);
     bool getLineOfText(QString& title, QString& message, QString& result);
 
 signals:
@@ -52,6 +52,7 @@ public slots:
     void sliderPositionChanged(qint64);
     void curAudioDurationChanged(qint64);
     void itemIndexChanged(int);
+    void showErrorMessage(QString);
     //void saveAsPlaylist(const QStringListModel* audioListModel);
 
 private slots:

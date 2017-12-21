@@ -27,9 +27,6 @@ public slots:
 private:
     MainWindow mainWin;
     QVector<Audio> currentList;
-    // пока что такая реализация
-    // потом будет переписано под класс Playlists
-    QVector<Playlist> currentPlaylists;
 };
 
 #endif // MAINCONTROLLER_H

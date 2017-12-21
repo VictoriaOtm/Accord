@@ -15,33 +15,39 @@ Playlist::Playlist(QString nameForPlaylist) {
 
 Playlist::Playlist(QString nameForPlaylist, QVector<Audio>& tracksForPlaylist) {
     name = nameForPlaylist;
+    // вызовем функцию qCopy
+    // чтобы не париться из-за передаваемого вектора
+    qCopy(tracksForPlaylist.begin(), tracksForPlaylist.end(), tracks.begin());
 
     /*if( tracksToPlaylist.isEmpty() ){
         QErrorMessage errorMessage;
         errorMessage.showMessage("This collections is empty");
         errorMessage.exec();
-    } else {*/
+    } else {
         // вызовем функцию qCopy
         // чтобы не париться из-за передаваемого вектора
         qCopy(tracksForPlaylist.begin(), tracksForPlaylist.end(), tracks.begin());
-    //}
+    }*/
 }
 
-void Playlist::Load() {
+ QString Playlist::getName() {
+     return name;
+ }
+
+/*void Playlist::Load() {
     if( name.isEmpty() ){
         return;
     }
 
     // в процессе разработки
-}
+}*/
 
-void Playlist::Save() {
+bool Playlist::Save( protobuf::Playlists& playlistsForSaving ) {
     if( name.isEmpty() ){
-        return;
+        return false;
     }
 
-    protobuf::Playlists saved_playlists;
-    protobuf::Playlist* playlistForSave = saved_playlists.add_playlist();
+    protobuf::Playlist* playlistForSave = playlistsForSaving.add_playlist();
     playlistForSave->set_name(name.toLocal8Bit());
 
     foreach( Audio audio, tracks ) {
@@ -49,5 +55,5 @@ void Playlist::Save() {
         tracksOfPlaylist->set_path(audio.GetPath().toLocal8Bit());
     }
 
-    return;
+    return true;
 }

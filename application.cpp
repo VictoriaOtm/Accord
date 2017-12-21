@@ -20,6 +20,10 @@ int Application::run(int argc, char *argv[]){
     QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
                           &mainController, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
 
+    // мои новые сигналы: ошибки и
+    QObject::connect(&Playlists::instance(), SIGNAL(Error(QString)),
+                          &mainController.getMainWin(), SLOT(ShowErrorMessage(QString)));
+
     // сначала скормить новый список песен в плеер
     // проверить его на валидность, а потом уже
     // показывать в интерфейсе юзеру

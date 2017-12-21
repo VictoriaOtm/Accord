@@ -8,20 +8,17 @@ QT       += core gui
 QT       += multimedia
 CONFIG += c++11
 
-#LIBS += /usr/local/lib/libprotobuf.so
-#PROTOS += /home/yury/Qt_projects/a.proto
-#PROTOS = a.proto b.proto
-#include(protobuf.pri)
 
 BITSIZE = $$system(getconf LONG_BIT)
- if (contains(BITSIZE, 64)) {
+if (contains(BITSIZE, 64)) {
      LIBS += /usr/lib/x86_64-linux-gnu/libprotobuf.so
- }
- if (contains(BITSIZE, 32)) {
+}
+if (contains(BITSIZE, 32)) {
      LIBS += /usr/lib/libprotobuf.so
- }
- PROTOS = playlist.proto
- include(protobuf.pri)
+}
+PROTOS = playlist.proto
+include(protobuf.pri)
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

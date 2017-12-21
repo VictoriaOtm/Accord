@@ -8,17 +8,18 @@
 #include <string>
 
 class Playlist
-{
+{    
 public:
     Playlist(QString nameForPlaylist);
     Playlist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist);
+    QString getName();
     void setNamePlaylist(QString nameForPlaylist);
     void addTrack();
-    void Save();
-    void Load();
+    bool Save( protobuf::Playlists& playlistsForSaving );
+    //void Load();
 
 private:
-    QString path;
+    //QString path;
     QString name;
     QVector<Audio> tracks;
 };
