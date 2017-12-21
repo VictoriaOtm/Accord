@@ -26,7 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
     file.close();
 
     QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
-                     this, SIGNAL(play()));
+                     this, SIGNAL(play(bool)));
+
+    QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
+                    this, SIGNAL(pause(bool)));
 
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
                      this, SIGNAL(next()));

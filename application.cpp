@@ -30,11 +30,11 @@ int Application::run(int argc, char *argv[]){
     QObject::connect(&Player::instance(), SIGNAL(removedTrackFailed(int)),
                      &mainController, SLOT(trackRemovingFailed(int)));
 
-    QObject::connect(&mainController.getMainWin(), SIGNAL(play()),
-                     &Player::instance(), SLOT(play()));
+    QObject::connect(&mainController.getMainWin(), SIGNAL(play(bool)),
+                     &Player::instance(), SLOT(play(bool)));
 
-    QObject::connect(&mainController.getMainWin(), SIGNAL(pause()),
-                     &Player::instance(), SLOT(pause()));
+    QObject::connect(&mainController.getMainWin(), SIGNAL(pause(bool)),
+                     &Player::instance(), SLOT(pause(bool)));
 
     QObject::connect(&mainController.getMainWin(), SIGNAL(next()),
                      &Player::instance(), SLOT(next()));

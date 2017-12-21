@@ -40,7 +40,6 @@ public slots:
     void audioRemoveFromList(int);
 
 
-
 private slots:
     void addButtonPushed();
     void removeButtonPushed();
@@ -54,8 +53,8 @@ private slots:
     void setNextRow();
 
 signals:
-    void play();
-    void pause();
+    void play(bool);
+    void pause(bool);
     void next();
     void prev();
 
