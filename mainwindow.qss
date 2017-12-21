@@ -1,9 +1,0 @@
-QPushButton {
-	background-color: transparent;
-	border-image: url(:images/play.png);
-	background: none;
-	border: none;
-	background-repeat: none;
-	height: 50px;
-	width: 50px;
-}

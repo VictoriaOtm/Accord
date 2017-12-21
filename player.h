@@ -54,11 +54,12 @@ signals:
     //EMITTED BY PLAYER ITSELF
     void addedTracksSuccessfully(QVector<Audio> successfullyAddedTracks);
     void addTracksFailed();
+
     void addTracksFailed(QVector<Audio> failedTracks);
     void removedTracksSuccessfully();
     
     void currentPlaylistChanged(QVector<Audio>);
-
+    
     void removedTracksFailed();
 
     void removedTrackSuccessfully(int);

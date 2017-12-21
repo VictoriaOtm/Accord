@@ -28,7 +28,6 @@ public:
     ~MainWindow();
     void setAudioListModel(QStringList tracks);
     void setPlaylistsModel(QStringList playlists);
-
     void showErrorMessage(QString textOfError);
     bool getLineOfText(QString& title, QString& message, QString& result);
 
@@ -38,8 +37,6 @@ public slots:
     void itemIndexChanged(int);
 
     void audioRemoveFromList(int);
-
-
 
 private slots:
     void addButtonPushed();
@@ -52,6 +49,8 @@ private slots:
 
     void setPrevRow();
     void setNextRow();
+    
+    
 
 signals:
     void play(bool);
@@ -67,15 +66,13 @@ signals:
     void addAudioFromDisk(MainWindow*);
     void removeAudio();
     void saveAsPlaylist(const QStringListModel* audioListModel);
-
+    
     void loopPlaylist(bool);
-
 
 private:
     Ui::MainWindow *ui;
     QStringListModel *audioListModel;
     QStringListModel *playlistModel;
-
     QListWidgetItem *audioListItem;
     
     QRadioButton *playPauseButton;

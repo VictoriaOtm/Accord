@@ -69,7 +69,6 @@ void MainController::trackRemovingFailed(int position){
     qDebug() << "Printing errors ";
 
     QString message = "Не удалось удалить трек";
-
     QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
     qDebug() << "Printing errors: success";
 }

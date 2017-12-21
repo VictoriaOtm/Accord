@@ -16,10 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     audioListModel = new QStringListModel(this);
     playlistModel = new QStringListModel(this);
-
     ui->setupUi(this);
-
+    
     playPauseButton = new QRadioButton(ui->playPauseBox);
+    playPauseButton->setFocusPolicy(Qt::NoFocus);
     playPauseButton->setObjectName("playPauseButton");
     playPauseButton->setStyleSheet(styleSheet);
 
@@ -33,12 +33,22 @@ MainWindow::MainWindow(QWidget *parent) :
     
     QObject::connect(ui->prevButton, SIGNAL(clicked()),
                      this, SIGNAL(prev()));
+    
+    QObject::connect(ui->nextButton, SIGNAL(clicked()),
+                     this, SLOT(setNextRow()));
+    
+
+    QObject::connect(ui->prevButton, SIGNAL(clicked()),
+                     this, SLOT(setPrevRow()));
 
     QObject::connect(ui->settingsButton, SIGNAL(clicked()),
                      this, SIGNAL(settings()));
 
     QObject::connect(ui->curAudioListWidget, SIGNAL(itemClicked(QListWidgetItem*)),
                      this, SLOT(itemClicked(QListWidgetItem*)));
+
+    QObject::connect(ui->curAudioListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+                     this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
     QObject::connect(ui->volumeButton, SIGNAL(clicked()),
             this, SLOT(setVolumeSlider()));
@@ -47,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
                      this, SLOT(addButtonPushed()));
 
     QObject::connect(ui->loopPlaylistButton, SIGNAL(clicked(bool)), this, SIGNAL(loopPlaylist(bool)));
-
+    
     QObject::connect(ui->minusButton, SIGNAL(clicked()),
                      this, SLOT(removeButtonPushed()));
 
@@ -151,6 +161,7 @@ void MainWindow::sliderPositionChanged(qint64 position){
 void MainWindow::setVolumeSlider() {
     if(!volumeSliderStatus){
         volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
+        volumeSlider->setFocusPolicy(Qt::NoFocus);
         volumeSlider->setRange(0,100);
         volumeSlider->show();
         volumeSliderStatus = true;

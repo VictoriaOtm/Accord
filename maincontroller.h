@@ -19,6 +19,7 @@ public:
 
 public slots:
     void NewTracksAdded(QVector<Audio> tracks);
+    void trackRemovingFailed(int position);
 
     void FailedToAddTracks(QVector<Audio> failedTracks);
 

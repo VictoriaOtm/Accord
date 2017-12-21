@@ -13,13 +13,23 @@ int Application::run(int argc, char *argv[]){
     QObject::connect(&mainController.getMainWin(), SIGNAL(addAudioFromDisk(MainWindow*)),
                           &uploadWinController, SLOT(Add(MainWindow*)));
 
-
-
     QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
                           &mainController, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
 
     QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
+                          &mainController, SLOT(NewTracksAdded(QVector<Audio>)));
+
+    QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
                      &Player::instance(), SLOT(addTracks(QVector<Audio>)));
+
+    QObject::connect(&mainController.getMainWin(), SIGNAL(removeAudio()),
+                     &Player::instance(), SLOT(removeTrack()));
+
+    QObject::connect(&Player::instance(), SIGNAL(removedTrackSuccessfully(int)),
+                     &mainController.getMainWin(), SLOT(audioRemoveFromList(int)));
+
+    QObject::connect(&Player::instance(), SIGNAL(removedTrackFailed(int)),
+                     &mainController, SLOT(trackRemovingFailed(int)));
 
     QObject::connect(&mainController.getMainWin(), SIGNAL(removeAudio()),
                      &Player::instance(), SLOT(removeTrack()));
@@ -43,7 +53,7 @@ int Application::run(int argc, char *argv[]){
                      &Player::instance(), SLOT(prev()));
 
     QObject::connect(&mainController.getMainWin(), SIGNAL(loopPlaylist(bool)), &Player::instance(), SLOT(loopPlaylist(bool)));
-
+  
     QObject::connect(&mainController.getMainWin(), SIGNAL(audioSwitched(int)),
                     &Player::instance(), SLOT(setPlayingPosition(int)));
 
