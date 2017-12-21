@@ -32,6 +32,7 @@ public slots:
     void prev();
     void next();
     void setVolume(int volume);
+
     void setPlayingPosition(int position);
     void setSelectedAudioPosition(int position);
     void loopPlaylist(bool looping);
@@ -55,10 +56,9 @@ signals:
     void addTracksFailed();
     void addTracksFailed(QVector<Audio> failedTracks);
     void removedTracksSuccessfully();
-
-    void removeTracksFailed();
     
     void currentPlaylistChanged(QVector<Audio>);
+
     void removedTracksFailed();
 
     void removedTrackSuccessfully(int);

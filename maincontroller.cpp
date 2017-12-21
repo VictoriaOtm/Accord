@@ -67,8 +67,10 @@ void MainController::CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tra
 
 void MainController::trackRemovingFailed(int position){
     qDebug() << "Printing errors ";
-    QString message = "Не удалось удалить трек номер ";
-    message.append(position + 1);
+
+    QString message = "Не удалось удалить трек";
+
     QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
     qDebug() << "Printing errors: success";
 }
+

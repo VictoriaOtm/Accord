@@ -36,6 +36,7 @@ void Playlist::Load() {
 }
 
 void Playlist::Save() {
+    /*
     if( name.isEmpty() ){
         return;
     }
@@ -48,6 +49,6 @@ void Playlist::Save() {
         protobuf::Playlist_Audio* tracksOfPlaylist = playlistForSave->add_audio();
         tracksOfPlaylist->set_path(audio.GetPath().toLocal8Bit());
     }
-
+    */
     return;
 }

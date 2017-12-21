@@ -1,3 +1,4 @@
 Accord_ver2.pro.*
 Build/
-.Accord_ver2.pro.user.swp
+*.swp
+Accord_ver2.pro.user.*

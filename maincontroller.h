@@ -19,6 +19,7 @@ public:
 
 public slots:
     void NewTracksAdded(QVector<Audio> tracks);
+
     void FailedToAddTracks(QVector<Audio> failedTracks);
 
     void CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist);
