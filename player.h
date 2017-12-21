@@ -26,8 +26,8 @@ private:
     int selectedAudioPosition;
     
 public slots:
-    void play(bool);
-    void pause(bool);
+    void play();
+    void pause();
     void stop();
     void prev();
     void next();

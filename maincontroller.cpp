@@ -3,6 +3,14 @@
 #include <QMessageBox>
 
 
+MainController::MainController(){
+    QObject::connect(&mainWin, SIGNAL(play(bool)),
+                     this, SLOT(playpause(bool)));
+
+    QObject::connect(&mainWin, SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
+                          this, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
+}
+
 void MainController::openMainWin(){
     mainWin.show();
 }
@@ -71,5 +79,13 @@ void MainController::trackRemovingFailed(int position){
     QString message = "Не удалось удалить трек";
     QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
     qDebug() << "Printing errors: success";
+}
+
+void MainController::playpause(bool playOrPause){
+    if(playOrPause){
+        emit play();
+    }else{
+        emit pause();
+    }
 }
 

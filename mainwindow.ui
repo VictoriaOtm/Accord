@@ -75,6 +75,14 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">#groupBox_6 {
+	border: none;
+}</string>
+          </property>
           <property name="title">
            <string/>
           </property>
@@ -254,6 +262,14 @@
             <height>0</height>
            </size>
           </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">#volumeMainBox {
+	border: none;
+}</string>
+          </property>
           <property name="title">
            <string/>
           </property>
@@ -265,6 +281,14 @@
              <width>100</width>
              <height>30</height>
             </rect>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#volumeBox {
+	border: none;
+}</string>
            </property>
            <property name="title">
             <string/>
@@ -350,6 +374,14 @@
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#playPauseBox {
+	border: none;
+}</string>
+           </property>
            <property name="title">
             <string/>
            </property>
@@ -362,6 +394,11 @@
              <width>30</width>
              <height>30</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#loopBox {
+	border: none;
+}</string>
            </property>
            <property name="title">
             <string/>
@@ -381,19 +418,22 @@
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
             </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
             <property name="styleSheet">
-             <string notr="true">#loopButton::indicator {
+             <string notr="true">#loopPlaylistButton::indicator {
 	width: 30px;
     height: 30px;
     background: none;
     background-repeat: none;
 }
 
-#loopButton::indicator::unchecked {
+#loopPlaylistButton::indicator::unchecked {
     image: url(:images/repeat.png);
 }
 
-#loopButton::indicator::checked {
+#loopPlaylistButton::indicator::checked {
     image: url(:images/loop_active.png);
 }</string>
             </property>
@@ -410,6 +450,11 @@
              <width>30</width>
              <height>30</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#shuffleBox {
+	border: none;
+}</string>
            </property>
            <property name="title">
             <string/>
@@ -428,6 +473,9 @@
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
             </property>
             <property name="styleSheet">
              <string notr="true">#shuffleButton::indicator {
@@ -459,6 +507,11 @@
              <height>36</height>
             </rect>
            </property>
+           <property name="styleSheet">
+            <string notr="true">#nextBox {
+	border: none;
+}</string>
+           </property>
            <property name="title">
             <string/>
            </property>
@@ -476,6 +529,9 @@
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
             </property>
             <property name="styleSheet">
              <string notr="true">#nextButton {
@@ -500,6 +556,11 @@
              <height>36</height>
             </rect>
            </property>
+           <property name="styleSheet">
+            <string notr="true">#prevBox {
+	border: none;
+}</string>
+           </property>
            <property name="title">
             <string/>
            </property>
@@ -517,6 +578,9 @@
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
             </property>
             <property name="styleSheet">
              <string notr="true">#prevButton {
@@ -536,6 +600,12 @@
             </property>
            </widget>
           </widget>
+          <zorder>playPauseBox</zorder>
+          <zorder>loopBox</zorder>
+          <zorder>shuffleBox</zorder>
+          <zorder>nextBox</zorder>
+          <zorder>prevBox</zorder>
+          <zorder>nextButton</zorder>
          </widget>
         </item>
         <item>
@@ -565,6 +635,14 @@
             <height>0</height>
            </size>
           </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">#settingsBox {
+	border: none;
+}</string>
+          </property>
           <property name="title">
            <string/>
           </property>
@@ -582,6 +660,9 @@
            </property>
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
            </property>
            <property name="styleSheet">
             <string notr="true">#settingsButton {
@@ -613,7 +694,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

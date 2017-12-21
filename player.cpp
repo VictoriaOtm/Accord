@@ -27,17 +27,12 @@ Player::Player(): selectedAudioPosition(0){
 }
 
 
-void Player::play(bool playPauseStatus){
-    //player.setVolume(100);
-    if(playPauseStatus){
+void Player::play(){
         player.play();
         emit currentIndexChanged(player.playlist()->currentIndex());
-    }
-
 }
 
-void Player::pause(bool playPauseStatus){
-    if(!playPauseStatus)
+void Player::pause(){
         player.pause();
 }
 

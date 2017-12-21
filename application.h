@@ -13,6 +13,9 @@ public:
     int run(int argc, char* argv[]);
 
 private:
+    void connectPlayerWithController(MainController &mainController);
+    void connectUploadWithController(MainController &mainController, UploadWinController &uploadWinController);
+    void connectPlayerWithUpload(UploadWinController &uploadWinController);
 
 };
 
