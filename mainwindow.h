@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QStringListModel>
 #include <QtGui>
+#include <QMessageBox>
 #include <QErrorMessage>
 #include <QInputDialog>
 #include <QLineEdit>

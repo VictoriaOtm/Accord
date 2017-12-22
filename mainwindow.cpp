@@ -192,9 +192,10 @@ void MainWindow::setVolumeSlider() {
 }
 
 void MainWindow::showErrorMessage(QString textOfError){
-    QErrorMessage errorMessage;
+    QMessageBox::warning(this, "Ошибка", textOfError, QMessageBox::Ok);
+    /*QErrorMessage errorMessage;
     errorMessage.showMessage(textOfError);
-    errorMessage.exec();
+    errorMessage.exec();*/
 }
 
 bool MainWindow::getLineOfText(const QString title, const QString message, QString& result){

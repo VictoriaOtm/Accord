@@ -6,25 +6,23 @@ Playlist::Playlist() {
     tracks.clear();
 }
 
-// во всех конструкторах должно гаранитироваться
+// далее во всех конструкторах должно гаранитироваться
 // не пустое поле 'nameForPlaylist'
 Playlist::Playlist(QString nameForPlaylist) {
     name = nameForPlaylist;
 }
 
+Playlist::Playlist(const protobuf::Playlist proto_playlist) {
+    name = QString::fromStdString( proto_playlist.name() );
+
+    for( int i = 0; i < proto_playlist.audio_size(); i++ ) {
+        tracks.push_back( Audio(QString::fromStdString( proto_playlist.audio().Get(i).path() )) );
+    }
+}
+
 Playlist::Playlist(QString nameForPlaylist, QVector<Audio> tracksForPlaylist) {
     name = nameForPlaylist;
     tracks = tracksForPlaylist;
-
-    /*if( tracksToPlaylist.isEmpty() ){
-        QErrorMessage errorMessage;
-        errorMessage.showMessage("This collections is empty");
-        errorMessage.exec();
-    } else {
-        // вызовем функцию qCopy
-        // чтобы не париться из-за передаваемого вектора
-        qCopy(tracksForPlaylist.begin(), tracksForPlaylist.end(), tracks.begin());
-    }*/
 }
 
  QString Playlist::getName() {
@@ -37,14 +35,18 @@ Playlist::Playlist(QString nameForPlaylist, QVector<Audio> tracksForPlaylist) {
      }
  }
 
-/*void Playlist::Load() {
-    if( name.isEmpty() ){
-        return;
-    }
+int Playlist::size() {
+    return tracks.size();
+}
 
-    // в процессе разработки
-}*/
-
+// функция, необходимая для работы
+// проверки корректной загрузки данных из protobuf
+QString Playlist::get(int index) {
+    if( 0 <= index && index < tracks.size() )
+        return tracks[index].GetPath();
+    else
+        return "";
+}
 
 bool Playlist::Save( protobuf::Playlists& playlistsForSaving ) {
     if( name.isEmpty() ){

@@ -12,16 +12,19 @@ class Playlist
 {    
 public:
     Playlist();
+    Playlist(const protobuf::Playlist proto_playlist);
     Playlist(QString nameForPlaylist);
     Playlist(QString nameForPlaylist, QVector<Audio> tracksToPlaylist);
+
     QString getName();
+    int size();
+    QString get(int index);
+
     void setNamePlaylist(QString nameForPlaylist);
     void addTrack();
     bool Save( protobuf::Playlists& playlistsForSaving );
-    //void Load();
 
 private:
-    //QString path;
     QString name;
     QVector<Audio> tracks;
 };

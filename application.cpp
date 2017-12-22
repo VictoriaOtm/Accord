@@ -13,6 +13,7 @@ int Application::run(int argc, char *argv[]) {
     QApplication application(argc, argv);
     MainController mainController;
     UploadWinController uploadWinController;
+    Playlists::instance();
 
     // мои новые сигналы: ошибки и введения данных
     QObject::connect(&Playlists::instance(), SIGNAL(Error(QString)),

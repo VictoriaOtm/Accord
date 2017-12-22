@@ -2,6 +2,9 @@
 #define PLAYLISTS_H
 
 #include "playlist.h"
+#include "fstream"
+#include "string.h"
+
 
 class Playlists : public QObject
 {

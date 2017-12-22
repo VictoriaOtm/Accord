@@ -1,13 +1,17 @@
 #include "playlists.h"
 
+Playlists& Playlists::instance(){
+    static Playlists playlistsSingletone;
+    return playlistsSingletone;
+}
+
 Playlists::Playlists() {
     currentPlaylists.clear();
 
     // сначала считать данные из конфиг файла
     // и в зависимости от результата либо подгружать
     // либо нет плейлисты
-    if( 1 )
-        this->Load();
+    this->Load();
 }
 
 Playlists::~Playlists() {
@@ -20,27 +24,48 @@ void Playlists::Load() {
     std::fstream finBinaryPlaylists("playlists.bin", std::ios::in | std::ios::binary);
     if( !finBinaryPlaylists.is_open() ) {
         emit Error("Ошибка при открытии плейлистов!\nЧто-то пошло не так!");
+        return;
     }
 
-    protobuf::Playlists currentPlaylists;
-    if( !currentPlaylists.ParseFromIstream(&finBinaryPlaylists) ){
+    protobuf::Playlists proto_currentPlaylists;
+    if( !proto_currentPlaylists.ParseFromIstream(&finBinaryPlaylists) ){
+        finBinaryPlaylists.close();
         emit Error("Ошибка при открытии плейлистов!\nЧто-то пошло не так!");
+        return;
     }
 
-    // TODO дописать загрузку
-    currentPlaylists.PrintDebugString();
-    foreach(protobuf::Playlist playlist, currentPlaylists) {
-        //Playlist* ptrPlaylist = new Playlist(playlist.name(), vector<Audio>);
-    }
+    // пример, как парсить protobuf
+    /*
+    qDebug() << proto_currentPlaylists.playlist_size();
+    qDebug() << QString::fromStdString( proto_currentPlaylists.playlist().Get(0).audio().Get(0).path() );
+    qDebug() << QString::fromStdString( proto_currentPlaylists.playlist().Get(0).audio().Get(1).path() );
+   */
 
+    for( int i = 0; i < proto_currentPlaylists.playlist_size(); i++ ) {
+        Playlist loadedPlaylist( proto_currentPlaylists.playlist().Get(i) );
+        currentPlaylists.push_back( loadedPlaylist );
+    }
     finBinaryPlaylists.close();
+
+    // проверочный вывод
+    for( int i = 0; i < currentPlaylists.size(); i++ ){
+        qDebug() << i;
+        for( int j = 0; j < currentPlaylists[i].size(); j++ ){
+            qDebug() << currentPlaylists[i].get(j);
+        }
+    }
 }
 
 void Playlists::Save() {
-    protobuf::Playlists playlistsForSaving;
+    if( currentPlaylists.isEmpty() )
+        return;
+
+    protobuf::Playlists proto_playlistsForSaving;
     foreach( Playlist playlist, currentPlaylists ) {
-        if( !playlist.Save(playlistsForSaving) )
+        if( !playlist.Save(proto_playlistsForSaving) ) {
             emit Error("Ошибка при сохранении плейлистов!\nЧто-то пошло не так!");
+            return;
+        }
     }
 
     // блок сохранения данных
@@ -48,15 +73,12 @@ void Playlists::Save() {
     std::fstream foutBinaryPlaylists("playlists.bin", std::ios::out | std::ios::binary | std::ios::trunc);
     if( !foutBinaryPlaylists.is_open() ) {
         emit Error("Ошибка при сохранении плейлистов!\nЧто-то пошло не так!");
+        return;
     }
-    playlistsForSaving.SerializeToOstream(&foutBinaryPlaylists);
+    proto_playlistsForSaving.SerializeToOstream(&foutBinaryPlaylists);
     foutBinaryPlaylists.close();
 }
 
-Playlists& Playlists::instance(){
-    static Playlists playlistsSingletone;
-    return playlistsSingletone;
-}
 
 void Playlists::CreatePlaylist(QString playlistName, QVector<Audio>& playlistTracks) {
     Playlist newPlaylist(playlistName, playlistTracks);
