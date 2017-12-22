@@ -16,7 +16,7 @@
 
 
 namespace Ui {
-    class MainWindow;
+class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -28,17 +28,19 @@ public:
     ~MainWindow();
     void setAudioListModel(QStringList tracks);
     void setPlaylistsModel(QStringList playlists);
-    //void showErrorMessage(QString textOfError);
-    bool getLineOfText(QString& title, QString& message, QString& result);
+
+    void showErrorMessage(QString textOfError);
+    bool getLineOfText(const QString title, const QString message, QString& result);
 
 public slots:
     void sliderPositionChanged(qint64);
     void curAudioDurationChanged(qint64);
     void itemIndexChanged(int);
-    void showErrorMessage(QString);
+    void errorMessage(QString);
     void audioRemoveFromList(int);
 
 private slots:
+    void ShowContextMenu(const QPoint&);
     void addButtonPushed();
     void removeButtonPushed();
 
@@ -49,8 +51,6 @@ private slots:
 
     void setPrevRow();
     void setNextRow();
-    
-    
 
 signals:
     void play(bool);
@@ -65,16 +65,18 @@ signals:
 
     void addAudioFromDisk(MainWindow*);
     void removeAudio();
-    void saveAsPlaylist(const QStringListModel* audioListModel);
-    
+    void saveAsPlaylist();
+
     void loopPlaylist(bool);
+
 
 private:
     Ui::MainWindow *ui;
     QStringListModel *audioListModel;
     QStringListModel *playlistModel;
+
     QListWidgetItem *audioListItem;
-    
+
     QRadioButton *playPauseButton;
     QSlider *volumeSlider;
     bool volumeSliderStatus;

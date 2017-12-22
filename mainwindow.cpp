@@ -4,6 +4,18 @@
 #include <iostream>
 
 
+void MainWindow::ShowContextMenu(const QPoint& pos)
+{
+   QMenu contextMenu(tr("Доступные действия"), this);
+
+   QAction action1("Сохранить как плейлист", this);
+   //QObject::connect(&action1, SIGNAL(triggered()), this, SLOT(saveAsPlaylist()));
+   QObject::connect(&action1, SIGNAL(triggered()), this, SIGNAL(saveAsPlaylist()));
+   contextMenu.addAction(&action1);
+
+   contextMenu.exec(mapToGlobal(pos));
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -16,30 +28,33 @@ MainWindow::MainWindow(QWidget *parent) :
 
     audioListModel = new QStringListModel(this);
     playlistModel = new QStringListModel(this);
+
     ui->setupUi(this);
-    
+
     playPauseButton = new QRadioButton(ui->playPauseBox);
-    playPauseButton->setFocusPolicy(Qt::NoFocus);
     playPauseButton->setObjectName("playPauseButton");
     playPauseButton->setStyleSheet(styleSheet);
+    playPauseButton->setFocusPolicy(Qt::NoFocus);
 
     file.close();
+
+    // добавим контекстное меню
+    ui->curAudioListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(ui->curAudioListWidget, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(ShowContextMenu(const QPoint&)));
+    //
 
     QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
                      this, SIGNAL(play(bool)));
 
+    QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
+                    this, SIGNAL(pause(bool)));
+
     QObject::connect(ui->nextButton, SIGNAL(clicked()),
                      this, SIGNAL(next()));
-    
-    QObject::connect(ui->prevButton, SIGNAL(clicked()),
-                     this, SIGNAL(prev()));
-    
-    QObject::connect(ui->nextButton, SIGNAL(clicked()),
-                     this, SLOT(setNextRow()));
-    
 
     QObject::connect(ui->prevButton, SIGNAL(clicked()),
-                     this, SLOT(setPrevRow()));
+                     this, SIGNAL(prev()));
 
     QObject::connect(ui->settingsButton, SIGNAL(clicked()),
                      this, SIGNAL(settings()));
@@ -56,12 +71,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->plusButton, SIGNAL(clicked()),
                      this, SLOT(addButtonPushed()));
 
-    QObject::connect(ui->loopPlaylistButton, SIGNAL(toggled(bool)), this, SIGNAL(loopPlaylist(bool)));
-    
+    QObject::connect(ui->loopPlaylistButton, SIGNAL(clicked(bool)), this, SIGNAL(loopPlaylist(bool)));
+
     QObject::connect(ui->minusButton, SIGNAL(clicked()),
                      this, SLOT(removeButtonPushed()));
-
 }
+
 
 MainWindow::~MainWindow() {
     delete audioListModel;
@@ -108,6 +123,13 @@ void MainWindow::addButtonPushed() {
     emit addAudioFromDisk(this);
 }
 
+void MainWindow::errorMessage(QString textOfError) {
+    showErrorMessage(textOfError);
+}
+
+void MainWindow::audioRemoveFromList(int position) {
+    ui->curAudioListWidget->model()->removeRow(position);
+}
 
 void MainWindow::itemClicked(QListWidgetItem *item){
     int position = item->listWidget()->currentRow();
@@ -154,12 +176,11 @@ void MainWindow::sliderPositionChanged(qint64 position){
     }
 }
 
-
 void MainWindow::setVolumeSlider() {
     if(!volumeSliderStatus){
         volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
-        volumeSlider->setFocusPolicy(Qt::NoFocus);
         volumeSlider->setRange(0,100);
+        volumeSlider->setFocusPolicy(Qt::NoFocus);
         volumeSlider->show();
         volumeSliderStatus = true;
     }
@@ -170,12 +191,13 @@ void MainWindow::setVolumeSlider() {
     }
 }
 
-
-void MainWindow::audioRemoveFromList(int position) {
-    ui->curAudioListWidget->model()->removeRow(position);
+void MainWindow::showErrorMessage(QString textOfError){
+    QErrorMessage errorMessage;
+    errorMessage.showMessage(textOfError);
+    errorMessage.exec();
 }
 
-bool MainWindow::getLineOfText(QString& title, QString& message, QString& result){
+bool MainWindow::getLineOfText(const QString title, const QString message, QString& result){
     // будет отвечать за кнопнку
     // которую нажнем пользователь
     // true - если нажали 'ok'
@@ -188,10 +210,4 @@ bool MainWindow::getLineOfText(QString& title, QString& message, QString& result
                                      QDir::home().dirName(), &ok);
 
     return ok;
-}
-
-void MainWindow::showErrorMessage(QString textOfError){
-    QErrorMessage errorMessage;
-    errorMessage.showMessage(textOfError);
-    errorMessage.exec();
 }

@@ -14,13 +14,21 @@ int Application::run(int argc, char *argv[]) {
     MainController mainController;
     UploadWinController uploadWinController;
 
-    // мои новые сигналы: ошибки и
+    // мои новые сигналы: ошибки и введения данных
     QObject::connect(&Playlists::instance(), SIGNAL(Error(QString)),
-                          &mainController.getMainWin(), SLOT(showErrorMessage(QString)));
+                          &mainController.getMainWin(), SLOT(errorMessage(QString)));
 
+    //
 
-    //QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
-                         // &mainController, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
+    // блок по работе с плейлистами
+    QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist()),
+                              &mainController, SLOT(CreatePlaylist()));
+    QObject::connect(&mainController, SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
+                          &Playlists::instance(), SLOT(CreatePlaylist(QString, QVector<Audio>&)));
+    //
+
+    QObject::connect(&mainController.getMainWin(), SIGNAL(addAudioFromDisk(MainWindow*)),
+                             &uploadWinController, SLOT(Add(MainWindow*)));
 
     QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
                      &Player::instance(), SLOT(addTracks(QVector<Audio>)));

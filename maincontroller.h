@@ -22,11 +22,12 @@ public slots:
     void trackRemovingFailed(int position);
     void playpause(bool);
     void FailedToAddTracks(QVector<Audio> failedTracks);
-    void CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist);
+    void CreatePlaylist();
 
 signals:
     void play();
     void pause();
+    void saveAsPlaylist(QString, QVector<Audio>&);
 
 private:
     MainWindow mainWin;

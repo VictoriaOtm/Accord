@@ -2,7 +2,7 @@
 
 Playlists::Playlists() {
     currentPlaylists.clear();
-    this->Load();
+    //this->Load();
 }
 
 void Playlists::Load() {
@@ -44,4 +44,9 @@ void Playlists::Save() {
 Playlists& Playlists::instance(){
     static Playlists playlistsSingletone;
     return playlistsSingletone;
+}
+
+void Playlists::CreatePlaylist(QString playlistName, QVector<Audio>& playlistTracks) {
+    Playlist newPlaylist(playlistName, playlistTracks);
+    currentPlaylists.push_back(newPlaylist);
 }

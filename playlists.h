@@ -15,6 +15,9 @@ public:
 signals:
     void Error(QString);
 
+public slots:
+    void CreatePlaylist(QString, QVector<Audio>&);
+
 private:
     Playlists();
     QVector<Playlist> currentPlaylists;
