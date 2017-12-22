@@ -236,6 +236,9 @@
           <strikeout>false</strikeout>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">#timeSlider {
 	padding-top: -4px;
@@ -600,12 +603,6 @@
             </property>
            </widget>
           </widget>
-          <zorder>playPauseBox</zorder>
-          <zorder>loopBox</zorder>
-          <zorder>shuffleBox</zorder>
-          <zorder>nextBox</zorder>
-          <zorder>prevBox</zorder>
-          <zorder>nextButton</zorder>
          </widget>
         </item>
         <item>
@@ -694,7 +691,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

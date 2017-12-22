@@ -14,7 +14,6 @@ int Application::run(int argc, char *argv[]){
                           &uploadWinController, SLOT(Add(MainWindow*)));
 
 
-
     //QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
                          // &mainController, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
 
