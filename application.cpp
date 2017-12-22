@@ -11,6 +11,7 @@ int Application::run(int argc, char *argv[]) {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
     QApplication application(argc, argv);
+    application.setWindowIcon(QIcon(QDir::currentPath() + "/icon.ico"));
     MainController mainController;
     UploadWinController uploadWinController;
     Playlists::instance();

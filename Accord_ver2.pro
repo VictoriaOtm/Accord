@@ -51,5 +51,7 @@ FORMS  += mainwindow.ui
 
 RESOURCES += ui.qrc
 
+RC_FILE += icon.rc
+
 OTHER_FILES += playlist.proto
 
