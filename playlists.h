@@ -9,6 +9,7 @@ class Playlists : public QObject
 
 public:
     static Playlists& instance();
+    ~Playlists();
     void Load();
     void Save();
 

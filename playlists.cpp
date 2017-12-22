@@ -6,7 +6,14 @@ Playlists::Playlists() {
     // сначала считать данные из конфиг файла
     // и в зависимости от результата либо подгружать
     // либо нет плейлисты
-    //this->Load();
+    if( 1 )
+        this->Load();
+}
+
+Playlists::~Playlists() {
+    qDebug() << "Save playlists";
+    this->Save();
+    this->currentPlaylists.clear();
 }
 
 void Playlists::Load() {
@@ -21,10 +28,10 @@ void Playlists::Load() {
     }
 
     // TODO дописать загрузку
-    currentPlaylists.DebugString();
-    /*foreach(protobuf::Playlist playlist, currentPlaylists) {
-        Playlist* ptrPlaylist = new Playlist(playlist.mutable_name(), vector<Audio>);
-    }*/
+    currentPlaylists.PrintDebugString();
+    foreach(protobuf::Playlist playlist, currentPlaylists) {
+        //Playlist* ptrPlaylist = new Playlist(playlist.name(), vector<Audio>);
+    }
 
     finBinaryPlaylists.close();
 }
