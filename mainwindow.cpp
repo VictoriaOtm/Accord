@@ -4,6 +4,18 @@
 #include <iostream>
 
 
+void MainWindow::ShowContextMenu(const QPoint& pos)
+{
+   QMenu contextMenu(tr("Доступные действия"), this);
+
+   QAction action1("Сохранить как плейлист", this);
+   //QObject::connect(&action1, SIGNAL(triggered()), this, SLOT(saveAsPlaylist()));
+   QObject::connect(&action1, SIGNAL(triggered()), this, SIGNAL(saveAsPlaylist()));
+   contextMenu.addAction(&action1);
+
+   contextMenu.exec(mapToGlobal(pos));
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -26,6 +38,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     file.close();
 
+    // добавим контекстное меню
+    ui->curAudioListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(ui->curAudioListWidget, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(ShowContextMenu(const QPoint&)));
+    //
+
     QObject::connect(playPauseButton, SIGNAL(toggled(bool)),
                      this, SIGNAL(play(bool)));
 
@@ -47,8 +65,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->curAudioListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
                      this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
-    QObject::connect(ui->volumeButton, SIGNAL(clicked()),
-            this, SLOT(setVolumeSlider()));
+    QObject::connect(ui->volumeButton, SIGNAL(toggled(bool)),
+                     this, SLOT(setVolume()));
 
     QObject::connect(ui->plusButton, SIGNAL(clicked()),
                      this, SLOT(addButtonPushed()));
@@ -57,8 +75,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->minusButton, SIGNAL(clicked()),
                      this, SLOT(removeButtonPushed()));
-
 }
+
 
 MainWindow::~MainWindow() {
     delete audioListModel;
@@ -105,6 +123,9 @@ void MainWindow::addButtonPushed() {
     emit addAudioFromDisk(this);
 }
 
+void MainWindow::errorMessage(QString textOfError) {
+    showErrorMessage(textOfError);
+}
 
 void MainWindow::audioRemoveFromList(int position) {
     ui->curAudioListWidget->model()->removeRow(position);
@@ -148,6 +169,11 @@ void MainWindow::curAudioDurationChanged(qint64 newDuration){
     ui->timeSlider->setMaximum(newDuration);
 }
 
+void MainWindow::setVolume(){
+    emit onOffVolume(ui->volumeButton->isChecked());
+    //true off, false on
+}
+
 void MainWindow::sliderPositionChanged(qint64 position){
     if (curAudioDuration != 0){
         ui->timeSlider->setSliderPosition(position);
@@ -155,28 +181,14 @@ void MainWindow::sliderPositionChanged(qint64 position){
     }
 }
 
-void MainWindow::setVolumeSlider() {
-    if(!volumeSliderStatus){
-        volumeSlider = new QSlider(Qt::Horizontal, ui->volumeBox);
-        volumeSlider->setRange(0,100);
-        volumeSlider->setFocusPolicy(Qt::NoFocus);
-        volumeSlider->show();
-        volumeSliderStatus = true;
-    }
-    else {
-        delete volumeSlider;
-        volumeSliderStatus = false;
-
-    }
-}
-
 void MainWindow::showErrorMessage(QString textOfError){
-    QErrorMessage errorMessage;
+    QMessageBox::warning(this, "Ошибка", textOfError, QMessageBox::Ok);
+    /*QErrorMessage errorMessage;
     errorMessage.showMessage(textOfError);
-    errorMessage.exec();
+    errorMessage.exec();*/
 }
 
-bool MainWindow::getLineOfText(QString& title, QString& message, QString& result){
+bool MainWindow::getLineOfText(const QString title, const QString message, QString& result){
     // будет отвечать за кнопнку
     // которую нажнем пользователь
     // true - если нажали 'ok'

@@ -28,18 +28,17 @@ Player::Player(): selectedAudioPosition(0){
 
 
 void Player::play(bool playPause){
-    if (playPause){
+    if( playPause ) {
         player.play();
         emit currentIndexChanged(player.playlist()->currentIndex());
     }
 }
 
 void Player::pause(bool playPause){
-    if (!playPause){
+    if( !playPause ) {
         player.pause();
     }
 }
-
 
 void Player::stop(){
     player.stop();
@@ -48,19 +47,23 @@ void Player::stop(){
 void Player::prev(){
     player.media().playlist()->previous();
     selectedAudioPosition = player.playlist()->currentIndex();
-
 }
 
 void Player::next(){
     player.media().playlist()->next();
     selectedAudioPosition = player.playlist()->currentIndex();
-
 }
 
 void Player::setVolume(int volume){
     player.setVolume(volume);
 }
 
+void Player::turnOnOffVolume(bool turnOff){
+    if(turnOff)
+        player.setVolume(0);
+    else
+        player.setVolume(100);
+}
 
 void Player::setPlayingPosition(int position){
     player.playlist()->setCurrentIndex(position);
@@ -139,7 +142,6 @@ void Player::removeTrack(){
         emit removedTrackFailed(selectedAudioPosition);
     }else{
         emit removedTrackSuccessfully(selectedAudioPosition);
-
     }
 }
 
@@ -148,6 +150,5 @@ void Player::loopPlaylist(bool looping){
         player.playlist()->setPlaybackMode(QMediaPlaylist::Loop);
     }else{
         player.playlist()->setPlaybackMode(QMediaPlaylist::Sequential);
-
     }
 }

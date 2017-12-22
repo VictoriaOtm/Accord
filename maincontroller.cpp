@@ -3,6 +3,26 @@
 #include <QMessageBox>
 
 
+MainController::MainController(){
+    QObject::connect(&mainWin, SIGNAL(play(bool)),
+                     this, SLOT(playpause(bool)));
+}
+
+void MainController::CreatePlaylist() {
+    QString nameOfPlaylist;
+    while( nameOfPlaylist.isEmpty() ) {
+        if( !mainWin.getLineOfText("Cоздание плейлиста", "Введите название плейлиста", nameOfPlaylist) )
+            return;
+    }
+
+    if( currentList.isEmpty() ) {
+        mainWin.showErrorMessage("Нет треков для добавления!");
+        return;
+    }
+
+     emit saveAsPlaylist(nameOfPlaylist, currentList);
+}
+
 void MainController::openMainWin(){
     mainWin.show();
 }
@@ -10,7 +30,6 @@ void MainController::openMainWin(){
 void MainController::start(){
     openMainWin();
 }
-
 
 MainWindow& MainController::getMainWin(){
     return mainWin;
@@ -60,17 +79,20 @@ void MainController::FailedToAddTracks(QVector<Audio> failedTracks){
     qDebug() << "Printing errors: success";
 }
 
-void MainController::CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist) {
-    Playlist newPlaylist(nameForPlaylist, tracksToPlaylist);
-
-}
-
 void MainController::trackRemovingFailed(int position){
     qDebug() << "Printing errors ";
 
     QString message = "Не удалось удалить трек";
-
     QMessageBox::warning(&mainWin, "Ошибка", message, QMessageBox::Ok);
     qDebug() << "Printing errors: success";
 }
+
+void MainController::playpause(bool playOrPause){
+    if(playOrPause){
+        emit play();
+    }else{
+        emit pause();
+    }
+}
+
 

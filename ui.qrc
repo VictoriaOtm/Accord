@@ -14,5 +14,6 @@
         <file>images/add.png</file>
         <file>images/loop_active.png</file>
         <file>images/shuffle_active.png</file>
+        <file>images/no_volume.png</file>
     </qresource>
 </RCC>

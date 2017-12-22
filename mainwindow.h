@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QStringListModel>
 #include <QtGui>
+#include <QMessageBox>
 #include <QErrorMessage>
 #include <QInputDialog>
 #include <QLineEdit>
@@ -30,21 +31,21 @@ public:
     void setPlaylistsModel(QStringList playlists);
 
     void showErrorMessage(QString textOfError);
-    bool getLineOfText(QString& title, QString& message, QString& result);
+    bool getLineOfText(const QString title, const QString message, QString& result);
 
 public slots:
     void sliderPositionChanged(qint64);
     void curAudioDurationChanged(qint64);
     void itemIndexChanged(int);
-
+    void errorMessage(QString);
     void audioRemoveFromList(int);
 
-
 private slots:
+    void ShowContextMenu(const QPoint&);
     void addButtonPushed();
     void removeButtonPushed();
 
-    void setVolumeSlider();
+    void setVolume();
 
     void itemClicked(QListWidgetItem*);
     void itemDoubleClicked(QListWidgetItem*);
@@ -62,10 +63,11 @@ signals:
 
     void audioSelected(int);
     void audioSwitched(int);
+    void onOffVolume(bool);
 
     void addAudioFromDisk(MainWindow*);
     void removeAudio();
-    void saveAsPlaylist(const QStringListModel* audioListModel);
+    void saveAsPlaylist();
 
     void loopPlaylist(bool);
 

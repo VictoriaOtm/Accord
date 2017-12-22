@@ -11,7 +11,7 @@ class MainController : public QObject
     Q_OBJECT
 
 public:
-    MainController(){}
+    MainController();
     ~MainController(){}
     void start();
     void openMainWin();
@@ -19,19 +19,19 @@ public:
 
 public slots:
     void NewTracksAdded(QVector<Audio> tracks);
-
-    void FailedToAddTracks(QVector<Audio> failedTracks);
-
-    void CreatePlaylist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist);
-
     void trackRemovingFailed(int position);
+    void playpause(bool);
+    void FailedToAddTracks(QVector<Audio> failedTracks);
+    void CreatePlaylist();
+
+signals:
+    void play();
+    void pause();
+    void saveAsPlaylist(QString, QVector<Audio>&);
 
 private:
     MainWindow mainWin;
     QVector<Audio> currentList;
-    // пока что такая реализация
-    // потом будет переписано под класс Playlists
-    QVector<Playlist> currentPlaylists;
 };
 
 #endif // MAINCONTROLLER_H

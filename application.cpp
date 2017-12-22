@@ -1,21 +1,36 @@
 #include "application.h"
 
-Application::Application()
-{
+Application::Application() {
 
 }
 
-int Application::run(int argc, char *argv[]){
+
+int Application::run(int argc, char *argv[]) {
+    // Verify that the version of the library that we linked against is
+    // compatible with the version of the headers we compiled against.
+    GOOGLE_PROTOBUF_VERIFY_VERSION;
+
     QApplication application(argc, argv);
+    application.setWindowIcon(QIcon(QDir::currentPath() + "/icon.ico"));
     MainController mainController;
     UploadWinController uploadWinController;
+    Playlists::instance();
+
+    // мои новые сигналы: ошибки и введения данных
+    QObject::connect(&Playlists::instance(), SIGNAL(Error(QString)),
+                          &mainController.getMainWin(), SLOT(errorMessage(QString)));
+
+    //
+
+    // блок по работе с плейлистами
+    QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist()),
+                              &mainController, SLOT(CreatePlaylist()));
+    QObject::connect(&mainController, SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
+                          &Playlists::instance(), SLOT(CreatePlaylist(QString, QVector<Audio>&)));
+    //
 
     QObject::connect(&mainController.getMainWin(), SIGNAL(addAudioFromDisk(MainWindow*)),
-                          &uploadWinController, SLOT(Add(MainWindow*)));
-
-
-    //QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
-                         // &mainController, SLOT(CreatePlaylist(QString, QVector<Audio>&)));
+                             &uploadWinController, SLOT(Add(MainWindow*)));
 
     QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
                      &Player::instance(), SLOT(addTracks(QVector<Audio>)));
@@ -46,6 +61,9 @@ int Application::run(int argc, char *argv[]){
     QObject::connect(&mainController.getMainWin(), SIGNAL(audioSwitched(int)),
                     &Player::instance(), SLOT(setPlayingPosition(int)));
 
+    QObject::connect(&mainController.getMainWin(), SIGNAL(onOffVolume(bool)),
+                    &Player::instance(), SLOT(turnOnOffVolume(bool)));
+
     QObject::connect(&mainController.getMainWin(), SIGNAL(audioSelected(int)),
                      &Player::instance(), SLOT(setSelectedAudioPosition(int)));
 
@@ -66,6 +84,9 @@ int Application::run(int argc, char *argv[]){
 
 
     mainController.start();
+
+    // Optional:  Delete all global objects allocated by libprotobuf.
+    google::protobuf::ShutdownProtobufLibrary();
 
     return application.exec();
 }
