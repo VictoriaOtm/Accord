@@ -2,6 +2,10 @@
 
 Playlists::Playlists() {
     currentPlaylists.clear();
+
+    // сначала считать данные из конфиг файла
+    // и в зависимости от результата либо подгружать
+    // либо нет плейлисты
     //this->Load();
 }
 
@@ -16,6 +20,7 @@ void Playlists::Load() {
         emit Error("Ошибка при открытии плейлистов!\nЧто-то пошло не так!");
     }
 
+    // TODO дописать загрузку
     currentPlaylists.DebugString();
     /*foreach(protobuf::Playlist playlist, currentPlaylists) {
         Playlist* ptrPlaylist = new Playlist(playlist.mutable_name(), vector<Audio>);

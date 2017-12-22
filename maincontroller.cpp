@@ -15,6 +15,11 @@ void MainController::CreatePlaylist() {
             return;
     }
 
+    if( currentList.isEmpty() ) {
+        mainWin.showErrorMessage("Нет треков для добавления!");
+        return;
+    }
+
      emit saveAsPlaylist(nameOfPlaylist, currentList);
 }
 

@@ -11,8 +11,9 @@
 class Playlist
 {    
 public:
+    Playlist();
     Playlist(QString nameForPlaylist);
-    Playlist(QString nameForPlaylist, QVector<Audio>& tracksToPlaylist);
+    Playlist(QString nameForPlaylist, QVector<Audio> tracksToPlaylist);
     QString getName();
     void setNamePlaylist(QString nameForPlaylist);
     void addTrack();

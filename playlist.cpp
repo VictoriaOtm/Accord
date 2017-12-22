@@ -1,11 +1,10 @@
 #include "playlist.h"
 
-void Playlist::setNamePlaylist(QString nameForPlaylist){
-    if( !name.isEmpty() ){
-        name = nameForPlaylist;
-    }
-}
 
+Playlist::Playlist() {
+    name = "playlist";
+    tracks.clear();
+}
 
 // во всех конструкторах должно гаранитироваться
 // не пустое поле 'nameForPlaylist'
@@ -13,11 +12,9 @@ Playlist::Playlist(QString nameForPlaylist) {
     name = nameForPlaylist;
 }
 
-Playlist::Playlist(QString nameForPlaylist, QVector<Audio>& tracksForPlaylist) {
+Playlist::Playlist(QString nameForPlaylist, QVector<Audio> tracksForPlaylist) {
     name = nameForPlaylist;
-    // вызовем функцию qCopy
-    // чтобы не париться из-за передаваемого вектора
-    qCopy(tracksForPlaylist.begin(), tracksForPlaylist.end(), tracks.begin());
+    tracks = tracksForPlaylist;
 
     /*if( tracksToPlaylist.isEmpty() ){
         QErrorMessage errorMessage;
@@ -32,6 +29,12 @@ Playlist::Playlist(QString nameForPlaylist, QVector<Audio>& tracksForPlaylist) {
 
  QString Playlist::getName() {
      return name;
+ }
+
+ void Playlist::setNamePlaylist(QString nameForPlaylist){
+     if( !name.isEmpty() ){
+         name = nameForPlaylist;
+     }
  }
 
 /*void Playlist::Load() {
