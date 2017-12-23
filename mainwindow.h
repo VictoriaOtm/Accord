@@ -17,7 +17,7 @@
 
 
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -29,6 +29,8 @@ public:
     ~MainWindow();
     void setAudioListModel(QStringList tracks);
     void setPlaylistsModel(QStringList playlists);
+    void setAudioListModelForPlaylist(QStringList tracks);
+
 
     void showErrorMessage(QString textOfError);
     bool getLineOfText(const QString title, const QString message, QString& result);
@@ -47,6 +49,7 @@ private slots:
 
     void setVolumeSlider();
 
+    void itemClickedLeftColumn(QListWidgetItem*);
     void itemClicked(QListWidgetItem*);
     void itemDoubleClicked(QListWidgetItem*);
 
@@ -61,6 +64,7 @@ signals:
 
     void settings();
 
+    void playlistSelected(int);
     void audioSelected(int);
     void audioSwitched(int);
 

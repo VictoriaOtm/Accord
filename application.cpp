@@ -13,8 +13,8 @@ int Application::run(int argc, char *argv[]) {
     QApplication application(argc, argv);
     application.setWindowIcon(QIcon(QDir::currentPath() + "/icon.ico"));
     MainController mainController;
-    UploadWinController uploadWinController;
     Playlists::instance();
+    UploadWinController uploadWinController;
 
     // мои новые сигналы: ошибки и введения данных
     QObject::connect(&Playlists::instance(), SIGNAL(Error(QString)),
@@ -27,7 +27,15 @@ int Application::run(int argc, char *argv[]) {
                               &mainController, SLOT(CreatePlaylist()));
     QObject::connect(&mainController, SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
                           &Playlists::instance(), SLOT(CreatePlaylist(QString, QVector<Audio>&)));
+
+    QObject::connect(&mainController.getMainWin(), SIGNAL(playlistSelected(int)),
+                              &mainController, SLOT( playlistSelected(int) ));
+
+    QObject::connect(&Playlists::instance(), SIGNAL(PrintPlaylists()),
+                          &mainController, SLOT( printPlaylists() ));
     //
+
+    Playlists::instance().Load();
 
     QObject::connect(&mainController.getMainWin(), SIGNAL(addAudioFromDisk(MainWindow*)),
                              &uploadWinController, SLOT(Add(MainWindow*)));

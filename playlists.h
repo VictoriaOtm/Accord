@@ -15,9 +15,14 @@ public:
     ~Playlists();
     void Load();
     void Save();
+    int Size();
+    int SizeOfPlaylist(int);
+    QString GetNameAudioOfPlaylist(int, int);
+    QString GetNameOfPlaylist(int);
 
 signals:
     void Error(QString);
+    void PrintPlaylists();
 
 public slots:
     void CreatePlaylist(QString, QVector<Audio>&);

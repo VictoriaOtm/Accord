@@ -4,7 +4,7 @@
 #include <QObject>
 #include "mainwindow.h"
 #include "audio.h"
-#include "playlist.h"
+#include "playlists.h"
 
 class MainController : public QObject
 {
@@ -18,11 +18,13 @@ public:
     MainWindow& getMainWin();
 
 public slots:
-    void NewTracksAdded(QVector<Audio> tracks);
-    void trackRemovingFailed(int position);
+    void NewTracksAdded(QVector<Audio>);
+    void trackRemovingFailed(int);
     void playpause(bool);
-    void FailedToAddTracks(QVector<Audio> failedTracks);
+    void FailedToAddTracks(QVector<Audio>);
     void CreatePlaylist();
+    void playlistSelected(int);
+    void printPlaylists();
 
 signals:
     void play();
@@ -30,6 +32,7 @@ signals:
     void saveAsPlaylist(QString, QVector<Audio>&);
 
 private:
+    int currentPosition = 0;
     MainWindow mainWin;
     QVector<Audio> currentList;
 };

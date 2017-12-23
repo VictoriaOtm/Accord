@@ -59,6 +59,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->settingsButton, SIGNAL(clicked()),
                      this, SIGNAL(settings()));
 
+    QObject::connect(ui->playListWidget, SIGNAL(itemClicked(QListWidgetItem*)),
+                     this, SLOT(itemClickedLeftColumn(QListWidgetItem*)));
+
     QObject::connect(ui->curAudioListWidget, SIGNAL(itemClicked(QListWidgetItem*)),
                      this, SLOT(itemClicked(QListWidgetItem*)));
 
@@ -75,8 +78,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->minusButton, SIGNAL(clicked()),
                      this, SLOT(removeButtonPushed()));
-}
 
+
+    // loadRightColumn();
+
+}
 
 MainWindow::~MainWindow() {
     delete audioListModel;
@@ -96,22 +102,32 @@ void MainWindow::setAudioListModel(QStringList tracks) {
     ui->curAudioListWidget->addItems(tracks);
 }
 
+void MainWindow::setAudioListModelForPlaylist(QStringList tracks) {
+    for(int i = 0; i <  ui->curAudioListWidget->count(); i++) {
+        ui->curAudioListWidget->model()->removeRow(i);
+    }
+
+    audioListModel->setStringList(tracks);
+    ui->curAudioListWidget->addItems(tracks);
+}
+
 void MainWindow::setPlaylistsModel(QStringList playlists) {
     // TODO
     // необходимо добавлять playlists в playlistModel
     // а не заменять их, как сейчас
     // т.к. playlists содержат только новые плейлисты, которые
     // только были добавлены
-    if(ui->playListWidget->count() == 0 ) {
+    //if(ui->playListWidget->count() == 0 ) {
         playlistModel->setStringList(playlists);
         ui->playListWidget->addItems(playlists);
-    }
+    //}
 
     // пробный код добавления плейлистов
     /*QListWidgetItem *newItem = new QListWidgetItem;
     //newItem->setText("Текущий плейлист");
     ui->playListWidget->insertItem(0, newItem);*/
 }
+
 
 void MainWindow::removeButtonPushed(){
     if (ui->curAudioListWidget->count() > 0){
@@ -134,6 +150,11 @@ void MainWindow::audioRemoveFromList(int position) {
 void MainWindow::itemClicked(QListWidgetItem *item){
     int position = item->listWidget()->currentRow();
     emit audioSelected(position);
+}
+
+void MainWindow::itemClickedLeftColumn(QListWidgetItem *item){
+    int position = item->listWidget()->currentRow();
+    emit playlistSelected(position);
 }
 
 void MainWindow::itemDoubleClicked(QListWidgetItem* item){

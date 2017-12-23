@@ -2,16 +2,13 @@
 
 Playlists& Playlists::instance(){
     static Playlists playlistsSingletone;
+    //playlistsSingletone.Load();
     return playlistsSingletone;
 }
 
 Playlists::Playlists() {
     currentPlaylists.clear();
-
-    // сначала считать данные из конфиг файла
-    // и в зависимости от результата либо подгружать
-    // либо нет плейлисты
-    this->Load();
+    //this->Load();
 }
 
 Playlists::~Playlists() {
@@ -20,10 +17,37 @@ Playlists::~Playlists() {
     this->currentPlaylists.clear();
 }
 
+int Playlists::SizeOfPlaylist(int index) {
+    if( 0 <= index && index < Playlists::instance().currentPlaylists.size() )
+        return Playlists::instance().currentPlaylists[index].size();
+    else
+        return -1;
+}
+
+QString Playlists::GetNameAudioOfPlaylist(int playlistNumber, int audioNumber) {
+    if( 0 <= playlistNumber && playlistNumber < Playlists::instance().currentPlaylists.size() ) {
+        if( 0 <= audioNumber && audioNumber < Playlists::instance().currentPlaylists[playlistNumber].size() ) {
+            return Playlists::instance().currentPlaylists[playlistNumber].get(audioNumber);
+        }
+    }
+
+    return "";
+}
+
+QString Playlists::GetNameOfPlaylist(int index) {
+    if( 0 <= index && index < Playlists::instance().currentPlaylists.size() ) {
+        return Playlists::instance().currentPlaylists[index].getName();
+    }
+
+    return "";
+}
+
+
 void Playlists::Load() {
+    emit Error("text");
     std::fstream finBinaryPlaylists("playlists.bin", std::ios::in | std::ios::binary);
     if( !finBinaryPlaylists.is_open() ) {
-        emit Error("Ошибка при открытии плейлистов!\nЧто-то пошло не так!");
+        //emit Error("Ошибка при открытии плейлистов!\nЧто-то пошло не так!");
         return;
     }
 
@@ -54,6 +78,11 @@ void Playlists::Load() {
             qDebug() << currentPlaylists[i].get(j);
         }
     }
+
+    if( !currentPlaylists.isEmpty() ) {
+        qDebug() << "Success send PrintPlaylists() signal";
+        emit PrintPlaylists();
+    }
 }
 
 void Playlists::Save() {
@@ -79,6 +108,9 @@ void Playlists::Save() {
     foutBinaryPlaylists.close();
 }
 
+int Playlists::Size() {
+    return Playlists::instance().currentPlaylists.size();
+}
 
 void Playlists::CreatePlaylist(QString playlistName, QVector<Audio>& playlistTracks) {
     Playlist newPlaylist(playlistName, playlistTracks);

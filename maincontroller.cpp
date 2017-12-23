@@ -4,6 +4,7 @@
 
 
 MainController::MainController(){
+    currentPosition = 0;
     QObject::connect(&mainWin, SIGNAL(play(bool)),
                      this, SLOT(playpause(bool)));
 }
@@ -38,8 +39,9 @@ MainWindow& MainController::getMainWin(){
 void MainController::NewTracksAdded(QVector<Audio> tracks){
     // формирование отображаемых плейлистов
     QStringList playlistsModel;
-    playlistsModel.append("Текущий плейлист");
-    mainWin.setPlaylistsModel(playlistsModel);
+    // нужно было в старой версии
+    //playlistsModel.append("Текущий плейлист");
+    //mainWin.setPlaylistsModel(playlistsModel);
 
     // формирование отображаемых аудиофайлов
     QStringList tracksNames;
@@ -62,8 +64,48 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
             // блок закончился
         }
     }
+
     mainWin.setAudioListModel(tracksNames);
     qDebug() << "Setting audio list model - success";
+}
+
+
+void MainController::printPlaylists() {
+    qDebug() << "Success full cath signal";
+    QStringList playlistsModel;
+    playlistsModel.append("Текущий плейлист");
+
+    for( int i = 0; i < Playlists::instance().Size(); i++ ) {
+        playlistsModel.append( Playlists::instance().GetNameOfPlaylist(i) );
+    }
+
+    qDebug() << playlistsModel;
+    mainWin.setPlaylistsModel(playlistsModel);
+}
+
+
+void MainController::playlistSelected(int position) {
+    if(position == 0){
+        currentPosition = position;
+        QStringList audioListModel;
+
+        for( int i = 0; i < currentList.size(); i++ ) {
+            audioListModel.append( currentList[i].GetFilename() );
+        }
+
+        return;
+    }
+
+    if( 1 <= position && position < Playlists::instance().Size() ) {
+        currentPosition = position;
+        QStringList audioListModel;
+
+        for( int i = 0; i < Playlists::instance().SizeOfPlaylist( currentPosition - 1 ); i++ ) {
+            audioListModel.append( Playlists::instance().GetNameAudioOfPlaylist(currentPosition - 1, i) );
+        }
+
+        mainWin.setAudioListModelForPlaylist( audioListModel );
+    }
 }
 
 void MainController::FailedToAddTracks(QVector<Audio> failedTracks){

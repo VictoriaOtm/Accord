@@ -43,7 +43,7 @@ int Playlist::size() {
 // проверки корректной загрузки данных из protobuf
 QString Playlist::get(int index) {
     if( 0 <= index && index < tracks.size() )
-        return tracks[index].GetPath();
+        return tracks[index].GetFilename();
     else
         return "";
 }
