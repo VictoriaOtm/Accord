@@ -2,13 +2,11 @@
 
 Playlists& Playlists::instance(){
     static Playlists playlistsSingletone;
-    //playlistsSingletone.Load();
     return playlistsSingletone;
 }
 
 Playlists::Playlists() {
     currentPlaylists.clear();
-    //this->Load();
 }
 
 Playlists::~Playlists() {
@@ -114,4 +112,6 @@ int Playlists::Size() {
 void Playlists::CreatePlaylist(QString playlistName, QVector<Audio>& playlistTracks) {
     Playlist newPlaylist(playlistName, playlistTracks);
     currentPlaylists.push_back(newPlaylist);
+
+    emit PrintPlaylists();
 }

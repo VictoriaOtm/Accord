@@ -104,6 +104,8 @@ void MainWindow::setAudioListModel(QStringList tracks) {
 
 void MainWindow::setAudioListModelForPlaylist(QStringList tracks) {
     qDebug() << tracks;
+    // сначала удалим все отоброжаемые треки
+    // в правой части
     int previousCount = ui->curAudioListWidget->count();
     for(int i = 0; i <  previousCount; i++) {
         ui->curAudioListWidget->model()->removeRow(0);
@@ -114,20 +116,20 @@ void MainWindow::setAudioListModelForPlaylist(QStringList tracks) {
 }
 
 void MainWindow::setPlaylistsModel(QStringList playlists) {
-    // TODO
-    // необходимо добавлять playlists в playlistModel
-    // а не заменять их, как сейчас
-    // т.к. playlists содержат только новые плейлисты, которые
-    // только были добавлены
-    //if(ui->playListWidget->count() == 0 ) {
-        playlistModel->setStringList(playlists);
-        ui->playListWidget->addItems(playlists);
-    //}
+    if( !playlists.isEmpty() ) {
+        if(ui->playListWidget->count() == 0 ) {
+            playlistModel->setStringList(playlists);
+            ui->playListWidget->addItems(playlists);
+        } else {
+            int previousCount = ui->playListWidget->count();
+            for(int i = 0; i <  previousCount; i++) {
+                ui->playListWidget->model()->removeRow(0);
+            }
 
-    // пробный код добавления плейлистов
-    /*QListWidgetItem *newItem = new QListWidgetItem;
-    //newItem->setText("Текущий плейлист");
-    ui->playListWidget->insertItem(0, newItem);*/
+            playlistModel->setStringList(playlists);
+            ui->playListWidget->addItems(playlists);
+        }
+    }
 }
 
 
