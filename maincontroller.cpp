@@ -85,7 +85,8 @@ void MainController::printPlaylists() {
 
 
 void MainController::playlistSelected(int position) {
-    if(position == 0){
+    qDebug() << "New cath, " << position;
+    if( position == 0 ){
         currentPosition = position;
         QStringList audioListModel;
 
@@ -93,17 +94,20 @@ void MainController::playlistSelected(int position) {
             audioListModel.append( currentList[i].GetFilename() );
         }
 
+        mainWin.setAudioListModelForPlaylist( audioListModel );
         return;
     }
 
-    if( 1 <= position && position < Playlists::instance().Size() ) {
+    // т.к. еще существует currentList
+    // который идет под '0' номером
+    position--;
+    if( 0 <= position && position < Playlists::instance().Size() ) {
         currentPosition = position;
         QStringList audioListModel;
 
-        for( int i = 0; i < Playlists::instance().SizeOfPlaylist( currentPosition - 1 ); i++ ) {
-            audioListModel.append( Playlists::instance().GetNameAudioOfPlaylist(currentPosition - 1, i) );
+        for( int i = 0; i < Playlists::instance().SizeOfPlaylist( currentPosition ); i++ ) {
+            audioListModel.append( Playlists::instance().GetNameAudioOfPlaylist(currentPosition, i) );
         }
-
         mainWin.setAudioListModelForPlaylist( audioListModel );
     }
 }

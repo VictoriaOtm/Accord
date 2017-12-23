@@ -18,16 +18,16 @@ Playlists::~Playlists() {
 }
 
 int Playlists::SizeOfPlaylist(int index) {
-    if( 0 <= index && index < Playlists::instance().currentPlaylists.size() )
-        return Playlists::instance().currentPlaylists[index].size();
+    if( 0 <= index && index < currentPlaylists.size() )
+        return currentPlaylists[index].size();
     else
         return -1;
 }
 
 QString Playlists::GetNameAudioOfPlaylist(int playlistNumber, int audioNumber) {
-    if( 0 <= playlistNumber && playlistNumber < Playlists::instance().currentPlaylists.size() ) {
-        if( 0 <= audioNumber && audioNumber < Playlists::instance().currentPlaylists[playlistNumber].size() ) {
-            return Playlists::instance().currentPlaylists[playlistNumber].get(audioNumber);
+    if( 0 <= playlistNumber && playlistNumber < currentPlaylists.size() ) {
+        if( 0 <= audioNumber && audioNumber < currentPlaylists[playlistNumber].size() ) {
+            return currentPlaylists[playlistNumber].get(audioNumber);
         }
     }
 
@@ -35,8 +35,8 @@ QString Playlists::GetNameAudioOfPlaylist(int playlistNumber, int audioNumber) {
 }
 
 QString Playlists::GetNameOfPlaylist(int index) {
-    if( 0 <= index && index < Playlists::instance().currentPlaylists.size() ) {
-        return Playlists::instance().currentPlaylists[index].getName();
+    if( 0 <= index && index < currentPlaylists.size() ) {
+        return currentPlaylists[index].getName();
     }
 
     return "";
@@ -44,7 +44,6 @@ QString Playlists::GetNameOfPlaylist(int index) {
 
 
 void Playlists::Load() {
-    emit Error("text");
     std::fstream finBinaryPlaylists("playlists.bin", std::ios::in | std::ios::binary);
     if( !finBinaryPlaylists.is_open() ) {
         //emit Error("Ошибка при открытии плейлистов!\nЧто-то пошло не так!");
@@ -109,7 +108,7 @@ void Playlists::Save() {
 }
 
 int Playlists::Size() {
-    return Playlists::instance().currentPlaylists.size();
+    return currentPlaylists.size();
 }
 
 void Playlists::CreatePlaylist(QString playlistName, QVector<Audio>& playlistTracks) {

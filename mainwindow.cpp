@@ -103,8 +103,10 @@ void MainWindow::setAudioListModel(QStringList tracks) {
 }
 
 void MainWindow::setAudioListModelForPlaylist(QStringList tracks) {
-    for(int i = 0; i <  ui->curAudioListWidget->count(); i++) {
-        ui->curAudioListWidget->model()->removeRow(i);
+    qDebug() << tracks;
+    int previousCount = ui->curAudioListWidget->count();
+    for(int i = 0; i <  previousCount; i++) {
+        ui->curAudioListWidget->model()->removeRow(0);
     }
 
     audioListModel->setStringList(tracks);
@@ -154,6 +156,7 @@ void MainWindow::itemClicked(QListWidgetItem *item){
 
 void MainWindow::itemClickedLeftColumn(QListWidgetItem *item){
     int position = item->listWidget()->currentRow();
+    qDebug() << "Cath it, " << position;
     emit playlistSelected(position);
 }
 
