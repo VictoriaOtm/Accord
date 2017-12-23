@@ -22,6 +22,16 @@ int Playlists::SizeOfPlaylist(int index) {
         return -1;
 }
 
+QVector<Audio> Playlists::GetAudioFiles(int index) {
+    QVector<Audio> result;
+    result.clear();
+
+   if( 0 <= index && index < currentPlaylists.size() )
+        return currentPlaylists[index];
+    else
+        return result;
+}
+
 QString Playlists::GetNameAudioOfPlaylist(int playlistNumber, int audioNumber) {
     if( 0 <= playlistNumber && playlistNumber < currentPlaylists.size() ) {
         if( 0 <= audioNumber && audioNumber < currentPlaylists[playlistNumber].size() ) {

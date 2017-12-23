@@ -94,6 +94,7 @@ void MainController::playlistSelected(int position) {
             audioListModel.append( currentList[i].GetFilename() );
         }
 
+        emit TracksAdded(currentList);
         mainWin.setAudioListModelForPlaylist( audioListModel );
         return;
     }
@@ -102,12 +103,14 @@ void MainController::playlistSelected(int position) {
     // который идет под '0' номером
     position--;
     if( 0 <= position && position < Playlists::instance().Size() ) {
-        currentPosition = position;
+        currentPosition = position + 1;
         QStringList audioListModel;
 
         for( int i = 0; i < Playlists::instance().SizeOfPlaylist( currentPosition ); i++ ) {
             audioListModel.append( Playlists::instance().GetNameAudioOfPlaylist(currentPosition, i) );
         }
+
+        emit TracksAdded(Playlists::instance().GetAudioFiles(position));
         mainWin.setAudioListModelForPlaylist( audioListModel );
     }
 }

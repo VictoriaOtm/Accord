@@ -19,6 +19,7 @@ public:
     int SizeOfPlaylist(int);
     QString GetNameAudioOfPlaylist(int, int);
     QString GetNameOfPlaylist(int);
+    QVector<Audio> GetAudioFiles(int);
 
 signals:
     void Error(QString);

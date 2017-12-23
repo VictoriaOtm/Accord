@@ -30,6 +30,7 @@ signals:
     void play();
     void pause();
     void saveAsPlaylist(QString, QVector<Audio>&);
+    void TracksAdded(QVector<Audio>);
 
 private:
     int currentPosition = 0;
