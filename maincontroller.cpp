@@ -86,7 +86,7 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
 
 
 void MainController::playlistSelected(int position) {
-    qDebug() << "Successfull cath signal 'playlistSelected, " << position;
+    qDebug() << "Successfull cath signal 'playlistSelected', " << position;
     // TODO дописать сигнал загрузки медиа в плеер
     emit LoadTracks(Playlists::instance().GetAudioFiles(position));
     showAudioForCurrentPlaylist(position);

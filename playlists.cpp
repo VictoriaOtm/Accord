@@ -58,7 +58,7 @@ Playlist& Playlists::operator [](const int i) {
 }
 
 void Playlists::Load() {
-    Playlist queue_playing("Текущий плейлист");
+    Playlist queue_playing("Очередь воспроизведения");
     currentPlaylists.push_back(queue_playing);
 
     std::fstream finBinaryPlaylists("playlists.bin", std::ios::in | std::ios::binary);
