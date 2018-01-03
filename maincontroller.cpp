@@ -10,7 +10,7 @@ MainController::MainController(){
 }
 
 void MainController::CreatePlaylist() {
-    if( currentList.isEmpty() ) {
+    if( Playlists::instance()[currentPosition].getAudio().isEmpty() ) {
         mainWin.showErrorMessage("Нет треков для добавления!");
         return;
     }
@@ -21,7 +21,8 @@ void MainController::CreatePlaylist() {
             return;
     }
 
-     emit saveAsPlaylist(nameOfPlaylist, currentList);
+    QVector<Audio> playlistTracks = Playlists::instance()[currentPosition].getAudio();
+     emit saveAsPlaylist( nameOfPlaylist, playlistTracks );
 }
 
 void MainController::openMainWin(){
@@ -36,9 +37,13 @@ MainWindow& MainController::getMainWin(){
     return mainWin;
 }
 
+void MainController::printPlaylists() {
+    qDebug() << "Successfull cath signal 'printPlaylists'";
+    showPlaylists();
+}
+
 void MainController::showPlaylists() {
     QStringList playlistsModel;
-    playlistsModel.append("Текущий плейлист");
 
     for( int i = 0; i < Playlists::instance().Size(); i++ ) {
         playlistsModel.append( Playlists::instance().GetNameOfPlaylist(i) );
@@ -49,15 +54,14 @@ void MainController::showPlaylists() {
 }
 
 void MainController::NewTracksAdded(QVector<Audio> tracks){
+    qDebug() << " StackTrace from void MainController::NewTracksAdded(QVector<Audio> tracks)";
     // формирование отображаемых аудиофайлов
     QStringList tracksNames;
 
     // добавим только новые треки в currentList
     foreach(Audio song, tracks){
         qDebug() << "Adding track to UI " << song.GetFilename();
-        if( !currentList.contains(song) ){
-            currentList += song;
-
+        if( !Playlists::instance()[currentPosition].getAudio().contains(song) ){
             // в этом блоке мы будем переводить QVector<Audio>
             // в формат QStringList, который может отображать mainWin
             /*QString authors;
@@ -70,17 +74,22 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
             // блок закончился
         }
     }
+    Playlists::instance()[currentPosition].addTracks(tracks);
 
-    //mainWin.setAudioListModel(tracksNames);
     showPlaylists();
-    showAudioForCurrentPlaylist();
+    showAudioForCurrentPlaylist(currentPosition);
+    //mainWin.setAudioListModel(tracksNames);
+
     qDebug() << "Setting audio list model - success";
+    qDebug() << "End of StackTrace";
 }
 
 
-void MainController::printPlaylists() {
-    qDebug() << "Success full cath signal";
-    showPlaylists();
+void MainController::playlistSelected(int position) {
+    qDebug() << "Successfull cath signal 'playlistSelected, " << position;
+    // TODO дописать сигнал загрузки медиа в плеер
+    emit LoadTracks(Playlists::instance().GetAudioFiles(position));
+    showAudioForCurrentPlaylist(position);
 }
 
 void MainController::showAudioForCurrentPlaylist(int position) {
@@ -89,20 +98,17 @@ void MainController::showAudioForCurrentPlaylist(int position) {
         QStringList audioListModel;
 
         for( int i = 0; i < Playlists::instance().SizeOfPlaylist( currentPosition ); i++ ) {
+            //qDebug() << "Playlists::instance().GetNameAudioOfPlaylist( " << currentPosition << ", " << i <<" )";
+            //QString str = Playlists::instance().GetNameAudioOfPlaylist(currentPosition, i);
             audioListModel.append( Playlists::instance().GetNameAudioOfPlaylist(currentPosition, i) );
         }
 
-        emit TracksAdded(Playlists::instance().GetAudioFiles(position));
         mainWin.setAudioListModelForPlaylist( audioListModel );
     }
 }
 
-void MainController::playlistSelected(int position) {
-    qDebug() << "New cath, " << position;
-    showAudioForCurrentPlaylist(position);
-}
 
-void MainController::FailedToAddTracks(QVector<Audio> failedTracks){
+void MainController::FailedToAddTracks(QVector<Audio> failedTracks) {
     //вывод окна с ошибками
     qDebug() << "Printing errors";
     QString message = "Не удалось добавить следующие треки: ";

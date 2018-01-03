@@ -43,6 +43,10 @@ int Playlist::size() {
     return tracks.size();
 }
 
+void Playlist::addTracks(QVector<Audio> tracksToAdd) {
+    tracks.append(tracksToAdd);
+}
+
 // функция, необходимая для работы
 // проверки корректной загрузки данных из protobuf
 QString Playlist::get(int index) {

@@ -20,6 +20,7 @@ public:
     QString GetNameAudioOfPlaylist(int, int);
     QString GetNameOfPlaylist(int);
     QVector<Audio> GetAudioFiles(int);
+    Playlist& operator [](const int i);
 
 signals:
     void Error(QString);

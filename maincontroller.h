@@ -33,11 +33,12 @@ signals:
     void pause();
     void saveAsPlaylist(QString, QVector<Audio>&);
     void TracksAdded(QVector<Audio>);
+    void LoadTracks(QVector<Audio>);
 
 private:
     MainWindow mainWin;
     int currentPosition = 0;
-    QVector<Audio> currentList;
+    //QVector<Audio> currentList;
 };
 
 #endif // MAINCONTROLLER_H

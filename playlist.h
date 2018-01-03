@@ -21,8 +21,9 @@ public:
     int size();
     QString get(int index);
 
+    void addTracks(QVector<Audio> tracksToAdd);
+
     void setNamePlaylist(QString nameForPlaylist);
-    void addTrack();
     bool Save( protobuf::Playlists& playlistsForSaving );
 
 private:

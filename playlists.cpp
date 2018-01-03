@@ -50,8 +50,17 @@ QString Playlists::GetNameOfPlaylist(int index) {
     return "";
 }
 
+Playlist& Playlists::operator [](const int i) {
+   // if( 0 <= i && i <= currentPlaylists.size() ) {
+        return currentPlaylists[i];
+    //} else
+    //    return NULL;
+}
 
 void Playlists::Load() {
+    Playlist queue_playing("Текущий плейлист");
+    currentPlaylists.push_back(queue_playing);
+
     std::fstream finBinaryPlaylists("playlists.bin", std::ios::in | std::ios::binary);
     if( !finBinaryPlaylists.is_open() ) {
         //emit Error("Ошибка при открытии плейлистов!\nЧто-то пошло не так!");
@@ -97,8 +106,8 @@ void Playlists::Save() {
         return;
 
     protobuf::Playlists proto_playlistsForSaving;
-    foreach( Playlist playlist, currentPlaylists ) {
-        if( !playlist.Save(proto_playlistsForSaving) ) {
+    for( int i = 1; i < currentPlaylists.size(); i++ ) {
+        if( !currentPlaylists[i].Save(proto_playlistsForSaving) ) {
             emit Error("Ошибка при сохранении плейлистов!\nЧто-то пошло не так!");
             return;
         }

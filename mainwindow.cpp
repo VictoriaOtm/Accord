@@ -158,7 +158,8 @@ void MainWindow::itemClicked(QListWidgetItem *item){
 
 void MainWindow::itemClickedLeftColumn(QListWidgetItem *item){
     int position = item->listWidget()->currentRow();
-    qDebug() << "Cath it, " << position;
+    qDebug() << "Cath click on left column";
+    qDebug() << "Send signal 'playlistSelected', " << position;
     emit playlistSelected(position);
 }
 
