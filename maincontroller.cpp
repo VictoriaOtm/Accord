@@ -78,7 +78,6 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
 
     showPlaylists();
     showAudioForCurrentPlaylist(currentPosition);
-    //mainWin.setAudioListModel(tracksNames);
 
     qDebug() << "Setting audio list model - success";
     qDebug() << "End of StackTrace";

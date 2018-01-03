@@ -37,6 +37,9 @@ int Application::run(int argc, char *argv[]) {
 
     QObject::connect(&mainController, SIGNAL(TracksAdded(QVector<Audio>)),
                      &Player::instance(), SLOT(addTracks(QVector<Audio>)));
+
+    QObject::connect(&mainController, SIGNAL(LoadTracks(QVector<Audio>)),
+                     &Player::instance(), SLOT(loadTracks(QVector<Audio>)));
     //
 
     Playlists::instance().Load();

@@ -112,6 +112,45 @@ void Player::addTracks(const QVector<Audio>& newTracks){
 
 }
 
+void Player::loadTracks(const QVector<Audio>& newTracks){
+    qDebug() << "void Player::loadTracks(const QVector<Audio>& newTracks)";
+    QList<QMediaContent> tracks;  //готовим массив для добавления в плейлист
+    QVector<Audio> successfullyAddedTracks;
+    QVector<Audio> notAdded;
+    QMimeDatabase db;       //инициализируем базу данных MIME типов для проверки типа файла
+    foreach(Audio audio, newTracks){
+        QMimeType type = db.mimeTypeForFile(audio.GetPath(), QMimeDatabase::MatchContent); //получаем MIME тип файла на основе его контента
+        if(SUPPORTED_FORMATS.contains(type)){ //если такой тип поддерживается
+            QMediaContent track(QUrl::fromLocalFile(audio.GetPath())); //то конструируем MediaContent на его основе
+            /*
+            qDebug() << "Adding track " << audio.GetPath();
+            qDebug() << type.name();
+            qDebug() << type.parentMimeTypes();
+            */
+            tracks.append(track); //добавляем к трекам, которые пойдут в плейлист
+            successfullyAddedTracks.append(audio);
+        }else{
+            //добавляем имя файла к массиву ошибок
+            notAdded.append(audio);
+        }
+    }
+    if(!player.playlist()->addMedia(tracks)){
+        /*
+        qDebug() << "Error while adding media to playlist in player";
+        qDebug() << player.playlist()->errorString();
+        */
+        emit addTracksFailed();
+    }else{
+        /*
+        qDebug() << "Successfully added media";
+        */
+        if(!notAdded.empty()){
+            emit addTracksFailed(notAdded);
+        }
+    }
+
+}
+
 void Player::removeTracks(int start, int end){
     if(!player.playlist()->removeMedia(start, end)){
         emit removedTracksFailed();

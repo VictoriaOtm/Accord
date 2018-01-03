@@ -38,6 +38,7 @@ public slots:
     void loopPlaylist(bool looping);
 
     void addTracks(const QVector<Audio>& newTracks);
+    void loadTracks(const QVector<Audio>& newTracks);
     void removeTracks(int start, int end);
     void addTrack(const Audio& newTrack);
     void removeTrack();
