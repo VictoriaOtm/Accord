@@ -25,6 +25,7 @@ int Application::run(int argc, char *argv[]) {
     // блок по работе с плейлистами
     QObject::connect(&mainController.getMainWin(), SIGNAL(saveAsPlaylist()),
                               &mainController, SLOT(CreatePlaylist()));
+
     QObject::connect(&mainController, SIGNAL(saveAsPlaylist(QString, QVector<Audio>&)),
                           &Playlists::instance(), SLOT(CreatePlaylist(QString, QVector<Audio>&)));
 
@@ -40,11 +41,15 @@ int Application::run(int argc, char *argv[]) {
 
     Playlists::instance().Load();
 
+
+    // блок по работе с uploadWinController
     QObject::connect(&mainController.getMainWin(), SIGNAL(addAudioFromDisk(MainWindow*)),
                              &uploadWinController, SLOT(Add(MainWindow*)));
 
     QObject::connect(&uploadWinController, SIGNAL(TracksAdded(QVector<Audio>)),
                      &Player::instance(), SLOT(addTracks(QVector<Audio>)));
+    //
+
 
     QObject::connect(&mainController.getMainWin(), SIGNAL(removeAudio()),
                      &Player::instance(), SLOT(removeTrack()));

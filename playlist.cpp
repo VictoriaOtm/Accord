@@ -25,6 +25,10 @@ Playlist::Playlist(QString nameForPlaylist, QVector<Audio> tracksForPlaylist) {
     tracks = tracksForPlaylist;
 }
 
+QVector<Audio> Playlist::getAudio() {
+    return tracks;
+}
+
  QString Playlist::getName() {
      return name;
  }

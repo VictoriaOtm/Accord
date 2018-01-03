@@ -17,6 +17,7 @@ public:
     Playlist(QString nameForPlaylist, QVector<Audio> tracksToPlaylist);
 
     QString getName();
+    QVector<Audio> getAudio();
     int size();
     QString get(int index);
 

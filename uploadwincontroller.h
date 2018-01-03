@@ -2,7 +2,6 @@
 #define UPLOADWINCONTROLLER_H
 
 #include <qfiledialog.h>
-#include "uploadwindow.h"
 #include "maincontroller.h"
 #include "audio.h"
 
@@ -20,7 +19,6 @@ signals:
     void TracksAdded(QVector<Audio>);
 
 private:
-    UploadWindow uploadWin;
     QVector<Audio> tracksToAdd;
 };
 

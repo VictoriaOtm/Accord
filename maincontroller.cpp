@@ -10,15 +10,15 @@ MainController::MainController(){
 }
 
 void MainController::CreatePlaylist() {
+    if( currentList.isEmpty() ) {
+        mainWin.showErrorMessage("Нет треков для добавления!");
+        return;
+    }
+
     QString nameOfPlaylist;
     while( nameOfPlaylist.isEmpty() ) {
         if( !mainWin.getLineOfText("Cоздание плейлиста", "Введите название плейлиста", nameOfPlaylist) )
             return;
-    }
-
-    if( currentList.isEmpty() ) {
-        mainWin.showErrorMessage("Нет треков для добавления!");
-        return;
     }
 
      emit saveAsPlaylist(nameOfPlaylist, currentList);
@@ -36,13 +36,19 @@ MainWindow& MainController::getMainWin(){
     return mainWin;
 }
 
-void MainController::NewTracksAdded(QVector<Audio> tracks){
-    // формирование отображаемых плейлистов
+void MainController::showPlaylists() {
     QStringList playlistsModel;
-    // нужно было в старой версии
-    //playlistsModel.append("Текущий плейлист");
-    //mainWin.setPlaylistsModel(playlistsModel);
+    playlistsModel.append("Текущий плейлист");
 
+    for( int i = 0; i < Playlists::instance().Size(); i++ ) {
+        playlistsModel.append( Playlists::instance().GetNameOfPlaylist(i) );
+    }
+
+    qDebug() << playlistsModel;
+    mainWin.setPlaylistsModel(playlistsModel);
+}
+
+void MainController::NewTracksAdded(QVector<Audio> tracks){
     // формирование отображаемых аудиофайлов
     QStringList tracksNames;
 
@@ -58,52 +64,30 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
             for(QString author: song.GetAuthors()){
                 authors += author + " ";
             }
-
             tracksNames.append(song.GetFilename() + ": " + iter->GetTitle() + ", " + authors);*/
+
             tracksNames.append(song.GetFilename());
             // блок закончился
         }
     }
 
     mainWin.setAudioListModel(tracksNames);
+    showPlaylists();
     qDebug() << "Setting audio list model - success";
 }
 
 
 void MainController::printPlaylists() {
     qDebug() << "Success full cath signal";
-    QStringList playlistsModel;
-    playlistsModel.append("Текущий плейлист");
-
-    for( int i = 0; i < Playlists::instance().Size(); i++ ) {
-        playlistsModel.append( Playlists::instance().GetNameOfPlaylist(i) );
-    }
-
-    qDebug() << playlistsModel;
-    mainWin.setPlaylistsModel(playlistsModel);
+    showPlaylists();
 }
 
 
 void MainController::playlistSelected(int position) {
     qDebug() << "New cath, " << position;
-    if( position == 0 ){
-        currentPosition = position;
-        QStringList audioListModel;
 
-        for( int i = 0; i < currentList.size(); i++ ) {
-            audioListModel.append( currentList[i].GetFilename() );
-        }
-
-        emit TracksAdded(currentList);
-        mainWin.setAudioListModelForPlaylist( audioListModel );
-        return;
-    }
-
-    // т.к. еще существует currentList
-    // который идет под '0' номером
-    position--;
     if( 0 <= position && position < Playlists::instance().Size() ) {
-        currentPosition = position + 1;
+        currentPosition = position;
         QStringList audioListModel;
 
         for( int i = 0; i < Playlists::instance().SizeOfPlaylist( currentPosition ); i++ ) {

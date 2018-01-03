@@ -16,6 +16,7 @@ public:
     void start();
     void openMainWin();
     MainWindow& getMainWin();
+    void showPlaylists();
 
 public slots:
     void NewTracksAdded(QVector<Audio>);
@@ -33,8 +34,8 @@ signals:
     void TracksAdded(QVector<Audio>);
 
 private:
-    int currentPosition = 0;
     MainWindow mainWin;
+    int currentPosition = 0;
     QVector<Audio> currentList;
 };
 

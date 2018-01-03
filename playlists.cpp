@@ -27,7 +27,7 @@ QVector<Audio> Playlists::GetAudioFiles(int index) {
     result.clear();
 
    if( 0 <= index && index < currentPlaylists.size() )
-        return currentPlaylists[index];
+        return currentPlaylists[index].getAudio();
     else
         return result;
 }

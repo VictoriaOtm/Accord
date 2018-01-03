@@ -33,8 +33,8 @@ SOURCES += main.cpp\
         uploadwincontroller.cpp\
         playlists.cpp\
         playlist.cpp\
-        audio.cpp\
-        uploadwindow.cpp
+        audio.cpp \
+        playlist.pb.h
 
 HEADERS  += mainwindow.h\
         application.h\
@@ -44,7 +44,7 @@ HEADERS  += mainwindow.h\
         playlists.h\
         playlist.h\
         audio.h \
-        uploadwindow.h
+        playlist.pb.cc
 
 
 FORMS  += mainwindow.ui
