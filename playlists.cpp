@@ -64,6 +64,9 @@ void Playlists::Load() {
     std::fstream finBinaryPlaylists("playlists.bin", std::ios::in | std::ios::binary);
     if( !finBinaryPlaylists.is_open() ) {
         //emit Error("Ошибка при открытии плейлистов!\nЧто-то пошло не так!");
+        // выведем на экран пользователю
+        // все считанные плейлисты
+        emit PrintPlaylists();
         return;
     }
 
@@ -95,10 +98,9 @@ void Playlists::Load() {
         }
     }
 
-    if( !currentPlaylists.isEmpty() ) {
-        qDebug() << "Success send PrintPlaylists() signal";
-        emit PrintPlaylists();
-    }
+    // выведем на экран пользователю
+    // все считанные плейлисты
+    emit PrintPlaylists();
 }
 
 void Playlists::Save() {
