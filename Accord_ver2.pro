@@ -16,8 +16,8 @@ if (contains(BITSIZE, 64)) {
 if (contains(BITSIZE, 32)) {
      LIBS += /usr/lib/libprotobuf.so
 }
-PROTOS = playlist.proto
-include(protobuf.pri)
+#PROTOS = playlist.proto
+#include(protobuf.pri)
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -36,7 +36,7 @@ SOURCES += main.cpp\
         audio.cpp \
         playlist.pb.h
 
-HEADERS  += mainwindow.h\
+HEADERS += mainwindow.h\
         application.h\
         maincontroller.h\
         player.h\

@@ -17,6 +17,7 @@ public:
     void openMainWin();
     MainWindow& getMainWin();
     void showPlaylists();
+    void showAudioForCurrentPlaylist(int position);
 
 public slots:
     void NewTracksAdded(QVector<Audio>);

@@ -71,8 +71,9 @@ void MainController::NewTracksAdded(QVector<Audio> tracks){
         }
     }
 
-    mainWin.setAudioListModel(tracksNames);
+    //mainWin.setAudioListModel(tracksNames);
     showPlaylists();
+    showAudioForCurrentPlaylist();
     qDebug() << "Setting audio list model - success";
 }
 
@@ -82,10 +83,7 @@ void MainController::printPlaylists() {
     showPlaylists();
 }
 
-
-void MainController::playlistSelected(int position) {
-    qDebug() << "New cath, " << position;
-
+void MainController::showAudioForCurrentPlaylist(int position) {
     if( 0 <= position && position < Playlists::instance().Size() ) {
         currentPosition = position;
         QStringList audioListModel;
@@ -97,6 +95,11 @@ void MainController::playlistSelected(int position) {
         emit TracksAdded(Playlists::instance().GetAudioFiles(position));
         mainWin.setAudioListModelForPlaylist( audioListModel );
     }
+}
+
+void MainController::playlistSelected(int position) {
+    qDebug() << "New cath, " << position;
+    showAudioForCurrentPlaylist(position);
 }
 
 void MainController::FailedToAddTracks(QVector<Audio> failedTracks){
